@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #title2 input {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            /* box-sizing: border-box; */
+            padding: 0 16px;
+            border: none;
+            background-color: #efefef;
+            color: #4f4f4f;
+        }
+        
+        table {
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #ccc;
+        }
+        
+        table td,
+        table th {
+            border-bottom: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            padding: 3px 5px;
+        }
+        
+        table th {
+            border-bottom: 2px solid #ccc;
+            text-align: center;
+        }
+        /* blockquote 样式 */
+        
+        blockquote {
+            display: block;
+            border-left: 8px solid #d0e5f2;
+            padding: 5px 10px;
+            margin: 10px 0;
+            line-height: 1.4;
+            font-size: 100%;
+            background-color: #f1f1f1;
+        }
+        /* code 样式 */
+        
+        code {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            background-color: #f1f1f1;
+            border-radius: 3px;
+            padding: 3px 5px;
+            margin: 0 3px;
+        }
+        
+        pre code {
+            display: block;
+        }
+        /* ul ol 样式 */
+        
+        ul,
+        ol {
+            margin: 10px 0 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="editor">
+
+        <p id="title2">
+            <input type="text" name="text" placeholder="请输入文章标题" id="wenben">
+        </p>
+        <div id="content">
+        </div>
+        <p>
+            <input type="button" value="提交" id="btn">
+        </p>
+
+    </div>
+
+    <!-- 注意， 只需要引用 JS，无需引用任何 CSS ！！！-->
+    <script src="./wangEditor.min.js"></script>
+
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#content');
+        // 或者 var editor = new E( document.getElementById('editor') )
+        editor.create();
+        document.getElementById('btn').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '/from');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    alert(xhr.responseText);
+                }
+            }
+            var Txt = editor.txt.text() + document.getElementById('wenben').value
+            xhr.send({
+                "text": editor.txt.text(),
+                "title": document.getElementById('wenben').value
+            });
+
+        }, false);
+    </script>
+</body>
+
+</html>

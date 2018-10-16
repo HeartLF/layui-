@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="./css/layui.css">
+    <style type="text/css">
+        .toolbar {
+            border: 1px solid #ccc;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 50px;
+        }
+        
+        .text {
+            border: 1px solid #ccc;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">layui 后台布局</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">博客</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">新建博客</a></dd>
+                            <dd><a href="javascript:;">草稿箱</a></dd>
+                            <dd><a href="javascript:;">博客管理</a></dd>
+                            <dd><a href="">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">新闻管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">新建</a></dd>
+                            <dd><a href="javascript:;">草稿箱</a></dd>
+                            <dd><a href="">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">项目管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">新建</a></dd>
+                            <dd><a href="javascript:;">草稿箱</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
+                    <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
+                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
+                    <li class="layui-nav-item"><a href="">博客管理</a></li>
+                    <li class="layui-nav-item"><a href="">毕业生管理</a></li>
+                    <li class="layui-nav-item"><a href="">个人资料</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div class="layui-form-item">
+                <label class="layui-form-label">输入框</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div id="div1" class="toolbar"></div>
+                <div style="padding: 5px 0; color: #ccc"></div>
+                <div id="div2" class="text" style="min-height: 500px;"></div>
+                <!--可使用 min-height 实现编辑区域自动增加高度-->
+            </div>
+
+            <div class="layui-form-item" style="text-align: center;">
+                <input type="button" value="发布博客" class="layui-btn layui-btn-lg">
+                <input type="button" value="保存为草稿" class="layui-btn layui-btn-lg">
+                <input type="button" value="返回" class="layui-btn layui-btn-lg">
+            </div>
+        </div>
+
+
+
+        <div class="layui-footer ">
+            <!-- 底部固定区域 -->
+            © layui.com - 底部固定区域
+        </div>
+    </div>
+    <script src="./layui.js "></script>
+    <script src="./release/wangEditor.js "></script>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function() {
+            var element = layui.element;
+
+        });
+        var E = window.wangEditor
+        var editor1 = new E('#div1', '#div2') // 两个参数也可以传入 elem 对象，class 选择器
+        editor1.create();
+
+        document.getElementById('btn').addEventListener('click', function() {
+
+            layer.open({
+                id: 1,
+                type: 1,
+                title: '修改密码',
+                skin: 'layui-layer-rim',
+                area: ['450px', 'auto'],
+
+                content: `<div class="row" style="width: 420px;  margin-left:7px; margin-top:10px;">' 
+                    '<div class="col-sm-12">'
+                    '<div class="input-group">'
+                    '<span class="input-group-addon"> 新 密 码   :</span>' 
+                    '<input id="firstpwd" type="password" class="form-control" placeholder="请输入密码">' 
+                    '</div>'
+                    '</div>'
+                    '<div class="col-sm-12" style="margin-top: 10px">' 
+                    '<div class="input-group">' 
+                    '<span class="input-group-addon">确认密码:</span>' 
+                    '<input id="secondpwd" type="password" class="form-control" placeholder="请再输入一次密码">' 
+                    '</div>' 
+                    '</div>' 
+                    '</div>`,
+                btn: ['保存', '取消'],
+                btn1: function(index, layero) {},
+                btn2: function(index, layero) {
+                    layer.close(index);
+                }
+
+            })
+        }, false)
+    </script>
+</body>
+
+</html>

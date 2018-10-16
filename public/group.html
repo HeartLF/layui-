@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="./css/layui.css">
+    <style type="text/css">
+        .toolbar {
+            border: 1px solid #ccc;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 50px;
+        }
+        
+        .text {
+            border: 1px solid #ccc;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">layui 后台布局</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">博客</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">新建博客</a></dd>
+                            <dd><a href="javascript:;">草稿箱</a></dd>
+                            <dd><a href="javascript:;">博客管理</a></dd>
+                            <dd><a href="">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">新闻管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">新建</a></dd>
+                            <dd><a href="javascript:;">草稿箱</a></dd>
+                            <dd><a href="">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">项目管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">新建</a></dd>
+                            <dd><a href="javascript:;">草稿箱</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
+                    <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
+                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
+                    <li class="layui-nav-item"><a href="">博客管理</a></li>
+                    <li class="layui-nav-item"><a href="">毕业生管理</a></li>
+                    <li class="layui-nav-item"><a href="">个人资料</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body" style="margin-left: 100px;margin-top: 50px;">
+            <!-- 内容主体区域 -->
+            <table class="layui-table" lay-data="{width:1500, url:'/group/allList', page:true, id:'idTest'}" lay-filter="demo">
+                <thead>
+                    <tr>
+
+                        <th lay-data="{field:'id', width:80, sort: true, fixed: true}" id="ID">id</th>
+                        <th lay-data="{field:'name', width:100}">组名</th>
+
+                        <th lay-data="{field:'intro'}">简介</th>
+                        <th lay-data="{field:'status',templet: '#switchTpl', unresize: true, width:80}" id="status">状态</th>
+                        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
+                    </tr>
+                </thead>
+            </table>
+            <script type="text/html" id="switchTpl">
+                <!-- 这里的 checked 的状态只是演示 -->
+                <input type="checkbox" name="status" lay-skin="switch" lay-text="可用|禁止" lay-filter="switchTest" {{ d.status=="USABLE" ? 'checked' : '' }} id="Status">
+            </script>
+            <script type="text/html" id="barDemo">
+
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-xs" lay-event="add">添加</a>
+            </script>
+        </div>
+
+
+
+
+        <div class="layui-footer ">
+            <!-- 底部固定区域 -->
+            © layui.com - 底部固定区域
+        </div>
+    </div>
+    <script src="./layui.js "></script>
+    <script src="./release/wangEditor.js "></script>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function() {
+            var element = layui.element;
+
+        });
+
+        layui.use(['form', 'jquery', 'table'],
+            function() {
+                var Data;
+                var table = layui.table;
+                var form = layui.form
+                var $ = layui.jquery;
+                var layer = layui.layer
+                    //监听表格复选框选择
+                table.on('checkbox(demo)', function(obj) {
+                    console.log(obj)
+                });
+                form.on('switch(switchTest)', function(data) {
+                    let id = data.elem.parentNode.parentNode.parentNode.firstChild.innerText;
+                    let status = data.elem.parentNode.parentNode.dataset.content
+                        // console.log(data.elem.parentNode.parentNode.dataset.content);
+                    if (status == "USABLE") {
+                        status = "DISABLE"
+                    } else {
+                        status = "USABLE"
+                    }
+                    $.get('/group/updateStatus?id=' + id + '&status=' + status, (data) => {
+                        console.log(data);
+                    })
+                });
+                // //监听工具条
+                table.on('tool(demo)', function(obj) {
+                    // group/updateStatus?id=  status=
+                    Data = obj.data;
+
+
+                    if (obj.event === 'edit') {
+                        layer.open({
+                            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                            type: 1,
+                            title: "编辑小组信息",
+                            area: ['30%', '50%'],
+                            content: ` <div class="layui-row" id="test" style="margin-top:20px">
+                        <div class="layui-col-md10">
+                        <form class="layui-form" id="addEmployeeForm" action="/group/update" method="post" lay-filter="example">
+                            <div class="layui-form-item" style="display:none">
+                            <label class="layui-form-label">ID</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="id" id="text1" class="layui-input" onBlur="isChinese('text1','Label1')" placeholder="请输入中文"  required="required" >
+                                <label id="Label1" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-form-item">
+                            <label class="layui-form-label">组名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" id="text1" class="layui-input" onBlur="isChinese('text1','Label1')" placeholder="请输入中文"  required="required">
+                                <label id="Label1" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-block">
+                                <select name="status" >
+                          
+                                    <option value="USABLE">可用</option>
+                                    <option value="DISABLE">禁用</option>     
+                                </select>
+                            </div>
+                        </div>
+                            <label class="layui-form-label">简介</label>
+                            <div class="layui-input-block">
+                                <textarea style="height:200px; placeholder="请输入内容" class="layui-textarea" name="intro"></textarea>
+                                <label id="Label1" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                       
+                        <div class="layui-form-item0" style="float:left">
+                            <div class="layui-input-block">
+                                <input type="submit" class="layui-btn layui-btn-normal" lay-filter="demo1" id="btn"></input>
+                        </div>
+                        <div class="layui-form-item" style="float:left">
+                            <div class="layui-input-block">
+                               
+                        </div>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>`,
+                            success: function() {
+                                form.val('example', {
+                                    "id": Data.id,
+                                    "name": Data.name, // "name": "value"
+                                    "intro": Data.intro,
+                                    "status": Data.status
+                                });
+                                form.render('select');
+
+
+                            }
+                        })
+
+                    } else if (obj.event === 'add') {
+                        layer.open({
+                            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                            type: 1,
+                            title: "添加用户信息",
+                            area: ['30%', '50%'],
+                            content: ` <div class="layui-row" id="test">
+                        <div class="layui-col-md10">
+                        <form class="layui-form" id="addEmployeeForm" onsubmit=" return checkImg('img_url','Label7')" action="/group/save" method="post" lay-filter="example">
+                            <div class="layui-form-item">
+                            <label class="layui-form-label">组名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" id="text1" class="layui-input" onBlur="isChinese('text1','Label1')" placeholder="请输入中文"  required="required">
+                                <label id="Label1" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                            <div class="layui-form-item">
+                            <label class="layui-form-label">简介</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="请输入内容" class="layui-textarea" name="intro"></textarea>
+                                <label id="Label1" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                     
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-block">
+                                <select name="status" >
+                          
+                                    <option value="USABLE">可用</option>
+                                    <option value="DISABLE">禁用</option>     
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="submit" class="layui-btn layui-btn-normal" lay-filter="demo1"></input>
+                        </div>
+                    </form>
+                </div>
+            </div>`,
+                            success: function() {
+                                form.render('select');
+                            }
+                        })
+                    }
+                })
+
+            })
+    </script>
+</body>
+
+</html>
