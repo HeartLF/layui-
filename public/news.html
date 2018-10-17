@@ -88,13 +88,12 @@
 
                 <div class="editormd" id="test-editormd">
                     <textarea></textarea>
-
                 </div>
 
-
                 <input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
-                <button id="preview-btn" class="layui-btn layui-btn-warm">保存为草稿</button>
-                <button id="preview-btn" class="layui-btn layui-btn-warm">返回</button>
+                <input type="button" name="submit" id="preview-btn" class="layui-btn layui-btn-warm" value="保存为草稿">
+                <button id="back-btn" class="layui-btn layui-btn-warm"><a href="">返回</a></button>
+
             </div>
         </div>
     </div>
@@ -106,8 +105,8 @@
         //JavaScript代码区域
         layui.use('element', function() {
             var element = layui.element;
-
         });
+
         var a = 1;
         var id = 0;
         console.log("申请了ID");
@@ -125,7 +124,7 @@
                 //syncScrolling : false,
                 saveHTMLToTextarea: true, // 保存 HTML 到 Textarea
                 searchReplace: true,
-                watch: false, // 关闭实时预览
+                //watch: false, // 关闭实时预览
                 htmlDecode: "style,script,iframe|on*", // 开启 HTML 标签解析，为了安全性，默认不开启    
                 //toolbar  : false,             //关闭工具栏
                 //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
@@ -155,17 +154,6 @@
                     //this.height(480);
                     //this.resize("100%", 640);
 
-                    document.getElementById("submit").onclick = function() {
-                        clearInterval(timer);
-                        let htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-                        let mdCode = testEditor.getMarkdown();
-                        console.log(htmlCode);
-                    }
-                    document.getElementById("preview-btn").onclick = function() {
-                            testEditor.previewing();
-                        }
-                        //模拟用户从数据库拿到md源代码，可以修改文章
-                    document.getElementsByTagName('textarea')[0].innerHTML = "##HELLO keke";
                 },
                 onchange: function() {
                     var title = document.getElementById('txt');
@@ -175,14 +163,15 @@
 
                         var xhr = new XMLHttpRequest();
 
-                        xhr.open('post', '/notice/saveNews');
+                        xhr.open('post', '/notice/saveNewsAuto');
                         xhr.onreadystatechange = function() {
                             if (xhr.status == 200 && xhr.readyState == 4) {
                                 var data = xhr.responseText;
                                 var result = JSON.parse(data);
-
                                 if (result.code >= 0) {
                                     id = result.data.id;
+                                } else {
+                                    alert('自动保存失败')
                                 }
                             }
                         }
@@ -194,6 +183,61 @@
                     console.log(a++);
                 }
             });
+
+
+            document.getElementById("submit").onclick = function() {
+                var title = document.getElementById('txt');
+                var mdCode = testEditor.getMarkdown();
+                var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                console.log(mdCode, htmlCode);
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('post', '/notice/saveNews');
+                xhr.onreadystatechange = function() {
+                    if (xhr.status == 200 && xhr.readyState == 4) {
+                        var data = xhr.responseText;
+                        var result = JSON.parse(data);
+
+                        if (result.code >= 0) {
+                            id = result.data.id;
+                        }
+                    }
+                }
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                let obj = "title+" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                //var html = JSON.stringify(obj);
+                xhr.send(obj);
+            }
+            document.getElementById("preview-btn").onclick = function() {
+                    //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
+                    var title = document.getElementById('txt');
+                    if (title.value == '') {
+                        return alert("请输入标题")
+                    }
+                    var mdCode = testEditor.getMarkdown();
+                    var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                    console.log(mdCode, htmlCode);
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('post', '/notice/saveNewsDraft');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.status == 200 && xhr.readyState == 4) {
+                            var data = xhr.responseText;
+                            var result = JSON.parse(data);
+
+                            if (result.code >= 0) {
+                                id = result.data.id;
+                            }
+                        }
+                    }
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                    //var html = JSON.stringify(obj);
+                    xhr.send(obj);
+
+                }
+                //模拟用户从数据库拿到md源代码，可以修改文章
+            document.getElementsByTagName('textarea')[0].innerHTML = "##HELLO keke";
 
 
         };
