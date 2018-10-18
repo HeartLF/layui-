@@ -45,7 +45,24 @@
         <script src="js/editormd.js"></script>
         <script type="text/javascript">
             var testEditor;
+            var a = 1;
+            // var id = localStorage["id"];
+            // if (id == 'undefined') {
+            var id = 0;
+            // }
+            var url = window.location.href //获取当前URL
+            console.log(url);
+            if (url.indexOf('?') != -1) {
+                id = url.split("?")[1].split("=")[1];
+
+            } else {
+                //取得参数
+                id = 0;
+            }
+            console.log(id);
+
             var jQuery = Zepto; // 为了避免修改 flowChart.js 和 sequence-diagram.js 的源码，所以想支持 flowChart / sequenceDiagram 就得加上这一句
+
             window.onload = function() {
                 testEditor = editormd("test-editormd", {
                     width: "90%",
@@ -86,28 +103,112 @@
                         //this.width("100%");
                         //this.height(480);
                         //this.resize("100%", 640);
+                    },
+                    onchange: function() {
+                        var title = document.getElementById('txt');
+                        if (parseInt(a / 5) > 0) {
+                            a = 0;
+                            var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+
+                            var xhr = new XMLHttpRequest();
+
+                            xhr.open('post', '/notice/saveNewsAuto');
+                            xhr.onreadystatechange = function() {
+                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                    var data = xhr.responseText;
+                                    var result = JSON.parse(data);
+                                    console.log(result);
+                                    if (result.code >= 0) {
+                                        id = result.data.id;
+                                    }
+
+                                }
+                            }
+                            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            // console.log(id);
+                            let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
+                            console.log(obj);
+                            xhr.send(obj);
+                        }
+                        a++;
+                        // console.log(a++);
                     }
                 });
-                document.getElementById("submit").onclick = function() {
-                    let htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-                    let mdCode = testEditor.getMarkdown();
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('get', '');
-                    xhr.onload = function(data) {
 
+                document.getElementById("submit").onclick = function() {
+                    // var url = window.location.href //获取当前URL
+                    // var param = url.split("?")[1].split("=")[1]; //取得参数
+                    var title = document.getElementById('txt');
+                    var mdCode = testEditor.getMarkdown();
+                    var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                    console.log(mdCode, htmlCode);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('post', '/notice/saveNews');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.status == 200 && xhr.readyState == 4) {
+                            var data = xhr.responseText;
+                            var result = JSON.parse(data);
+                            // if (param > 1) {
+                            //     id = param;
+                            //     return;
+                            // }
+                            if (result.code >= 0) {
+                                id = result.data.id;
+                            }
+                        }
                     }
-                    var obj = JSON.stringify(mdCode);
-                    xhr.send({
-                        name: obj
-                    })
-                    console.log(htmlCode);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    let obj = "title+" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                    //var html = JSON.stringify(obj);
+                    xhr.send(obj);
+                    // window.location = './message.html';
                 }
                 document.getElementById("preview-btn").onclick = function() {
-                        testEditor.previewing();
+                    //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
+                    var title = document.getElementById('txt');
+                    if (title.value == '') {
+                        return alert("请输入标题")
                     }
-                    //模拟用户从数据库拿到md源代码，可以修改文章
-                document.getElementsByTagName('textarea')[0].innerHTML = "##HELLO keke";
-            };
+                    var mdCode = testEditor.getMarkdown();
+                    var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                    console.log(mdCode, htmlCode);
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('post', '/notice/saveNewsDraft');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.status == 200 && xhr.readyState == 4) {
+                            var data = xhr.responseText;
+                            var result = JSON.parse(data);
+
+                            if (result.code >= 0) {
+                                id = result.data.id;
+                            }
+                        }
+                    }
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                    //var html = JSON.stringify(obj);
+                    xhr.send(obj);
+                }
+            }
+            ajax();
+
+            function ajax() {
+                var title = document.getElementById('txt');
+                var xhr = new XMLHttpRequest();
+                xhr.open('get', '/notice/getNewsMarkdown?id=' + id);
+                xhr.onreadystatechange = function() {
+                    if (xhr.status == 200 && xhr.readyState == 4) {
+                        var result = JSON.parse(xhr.responseText);
+                        console.log(result);
+                        title.value = result.data.title;
+                        // document.getElementsByTagName('textarea')[0].innerHTML = "dasdasd"
+                        document.getElementsByTagName('textarea')[0].innerHTML = result.data.markdownContent
+                    }
+                }
+                xhr.send();
+
+            }
         </script>
 </body>
 

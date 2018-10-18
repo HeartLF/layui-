@@ -139,31 +139,13 @@
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
         var xhr = new XMLHttpRequest();
-        xhr.open('get', 'notice/listNewsDraft');
+        xhr.open('get', 'notice/listNewsOfficial');
         xhr.onreadystatechange = function() {
             var html = '';
             if (xhr.status == 200 && xhr.readyState == 4) {
                 var result = JSON.parse(xhr.responseText);
-                if (result.data.length == 0) {
-                    html = `<div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-body"  style="padding:none">
-                                    <button  class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
-                            </div>
-                        </div>
-                    </div>`
-                }
+                console.log(result.data.length);
                 for (var i = 0; i < result.data.length; i++) {
-                    if (i == 0) {
-                        html = `<div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-body"  style="padding:none">
-                                    <button  class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
-                            </div>
-                        </div>
-                    </div>`;
-
-                    }
                     html += `<div class="layui-col-md6">
                         <div class="layui-card">
                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
