@@ -41,7 +41,7 @@
             <button id="back-btn" class="layui-btn layui-btn-warm"><a href="">返回</a></button>
         </div>
         <script src="js/zepto.min.js"></script>
-        <script src="./layui.js "></script>
+        <script src="js/layui.js"></script>
         <script src="js/editormd.js"></script>
         <script type="text/javascript">
             var testEditor;
@@ -112,7 +112,7 @@
 
                             var xhr = new XMLHttpRequest();
 
-                            xhr.open('post', '/notice/saveNewsAuto');
+                            xhr.open('post', '/notice/saveProjectAuto');
                             xhr.onreadystatechange = function() {
                                 if (xhr.status == 200 && xhr.readyState == 4) {
                                     var data = xhr.responseText;
@@ -134,37 +134,38 @@
                         // console.log(a++);
                     }
                 });
-
+                //提交
                 document.getElementById("submit").onclick = function() {
-                    // var url = window.location.href //获取当前URL
-                    // var param = url.split("?")[1].split("=")[1]; //取得参数
-                    var title = document.getElementById('txt');
-                    var mdCode = testEditor.getMarkdown();
-                    var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-                    if (title.value == '') {
-                        return alert("请输入标题")
-                    }
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('post', '/notice/saveNews');
-                    xhr.onreadystatechange = function() {
-                        if (xhr.status == 200 && xhr.readyState == 4) {
-                            var data = xhr.responseText;
-                            var result = JSON.parse(data);
-                            // if (param > 1) {
-                            //     id = param;
-                            //     return;
-                            // }
-                            if (result.code >= 0) {
-                                id = result.data.id;
+                        // var url = window.location.href //获取当前URL
+                        // var param = url.split("?")[1].split("=")[1]; //取得参数
+                        var title = document.getElementById('txt');
+                        var mdCode = testEditor.getMarkdown();
+                        var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                        if (title.value == '') {
+                            return alert("请输入标题")
+                        }
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('post', '/notice/saveProject');
+                        xhr.onreadystatechange = function() {
+                            if (xhr.status == 200 && xhr.readyState == 4) {
+                                var data = xhr.responseText;
+                                var result = JSON.parse(data);
+                                // if (param > 1) {
+                                //     id = param;
+                                //     return;
+                                // }
+                                if (result.code >= 0) {
+                                    id = result.data.id;
+                                }
                             }
                         }
+                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        let obj = "title:" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                        //var html = JSON.stringify(obj);
+                        xhr.send(obj);
+                        // window.location = './message.html';
                     }
-                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    let obj = "title+" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
-                    //var html = JSON.stringify(obj);
-                    xhr.send(obj);
-                    // window.location = './message.html';
-                }
+                    //保存为草稿
                 document.getElementById("preview-btn").onclick = function() {
                     //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
                     var title = document.getElementById('txt');
@@ -176,7 +177,7 @@
                     console.log(mdCode, htmlCode);
                     var xhr = new XMLHttpRequest();
 
-                    xhr.open('post', '/notice/saveNewsDraft');
+                    xhr.open('post', '/notice/saveProjectDraft');
                     xhr.onreadystatechange = function() {
                         if (xhr.status == 200 && xhr.readyState == 4) {
                             var data = xhr.responseText;
@@ -198,7 +199,7 @@
             function ajax() {
                 var title = document.getElementById('txt');
                 var xhr = new XMLHttpRequest();
-                xhr.open('get', '/notice/getNewsMarkdown?id=' + id);
+                xhr.open('get', '/notice/getProjectMarkdown?id=' + id);
                 xhr.onreadystatechange = function() {
                     if (xhr.status == 200 && xhr.readyState == 4) {
                         var result = JSON.parse(xhr.responseText);

@@ -82,7 +82,7 @@
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a class="javascript:;" href="javascript:;">博客</a>
+                        <a class="" href="javascript:;">博客</a>
                         <dl class="layui-nav-child">
                             <dd><a href="javascript:;">新建博客</a></dd>
                             <dd><a href="javascript:;">草稿箱</a></dd>
@@ -91,12 +91,14 @@
                         </dl>
                     </li>
                     <li class="layui-nav-item">
-                        <a class="javascript:;" href="javascript:;">新闻管理</a>
+                        <a href="javascript:;">新闻管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="./message_history.html">新闻</a></dd>
                             <dd><a href="./editor.html">新建</a></dd>
                             <dd><a href="./message.html">草稿箱</a></dd>
-
+                            <dd>
+                                <a href=""></a>
+                            </dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
@@ -133,22 +135,18 @@
         //JavaScript代码区域
         layui.use('element', function() {
             var element = layui.element;
-            element.on('nav(test)', function(elem) {
-                //console.log(elem)
-                layer.msg(elem.text());
-            });
+
         });
         // var editor = document.getElementById('editor');
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
         var xhr = new XMLHttpRequest();
-        xhr.open('get', 'notice/listNewsOfficial');
+        xhr.open('get', 'notice/listProjectOfficial');
         xhr.onreadystatechange = function() {
             var html = '';
             if (xhr.status == 200 && xhr.readyState == 4) {
                 var result = JSON.parse(xhr.responseText);
-                console.log(result.data);
-                var arr = [];
+
                 result.data.map(element => {
                     element.addTime = element.addTime.slice().replace('T', ' ');
 
@@ -178,10 +176,10 @@
                 }
                 document.getElementsByClassName('layui-row')[0].innerHTML += html;
                 var btn = document.querySelectorAll('.layui-btn');
-                console.log(btn);
+                console.log(btn.length);
                 for (var i = 1; i < btn.length; i++) {
                     (function(i) {
-                        if (i % 2 == 0) {
+                        if (i % 2 != 0) {
                             btn[i].addEventListener('click', function() {
                                 console.log(this.dataset.id);
                                 var xhr = new XMLHttpRequest();

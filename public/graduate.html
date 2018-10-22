@@ -45,9 +45,12 @@
                     <li class="layui-nav-item">
                         <a href="javascript:;">新闻管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                            <dd><a href="">超链接</a></dd>
+                            <dd><a href="./message_history.html">新闻</a></dd>
+                            <dd><a href="./editor.html">新建</a></dd>
+                            <dd><a href="./message.html">草稿箱</a></dd>
+                            <dd>
+                                <a href=""></a>
+                            </dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
@@ -57,8 +60,9 @@
                             <dd><a href="javascript:;">草稿箱</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item"><a href="">成员管理</a></li>
+                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
                     <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
+                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
                     <li class="layui-nav-item"><a href="">博客管理</a></li>
                     <li class="layui-nav-item"><a href="">毕业生管理</a></li>
                     <li class="layui-nav-item"><a href="">个人资料</a></li>
@@ -94,7 +98,7 @@
 
             <div class="layui-table-box ">
 
-                <table class="layui-table" id="test3" lay-filter="test3" lay-data="{id:'test3',url:'http://192.168.1.138/person/personList'}">
+                <table class="layui-table" id="test3" lay-filter="test3" lay-data="{id:'test3',url:'/person/personList'}">
                     <thead>
                         <tr>
                             <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
@@ -122,7 +126,7 @@
             </div>
 
             </div>
-            <script src="./layui.js "></script>
+            <script src="js/layui.js"></script>
             <script>
                 layui.use('element', function() {
                     var element = layui.element;
@@ -512,7 +516,7 @@
 
                         form.render('select');
                     })
-                    $.get('http://192.168.1.138/group/usableList', {}, function(data) {
+                    $.get('/group/usableList', {}, function(data) {
                         var $html = "";
                         // console.log(data);
                         data.Group.forEach(function(element) {
@@ -540,7 +544,7 @@
                         // num++;
                         // console.log(data.value); //得到被选中的值]
                         table.reload('test3', {
-                            url: 'http://192.168.1.138/person/personList',
+                            url: '/person/personList',
                             page: 'false',
                             where: {
                                 grade: arr[0],
