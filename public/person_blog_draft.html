@@ -141,7 +141,7 @@
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
         var xhr = new XMLHttpRequest();
-        xhr.open('get', 'notice/listNewsDraft');
+        xhr.open('get', 'blogs/listDraft');
         xhr.onreadystatechange = function() {
             var html = '';
             if (xhr.status == 200 && xhr.readyState == 4) {
@@ -150,7 +150,7 @@
                     html = `<div class="layui-col-md6">
                         <div class="layui-card">
                             <div class="layui-card-body"  style="padding:none">
-                                    <button  class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
+                                    <button  class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
                             </div>
                         </div>
                     </div>`
@@ -160,7 +160,7 @@
                         html = `<div class="layui-col-md6">
                         <div class="layui-card">
                             <div class="layui-card-body"  style="padding:none">
-                                    <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
+                                    <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
                             </div>
                         </div>
                     </div>`;
@@ -185,7 +185,6 @@
                             </div>
                         </div>
                     </div>`;
-
                 }
                 document.getElementsByClassName('layui-row')[0].innerHTML += html;
                 var btn = document.querySelectorAll('.layui-btn');
@@ -196,7 +195,7 @@
                             btn[i].addEventListener('click', function() {
                                 console.log(this.dataset.id);
                                 var xhr = new XMLHttpRequest();
-                                xhr.open('get', '/notice/delete?id=' + this.dataset.id);
+                                xhr.open('get', '/blogs/delete?id=' + this.dataset.id);
                                 xhr.onreadystatechange = function() {
                                     if (xhr.status == 200 && xhr.readyState == 4) {
                                         console.log(xhr.responseText);
@@ -205,7 +204,6 @@
                                 xhr.send();
                             }, false)
                         }
-
                     })(i)
                 }
             }
