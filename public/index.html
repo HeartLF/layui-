@@ -101,7 +101,6 @@
                             <input type="checkbox" name="biaoq3" title="游戏">
                         </div>
                     </div>
-                    <input type="submit" value="提交">
                 </form>
                 <input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
                 <button id="preview-btn" class="layui-btn layui-btn-warm">转换为html代码</button>
@@ -127,6 +126,10 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
 
                     let data = JSON.parse(xhr.responseText);
+                    let html = ''
+                    for (var i = 0; i < data.data.length; i++) {
+                        html += ` <input type="checkbox" name="biaoq1" title="写作">`
+                    }
                     console.log(data);
                 }
             }
