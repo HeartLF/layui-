@@ -141,7 +141,7 @@
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
         var xhr = new XMLHttpRequest();
-        xhr.open('get', 'blogs/listDraft');
+        xhr.open('get', '/blogs/listDraft');
         xhr.onreadystatechange = function() {
             var html = '';
             if (xhr.status == 200 && xhr.readyState == 4) {

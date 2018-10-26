@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/editormd.css" />
     <link rel="stylesheet" href="./css/layui.css">
+
 </head>
 
 <body class="layui-layout-body" style="overflow:auto">
@@ -28,44 +29,61 @@
             </ul>
         </div>
         <div id="layout">
+            <br>
             <header>
                 <input type="text" placeholder="请输入标题！！必须填" name="txt" class="layui-input" id="txt" value="">
             </header>
-
+            <br>
+            <div id="Alert" style="width:150px;height:100px;position:absolute;display: none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 20;opacity: 1;background-color: rgba(0,0,0,.6);">
+                <span style="height:40px;text-align:center;line-height:40px;   color: #fff; font-size: 14px; padding: 12px 25px;">保存草稿成功</span>
+                <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button>
+            </div>
             <div class="editormd" id="test-editormd">
                 <textarea></textarea>
 
             </div>
+
             <br/>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">单行选择框</label>
-                <div id="box2">
+            <div class="layui-form-item" style="width: 90%;margin:0 auto ;">
+                <label style="float: left">标签：</label>
+
+                <div id="box2" style="margin-top:10px;">
 
                     <button style="float:left" id="btn2" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i>添加新分类</button>
                 </div>
             </div>
+            <br>
+            <br>
+            <div style="margin-bottom:40px;">
 
 
-
-            <input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
-            <input type="button" name="submit" id="preview-btn" class="layui-btn layui-btn-warm" value="保存为草稿">
-            <button id="back-btn" class="layui-btn layui-btn-warm"><a href="">返回</a></button>
+                <input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
+                <input type="button" name="submit" id="preview-btn" class="layui-btn layui-btn-warm" value="保存为草稿">
+                <button id="back-btn" class="layui-btn layui-btn-warm"><a href="">返回</a></button>
+            </div>
         </div>
         <script src="js/zepto.min.js"></script>
         <script src="./layui.js "></script>
         <script src="./js/jquery.js"></script>
         <script src="js/editormd.js"></script>
         <script type="text/javascript">
-            layui.use('element', function() {
+            layui.use(['element', 'layer'], function() {
                 var element = layui.element;
-            });
+                var layer = layui.layer;
 
+            });
+            document.getElementById('Alert').style.display = 'block';
+            document.getElementById('Alert_btn').onclick = function() {
+
+            }
             var testEditor;
             var a = 1;
             // var id = localStorage["id"];
             // if (id == 'undefined') {
             var id = 0;
+            var result = [];
+            var html;
             // }
             var url = window.location.href //获取当前URL
             console.log(url);
@@ -138,105 +156,168 @@
                                         if (result.code >= 0) {
                                             id = result.data.id;
                                         }
-
                                     }
                                 }
-                                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                xhr.setRequestHeader("Content-type", "application/json");
                                 // console.log(id);
-                                let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
+                                let obj = {
+                                        blogsModel: {
+                                            title: title.value,
+                                            id: id,
+                                            content: htmlCode
+                                        }
+                                    }
+                                    // let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
                                 console.log(obj);
-                                xhr.send(obj);
+                                var info = JSON.stringify(obj);
+                                xhr.send(info);
                             }
                             a++;
                             // console.log(a++);
                         }
                     });
+                    layui.use(['element', 'layer'], function() {
+                        var element = layui.element;
+                        var layer = layui.layer;
 
-                    document.getElementById("submit").onclick = function() {
-                        // var url = window.location.href //获取当前URL
-                        // var param = url.split("?")[1].split("=")[1]; //取得参数
-                        var title = document.getElementById('txt');
-                        var mdCode = testEditor.getMarkdown();
-                        var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-                        if (title.value == '') {
-                            return alert("请输入标题")
-                        }
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('post', '/notice/saveNews');
-                        xhr.onreadystatechange = function() {
-                            if (xhr.status == 200 && xhr.readyState == 4) {
-                                var data = xhr.responseText;
-                                var result = JSON.parse(data);
-                                // if (param > 1) {
-                                //     id = param;
-                                //     return;
-                                // }
-                                if (result.code >= 0) {
-                                    id = result.data.id;
+
+                        document.getElementById("submit").onclick = function() {
+                            // var url = window.location.href //获取当前URL
+                            // var param = url.split("?")[1].split("=")[1]; //取得参数
+                            var title = document.getElementById('txt');
+                            var mdCode = testEditor.getMarkdown();
+                            var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                            if (title.value == '') {
+                                return alert("请输入标题")
+                            }
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('post', '/blogs/saveAudit');
+                            xhr.onreadystatechange = function() {
+                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                    var data = xhr.responseText;
+                                    var result = JSON.parse(data);
+                                    // if (param > 1) {
+                                    //     id = param;
+                                    //6.631 //     return;
+                                    // }
+                                    if (result.code >= 0) {
+                                        id = result.data.id;
+
+                                    }
                                 }
                             }
+                            xhr.setRequestHeader("Content-type", "application/json");
+                            var str = []
+                            for (var i = 0; i < result.length; i++) {
+                                str.push({
+                                    id: result[i]
+                                })
+                            }
+                            let obj = {
+                                    blogsModel: {
+                                        title: title.value,
+                                        id: id,
+                                        content: htmlCode,
+                                        markdownContent: mdCode,
+                                        classifySet: str
+                                    }
+                                }
+                                //let obj = "title+" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                                //var html = JSON.stringify(obj);
+                            var info = JSON.stringify(obj);
+                            xhr.send(info);
+                            // window.location = './message.html';
                         }
-                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                        let obj = "title+" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
-                        //var html = JSON.stringify(obj);
-                        xhr.send(obj);
-                        // window.location = './message.html';
-                    }
-                    document.getElementById("preview-btn").onclick = function() {
-                        //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
-                        var title = document.getElementById('txt');
-                        if (title.value == '') {
-                            return alert("请输入标题")
-                        }
-                        var mdCode = testEditor.getMarkdown();
-                        var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-                        console.log(mdCode, htmlCode);
-                        var xhr = new XMLHttpRequest();
+                        document.getElementById("preview-btn").onclick = function() {
+                            //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
+                            var title = document.getElementById('txt');
+                            if (title.value == '') {
+                                return alert("请输入标题")
+                            }
+                            var mdCode = testEditor.getMarkdown();
+                            var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                            console.log(mdCode, htmlCode);
+                            var xhr = new XMLHttpRequest();
 
-                        xhr.open('post', '/blogs/saveDraft');
-                        xhr.onreadystatechange = function() {
-                            if (xhr.status == 200 && xhr.readyState == 4) {
-                                var data = xhr.responseText;
-                                var result = JSON.parse(data);
+                            xhr.open('post', '/blogs/saveDraft');
+                            xhr.onreadystatechange = function() {
+                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                    var data = xhr.responseText;
+                                    var result = JSON.parse(data);
 
-                                if (result.code >= 0) {
-                                    id = result.data.id;
+                                    if (result.code >= 0) {
+                                        id = result.data.id;
+
+
+                                    }
                                 }
                             }
-                        }
-                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                        let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
-                        //var html = JSON.stringify(obj);
-                        xhr.send(obj);
-                    }
-                    $('#btn2').on('click', function() {
+                            xhr.setRequestHeader("Content-type", "application/json");
+                            var str = []
 
-                        $('#box2').before(`<div class='label'>
-                        <select name="" id="" style="display:block;float: left;width: 100px;">
-                            <option value="123">1berberberberbe</option>
-                            <option value="1212"></option>
-                            <option value="wedfwe">1</option>
-                            <option value="">1</option>
+                            for (var i = 0; i < result.length; i++) {
+                                str.push({
+                                    id: result[i]
+                                })
+                            }
+                            console.log(str);
+                            let obj = {
+                                    blogsModel: {
+                                        title: title.value,
+                                        id: id,
+                                        content: htmlCode,
+                                        markdownContent: mdCode,
+                                        classifySet: str
+                                    }
+
+                                }
+                                //let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode + str;
+                            var info = JSON.stringify(obj);
+                            xhr.send(info);
+                        }
+
+                        document.getElementById('btn2').onclick = function() {
+
+                            let Html = ''
+
+                            $('#btn2').before(`<div class='label'>
+                            <select name="" id="" style="float: left;width: 100px;height:30px;line-height: 30px;
+                     padding: 0 10px; font-size: 13px; " class="selectText">
+                                <option value="" >请选择</option>
+                            ${html}
                             </select>
-                        <i style="float:left" class=" layui-icon layui-icon-close delete"></i>
-                    </div>`);
-                        var Delete = document.querySelectorAll('.delete');
+                            <img src="./images/关闭.png" class="delete" style="float:left;width:20px;margin-top:5px;">
+                            </div>`);
+                            var Delete = document.querySelectorAll('.delete');
+                            var label = document.querySelectorAll('.label');
+                            //let select = document.getElementById('btn2').previousSibling;
+                            let select = document.querySelectorAll('.selectText');
+                            select[select.length - 1].onchange = function() {
+                                result.push(this.options[this.options.selectedIndex].value);
+                            }
+                            for (let i = 0; i < Delete.length; i++) {
+                                Delete[i].onclick = function() {
+                                    // let val = $(this).siblings();
+                                    // // console.log(val[0]);
+                                    // // let value = val[0].find("option:selected").val()
+                                    // let index = val[0].selectedIndex;
+                                    // let value = val[0].options[index].value;
+                                    // console.log(value)
 
-                        for (let i = 0; i < Delete.length; i++) {
-                            Delete[i].onclick = function() {
-                                let val = $(this).siblings();
-                                // console.log(val[0]);
-                                // let value = val[0].find("option:selected").val()
-                                let index = val[0].selectedIndex;
-                                let value = val[0].options[index].value;
-                                console.log(value)
+                                    $(this).parent().remove();
+                                    result.splice(i, 1);
+                                    console.log(i);
+                                    console.log(result)
+                                }
                             }
 
+
                         }
-                    })
+                    });
 
                 }
                 // ajax();
+            labelAjax()
 
             function ajax() {
                 var title = document.getElementById('txt');
@@ -252,7 +333,16 @@
                     }
                 }
                 xhr.send();
+            }
 
+            function labelAjax() {
+                $.get('/classify/list', (data) => {
+                    console.log(data);
+                    for (let i = 0; i < data.data.length; i++) {
+                        html += `<option value="${data.data[i].id}" style="font-size: 15px; text-align: center;line-height: 30px; color: #555;">${data.data[i].name}</option>`
+                    }
+                    console.log(html);
+                })
             }
         </script>
 </body>

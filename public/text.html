@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/person/test');
+        xhr.onload = function() {
+            console.log(xhr.responseText);
+        }
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        var info = JSON.stringify({
+            model: {
+                id: '45612',
+                name: 'sdhshdb',
+                set: ['111', '222']
+            }
+
+        })
+        xhr.send(info)
+    </script>
+</body>
+
+</html>
