@@ -82,7 +82,7 @@
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a class="javascript:;" href="javascript:;">博客</a>
+                        <a class="" href="javascript:;">博客</a>
                         <dl class="layui-nav-child">
                             <dd><a href="javascript:;">新建博客</a></dd>
                             <dd><a href="javascript:;">草稿箱</a></dd>
@@ -91,12 +91,14 @@
                         </dl>
                     </li>
                     <li class="layui-nav-item">
-                        <a class="javascript:;" href="javascript:;">新闻管理</a>
+                        <a href="javascript:;">新闻管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="./message_history.html">新闻</a></dd>
                             <dd><a href="./editor.html">新建</a></dd>
                             <dd><a href="./message.html">草稿箱</a></dd>
-
+                            <dd>
+                                <a href=""></a>
+                            </dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
@@ -127,55 +129,82 @@
 
         </div>
     </div>
-    <script src="js/layui.js"></script>
+    <script src="./layui.js"></script>
 
     <script>
         //JavaScript代码区域
         layui.use('element', function() {
             var element = layui.element;
-            element.on('nav(test)', function(elem) {
-                //console.log(elem)
-                layer.msg(elem.text());
-            });
+
         });
         // var editor = document.getElementById('editor');
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
         var xhr = new XMLHttpRequest();
-        xhr.open('get', 'notice/listNewsOfficial');
+        xhr.open('get', '/blogs/listAudit');
         xhr.onreadystatechange = function() {
             var html = '';
             if (xhr.status == 200 && xhr.readyState == 4) {
                 var result = JSON.parse(xhr.responseText);
                 console.log(result.data);
-                var arr = [];
                 result.data.map(element => {
                     element.addTime = element.addTime.slice().replace('T', ' ');
                 });
+                var str = '';
 
+                if (result.data.length == 0) {
+                    html = `<div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-body"  style="padding:none">
+                                    <button  class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
+                            </div>
+                        </div>
+                    </div>`
+                }
                 for (var i = 0; i < result.data.length; i++) {
+                    if (i == 0) {
+                        html = `<div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-body"  style="padding:none">
+                                    <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
+                            </div>
+                        </div>
+                    </div>`;
+                    }
+
+                    for (var j = 0; j < result.data[i].classifySet.length; j++) {
+                        str += (result.data[i].classifySet[j].name + '  ')
+                        console.log(str);
+                    }
+                    console.log(str);
+
                     html += `<div class="layui-col-md6">
                         <div class="layui-card">
-                                <h1 class="layui-card-header" style="font-size:24px">${result.data[i].title}</h1>
+                            <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
                             <div class="layui-card-body">
                                 <div>${result.data[i].intro}</div>
                                 <br>
                                 <dl style="font-size:14px">
-                                    <dd style="float:left;margin-right: 10px;">姓名：<span>${result.data[i].editPerson.name}</span></dd>
+                                    <dd style="float:left">状态：<span>草稿</span>&nbsp&nbsp</dd>
+                                    <dd style="float:left">标签：<span>${str}</span></dd>
+                                    <div style="float:right">
+                                    <dd style="float:left;margin-right: 10px;"><span>${result.data[i].person.name}</span></dd>
                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${result.data[i].id}</span></dd>
-                                    <dd style="float:left">时间：<span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>
-                                    <dd>状态：<span>发表</span></dd>
+                                    <dd style="float:left"><span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>                                   
+                                    </div>
+                                    <div style="clear:both"></div>
                                     <div style="float:right">
                                             <a href="./blog_editor.html?id=${result.data[i].id}"><button class="layui-btn layui-btn-primary layui-btn-sm" data-id=${result.data[i].id}> <i class="layui-icon"></i></button></a>  
-                                        <button class="layui-btn layui-btn-primary layui-btn-sm" data-id=${result.data[i].id}><i class="layui-icon"></i></button>
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm" data-id=${result.data[i].id}><i class="layui-icon"></i></button>
                                     </div>
                                 </dl>
                             </div>
                         </div>
                     </div>`;
-
+                    str = '';
                 }
                 document.getElementsByClassName('layui-row')[0].innerHTML += html;
+
                 var btn = document.querySelectorAll('.layui-btn');
                 console.log(btn);
                 for (var i = 1; i < btn.length; i++) {
@@ -184,7 +213,7 @@
                             btn[i].addEventListener('click', function() {
                                 console.log(this.dataset.id);
                                 var xhr = new XMLHttpRequest();
-                                xhr.open('get', '/notice/delete?id=' + this.dataset.id);
+                                xhr.open('get', '/blogs/delete?id=' + this.dataset.id);
                                 xhr.onreadystatechange = function() {
                                     if (xhr.status == 200 && xhr.readyState == 4) {
                                         console.log(xhr.responseText);
@@ -193,7 +222,6 @@
                                 xhr.send();
                             }, false)
                         }
-
                     })(i)
                 }
             }

@@ -9,22 +9,18 @@
 </head>
 
 <body>
+    <video id="vido" controls="controls" src="http://47.104.191.164/group1/M00/00/00/rB_bBFvUD-SENbKBAAAAAJPZzcI035.mp4" style="width:500px;height:500px;" autoplay></video>
     <script>
-        var xhr = new XMLHttpRequest();
-        xhr.open('post', '/person/test');
-        xhr.onload = function() {
-            console.log(xhr.responseText);
-        }
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        var info = JSON.stringify({
-            model: {
-                id: '45612',
-                name: 'sdhshdb',
-                set: ['111', '222']
-            }
+        // var video=document.getElementById('vido');
+        // var xhr = new XMLHttpRequest();
+        // xhr.open('post', '/person/test');
+        // xhr.onload = function() {
+        //     console.log()
+        //     video.setAttribute('src',)
+        // }
+        // xhr.setRequestHeader('Content-Type', 'application/json');
 
-        })
-        xhr.send(info)
+        // xhr.send(info)
     </script>
 </body>
 

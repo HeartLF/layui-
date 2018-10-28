@@ -120,10 +120,7 @@
 
         <div class="layui-body" style=" background-color: #F2F2F2;">
             <!-- 内容主体区域 -->
-            <div id="Alert" style="color:#fff; text-align: center; width:150px;height:100px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
-                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 18px;">删除成功</div>
-                <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
-            </div>
+
             <div style="padding: 20px;">
                 <div class="layui-row layui-col-space15">
 
@@ -144,7 +141,7 @@
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
         var xhr = new XMLHttpRequest();
-        xhr.open('get', '/blogs/listDraft');
+        xhr.open('get', '/blogs/saveAudit');
         xhr.onreadystatechange = function() {
             var html = '';
             if (xhr.status == 200 && xhr.readyState == 4) {
@@ -152,17 +149,11 @@
                 console.log(result.data);
                 result.data.map(element => {
                     element.addTime = element.addTime.slice().replace('T', ' ');
-                });
-                var str = '';
-                // for (var i = 0; i < result.data.length; i++) {
 
-                //     for (var j = 0; j < result.data[i].classifySet.length; j++) {
-                //         str += (result.data[i].classifySet[j].name + '  ')
-                //     }
-                // }
+                });
                 if (result.data.length == 0) {
                     html = `<div class="layui-col-md6">
-                        <div class="layui-card" style="height:185px;">
+                        <div class="layui-card">
                             <div class="layui-card-body"  style="padding:none">
                                     <button  class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
                             </div>
@@ -170,52 +161,40 @@
                     </div>`
                 }
                 for (var i = 0; i < result.data.length; i++) {
-
                     if (i == 0) {
                         html = `<div class="layui-col-md6">
-                        <div class="layui-card" style="height:185px;">
+                        <div class="layui-card">
                             <div class="layui-card-body"  style="padding:none">
                                     <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
                             </div>
                         </div>
                     </div>`;
                     }
-                    if (result.data[i].hasOwnProperty('classifySet') != 0) {
-                        for (var j = 0; j < result.data[i].classifySet.length; j++) {
-                            str += (result.data[i].classifySet[j].name + '  ')
-                            console.log(str);
-                        }
-                    }
-
-                    console.log(str);
-
                     html += `<div class="layui-col-md6">
                         <div class="layui-card">
                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
                             <div class="layui-card-body">
-                                <div style="height:24px; line-height:24px;">${result.data[i].intro}</div>
+                                <div>${result.data[i].intro}</div>
                                 <br>
                                 <dl style="font-size:14px">
-                                    <dd style="float:left">状态：<span>草稿</span>&nbsp&nbsp</dd>
-                                    <dd style="float:left">标签：<span>${str}</span></dd>
-                                    <div style="float:right">
-                                    <dd style="float:left;margin-right: 10px;"><span>${result.data[i].person.name}</span></dd>
+                                    <dd style="float:left;margin-right: 10px;">姓名：<span>${result.data[i].person.name}</span></dd>
                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${result.data[i].id}</span></dd>
-                                    <dd style="float:left"><span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>                                   
-                                    </div>
+                                    <dd style="float:left">时间：<span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>
+                                    
+                                    <dd style="float:left">状态：<span>草稿</span>&nbsp&nbsp</dd>
+                                    <dd style="float:left">标签：<span>${result.data[i].classifySet[0].name}</span></dd>
                                     <div style="clear:both"></div>
                                     <div style="float:right">
                                             <a href="./blog_editor.html?id=${result.data[i].id}"><button class="layui-btn layui-btn-primary layui-btn-sm" data-id=${result.data[i].id}> <i class="layui-icon"></i></button></a>  
                                             <button class="layui-btn layui-btn-primary layui-btn-sm" data-id=${result.data[i].id}><i class="layui-icon"></i></button>
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm" data-id=${result.data[i].id}>审核通过</button>
                                     </div>
                                 </dl>
                             </div>
                         </div>
                     </div>`;
-                    str = '';
                 }
                 document.getElementsByClassName('layui-row')[0].innerHTML += html;
-
                 var btn = document.querySelectorAll('.layui-btn');
                 console.log(btn);
                 for (var i = 1; i < btn.length; i++) {
@@ -224,20 +203,10 @@
                             btn[i].addEventListener('click', function() {
                                 console.log(this.dataset.id);
                                 var xhr = new XMLHttpRequest();
-                                xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
+                                xhr.open('get', '/blogs/delete?id=' + this.dataset.id);
                                 xhr.onreadystatechange = function() {
-                                    console.log(xhr.responseText)
                                     if (xhr.status == 200 && xhr.readyState == 4) {
-                                        let json = JSON.parse(xhr.responseText)
-                                        console.log(xhr.responseText.code)
-                                        if (json.code == 0) {
-                                            document.getElementById('Alert').style.display = 'block';
-                                            setTimeout(function() {
-                                                document.getElementById("Alert").style.display = "none";
-                                                window.location = './person_blog_draft.html'
-                                            }, 2000);
-
-                                        }
+                                        console.log(xhr.responseText);
                                     }
                                 }
                                 xhr.send();
