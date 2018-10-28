@@ -34,12 +34,16 @@
                 <input type="text" placeholder="请输入标题！！必须填" name="txt" class="layui-input" id="txt" value="">
             </header>
             <br>
-            <div id="Alert" style="color:#fff; text-align: center; width:150px;height:100px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
-                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 18px;">保存草稿成功</div>
+            <div id="Alert" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">保存草稿成功</div>
                 <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
             </div>
-            <div id="Alert2" style="color:#fff; text-align: center; width:150px;height:100px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
-                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 18px;">提交成功</div>
+            <div id="Alert2" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">提交成功</div>
+                <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+            </div>
+            <div id="Alert3" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;bottom:0px;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">自动保存成功</div>
                 <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
             </div>
             <div class="editormd" id="test-editormd">
@@ -128,7 +132,7 @@
                     //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
                     imageUpload: true,
                     imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                    imageUploadURL: "./php/upload.php",
+                    imageUploadURL: "/file/uploadImg",
                     onload: function() {
                         console.log('onload', this);
 
@@ -156,6 +160,11 @@
                                     console.log(result);
                                     if (result.code >= 0) {
                                         id = result.data.id;
+                                        document.getElementById('Alert3').style.display = 'block';
+                                        setTimeout(function() {
+                                            document.getElementById("Alert3").style.display = "none";
+                                            //window.location = './person_blog_draft.html'
+                                        }, 2000);
                                     }
                                 }
                             }
@@ -305,12 +314,7 @@
                     }
                     for (let i = 0; i < Delete.length; i++) {
                         Delete[i].onclick = function() {
-                            // let val = $(this).siblings();
-                            // // console.log(val[0]);
-                            // // let value = val[0].find("option:selected").val()
-                            // let index = val[0].selectedIndex;
-                            // let value = val[0].options[index].value;
-                            // console.log(value)
+
 
                             $(this).parent().remove();
                             result.splice(i, 1);
@@ -320,8 +324,6 @@
                     }
                 }
             }
-
-
 
             function ajax() {
                 var title = document.getElementById('txt');

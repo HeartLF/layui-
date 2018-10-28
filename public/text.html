@@ -1,27 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="css/layui.css" />
+    <script type="text/javascript" src="./layui.js" charset="utf-8"></script>
 </head>
 
 <body>
-    <video id="vido" controls="controls" src="http://47.104.191.164/group1/M00/00/00/rB_bBFvUD-SENbKBAAAAAJPZzcI035.mp4" style="width:500px;height:500px;" autoplay></video>
-    <script>
-        // var video=document.getElementById('vido');
-        // var xhr = new XMLHttpRequest();
-        // xhr.open('post', '/person/test');
-        // xhr.onload = function() {
-        //     console.log()
-        //     video.setAttribute('src',)
-        // }
-        // xhr.setRequestHeader('Content-Type', 'application/json');
 
-        // xhr.send(info)
+    <ul id="demo">
+        <li>1</li>
+        <li>2</li>
+
+        <li>6</li>
+    </ul>
+
+    <script>
+        layui.use('flow', function() {
+            var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+            var flow = layui.flow;
+            flow.load({
+                elem: '#LAY_demo1' //流加载容器
+                    ,
+                scrollElem: '#LAY_demo1' //滚动条所在元素，一般不用填，此处只是演示需要。
+                    ,
+                done: function(page, next) { //执行下一页的回调
+
+                    //模拟数据插入
+                    setTimeout(function() {
+                        var lis = [];
+                        for (var i = 0; i < 8; i++) {
+                            lis.push('<li>' + ((page - 1) * 8 + i + 1) + '</li>')
+                        }
+
+                        //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                        //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                        next(lis.join(''), page < 10); //假设总页数为 10
+                    }, 500);
+                }
+            });
+        });
     </script>
+
 </body>
 
-</html>
+
+
+//
+<script>
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.open('get', '/blogs/listDraft');
+    //     xhr.onreadystatechange = function() {
+    //         var html = '';
+    //         if (xhr.status == 200 && xhr.readyState == 4) {
+    //             var result = JSON.parse(xhr.responseText);
+    //             console.log(result.data);
+    //             result.data.map(element => {
+    //                 element.addTime = element.addTime.slice().replace('T', ' ');
+    //             });
+    //             var str = '';
+    //             if (result.data.length == 0) {
+    //                 html = `<div class="layui-col-md6">
+    //                         <div class="layui-card">
+    //                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
+    //                             <div class="layui-card-body">
+    //                                 <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
+    //                                 <div style="display:none">
+    //                                 <div style="height:24px; line-height:24px;">${result.data[i].intro}</div>
+    //                                 <br>
+    //                                 <dl style="font-size:14px">
+    //                                     <dd style="float:left">状态：<span>${map.get(result[i].data.status)}</span>&nbsp&nbsp</dd>
+    //                                     <dd style="float:left;">标签：<span style="width:400px;   vertical-align: middle;display:inline-block; overflow: hidden;
+    //             text-overflow: ellipsis;
+    //             white-space: nowrap;">${str}</span></dd>
+    //                                     <div style="float:right">
+    //                                     <dd style="float:left;margin-right: 10px;color:#3399ea"><span>${result.data[i].person.name}</span></dd>
+    //                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${result.data[i].id}</span></dd>
+    //                                     <dd style="float:left"><span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>                                   
+    //                                     </div>
+    //                                     <div style="clear:both"></div>
+    //                                     <div style="float:right">
+    //                                             <a href="./blog_editor.html?id=${result.data[i].id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}> <i class="layui-icon"></i></button></a>  
+    //                                             <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}><i class="layui-icon"></i></button>
+    //                                     </div>
+    //                                 </dl>
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>`
+    //             }
+    //             for (var i = 0; i < result.data.length; i++) {
+
+    //                 if (i == 0) {
+    //                     html = `<div class="layui-col-md6">
+    //                         <div class="layui-card" style="height:189px;">
+    //                             <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
+    //                             <div style="display:none">
+    //                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
+    //                             <div class="layui-card-body">
+
+
+    //                                 <div style="height:24px; line-height:24px;">${result.data[i].intro}</div>
+    //                                 <br>
+    //                                 <dl style="font-size:14px">
+    //                                     <dd style="float:left">状态：<span>${map.get(result.data[i].status)}</span>&nbsp&nbsp</dd>
+    //                                     <dd style="float:left;">标签：<span style="width:320px;   vertical-align: middle;display:inline-block; overflow: hidden;
+    //             text-overflow: ellipsis;
+    //             white-space: nowrap;">${str}</span></dd>
+    //                                     <div style="float:right">
+    //                                     <dd style="float:left;margin-right: 10px;color:#3399ea"><span>${result.data[i].person.name}</span></dd>
+    //                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${result.data[i].id}</span></dd>
+    //                                     <dd style="float:left"><span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>                                   
+    //                                     </div>
+    //                                     <div style="clear:both"></div>
+    //                                     <div style="float:right">
+    //                                             <a href="./blog_editor.html?id=${result.data[i].id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}> <i class="layui-icon"></i></button></a>  
+    //                                             <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}><i class="layui-icon"></i></button>
+    //                                     </div>
+    //                                 </dl>
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>`;
+    //                 }
+    //                 if (result.data[i].hasOwnProperty('classifySet') != 0) {
+    //                     for (var j = 0; j < result.data[i].classifySet.length; j++) {
+    //                         str += (result.data[i].classifySet[j].name + '  ')
+    //                         console.log(str);
+    //                     }
+    //                 }
+
+    //                 console.log(str);
+
+    //                 html += `<div class="layui-col-md6">
+    //                         <div class="layui-card" >
+    //                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
+    //                             <div class="layui-card-body">
+    //                                 <div style="height:24px; line-height:24px;">${result.data[i].intro}</div>
+    //                                 <br>
+    //                                 <dl style="font-size:14px">
+    //                                     <dd style="float:left">状态：<span>${map.get(result.data[i].status)}</span>&nbsp&nbsp</dd>
+    //                                     <dd style="float:left;">标签：<span style="width:200px;   vertical-align: middle;display:inline-block; overflow: hidden;
+    //             text-overflow: ellipsis;
+    //             white-space: nowrap;">${str}</span></dd>
+    //                                     <div style="float:right">
+    //                                     <dd style="float:left;margin-right: 10px;color:#3399ea"><span>${result.data[i].person.name}</span></dd>
+    //                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${result.data[i].id}</span></dd>
+    //                                     <dd style="float:left"><span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>                                   
+    //                                     </div>
+    //                                     <div style="clear:both"></div>
+    //                                     <div style="float:right">
+    //                                             <a href="./blog_editor.html?id=${result.data[i].id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}> <i class="layui-icon"></i></button></a>  
+    //                                             <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}><i class="layui-icon"></i></button>
+    //                                     </div>
+    //                                 </dl>
+    //                             </div>
+    //                         </div>
+    //                     </div>`;
+    //                 str = '';
+    //             }
+    //             document.getElementsByClassName('layui-row')[0].innerHTML += html;
+
+    //             var btn = document.querySelectorAll('.layui-btn');
+    //             console.log(btn);
+    //             for (var i = 1; i < btn.length; i++) {
+    //                 (function(i) {
+    //                     if (i % 2 == 0) {
+    //                         btn[i].addEventListener('click', function() {
+    //                             console.log(this.dataset.id);
+    //                             var xhr = new XMLHttpRequest();
+    //                             xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
+    //                             xhr.onreadystatechange = function() {
+    //                                 console.log(xhr.responseText)
+    //                                 if (xhr.status == 200 && xhr.readyState == 4) {
+    //                                     let json = JSON.parse(xhr.responseText)
+    //                                     console.log(xhr.responseText.code)
+    //                                     if (json.code == 0) {
+    //                                         document.getElementById('Alert').style.display = 'block';
+    //                                         setTimeout(function() {
+    //                                             document.getElementById("Alert").style.display = "none";
+    //                                             window.location = './person_blog_draft.html'
+    //                                         }, 2000);
+
+    //                                     }
+    //                                 }
+    //                             }
+    //                             xhr.send();
+    //                         }, false)
+    //                     }
+    //                 })(i)
+    //             }
+    //         }
+    //     }
+    //     xhr.send();
+    //
+</script>
