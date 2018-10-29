@@ -6,7 +6,7 @@ app.use(express.static('./public'));
 app.use('/', (req, res) => {
     var url;
 
-    url = 'http://192.168.1.115' + req.url;
+    url = 'http://192.168.1.116' + req.url;
     req.pipe(request(url)).pipe(res);
 
 

@@ -145,15 +145,20 @@
         });
         var map = new Map();
         var map2 = new Map();
+        var map3 = new Map();
         map.set('DRAFT', '草稿2');
         map.set('AUDIT', '审核中');
         map.set('OFFICIAL', '正式');
         map.set('RECOMMEND', '推荐');
 
 
-        map2.set('AUDIT', 'red');
-        map2.set('OFFICIAL', 'green');
-        map2.set('RECOMMEND', 'yellow');
+        map2.set('AUDIT', '#d81e06');
+        map2.set('OFFICIAL', '#1afa29');
+        map2.set('RECOMMEND', '#1296db');
+
+        map3.set('AUDIT', './images/shenhe.png');
+        map3.set('OFFICIAL', './images/zhengshi.png');
+        map3.set('RECOMMEND', './images/tuijian.png');
         // var editor = document.getElementById('editor');
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
@@ -169,7 +174,7 @@
                 done: function(page, next) { //到达临界点（默认滚动触发），触发下一页
                     var lis = [];
                     //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                    $.get('/blogs/listAudit?limit=8&page=' + page, function(res) {
+                    $.get('/blogs/listOfficial?limit=8&page=' + page, function(res) {
                         //假设你的列表返回在data集合中
                         console.log(res);
                         var result = res.data;
@@ -193,8 +198,8 @@
                                                 <div style="height:24px; line-height:24px;">${item.intro}</div>
                                                 <br>
                                                 <dl style="font-size:14px">
-                                                    <dd style="float:left;color:${map2.get(item.status)}">状态：<span style="color:${map2.get(item.status)}">${map.get(item.status)}</span>&nbsp&nbsp</dd>
-                                                    <dd style="float:left;">标签：<span style="width:200px;   vertical-align: middle;display:inline-block; overflow: hidden;
+                                                    <dd style="float:left;color:${map2.get(item.status)}"><img src='${map3.get(item.status)}' style="display: inline-block;width:28px;height:28px;"'><span style="color:${map2.get(item.status)};vertical-align: middle">${map.get(item.status)}</span>&nbsp&nbsp</dd>
+                                                    <dd style="float:left;"><img src="./images/标签.png" style="display:inline-block;width:28px;height:28px"><span style="width:200px;vertical-align: middle;display:inline-block; overflow: hidden;
                                             text-overflow: ellipsis;
                                             white-space: nowrap;">${str}</span></dd>
                                                     <div style="float:right">
