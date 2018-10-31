@@ -129,7 +129,9 @@
                 <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
             </div>
             <div style="padding: 20px;">
+
                 <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
+
                 </div>
             </div>
 
@@ -176,7 +178,7 @@
                     //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
                     $.get('/blogs/listOfficial?limit=8&page=' + page, function(res) {
                         //假设你的列表返回在data集合中
-                        console.log(res);
+
                         var result = res.data;
                         console.log(result)
                         result.map(element => {
@@ -185,11 +187,13 @@
                         var str = '';
                         var html = '';
                         layui.each(result, function(index, item) {
-
+                            console.log(item);
                             if (item.hasOwnProperty('classifySet') != 0) {
+                                console.log(1);
                                 for (var j = 0; j < item.classifySet.length; j++) {
                                     str += (item.classifySet[j].name + '  ')
                                 }
+                                console.log(str);
                             }
                             html += `<div class="layui-col-md6">
                                             <div class="layui-card" >

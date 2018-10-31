@@ -145,7 +145,7 @@
         });
         var map = new Map();
         var map2 = new Map();
-        map.set('DRAFT', '草稿2');
+        map.set('DRAFT', '草稿');
         map.set('AUDIT', '审核中');
         map.set('OFFICIAL', '正式');
         map.set('RECOMMEND', '推荐');
@@ -190,7 +190,7 @@
                                                 <div style="height:24px; line-height:24px;">${item.intro}</div>
                                                 <br>
                                                 <dl style="font-size:14px">
-                                                    <dd style="float:left">状态：<span>${map.get(item.status)}</span>&nbsp&nbsp</dd>
+                                                    <dd style="float:left"><span>${map.get(item.status)}</span>&nbsp&nbsp</dd>
                                                     <dd style="float:left;">标签：<span style="width:320px;   vertical-align: middle;display:inline-block; overflow: hidden;
                                             text-overflow: ellipsis;
                                             white-space: nowrap;">${str}</span></dd>

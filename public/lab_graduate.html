@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="./css/layui.css">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/editormd.css" />
+    <style type="text/css">
+        .toolbar {
+            border: 1px solid #ccc;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 50px;
+        }
+        
+        .text {
+            border: 1px solid #ccc;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">layui 后台布局</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item">
+                        <a class="avascript:;" href="javascript:;">博客</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">新建博客</a></dd>
+                            <dd><a href="javascript:;">草稿箱</a></dd>
+                            <dd><a href="javascript:;">博客管理</a></dd>
+                            <dd><a href="">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="./message_history.html" target="_blank">新闻管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./editor.html">新建</a></dd>
+
+                            <dd><a href="./message.html">草稿箱</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">项目管理</a>
+                        <dl class="layui-nav-child">
+
+                            <dd><a href="./project_message_history .html">项目</a></dd>
+                            <dd><a href="./project_message.html">草稿箱</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
+                    <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
+                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
+                    <li class="layui-nav-item"><a href="">博客管理</a></li>
+                    <li class="layui-nav-item"><a href="">毕业生管理</a></li>
+                    <li class="layui-nav-item"><a href="">个人资料</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div class="layui-collapse" lay-accordion="" lay-filter="test">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">为什么JS社区大量采用未发布或者未广泛支持的语言特性？</h2>
+                    <div class="layui-colla-content">
+                        <table class="layui-hide" id="test"></table>
+                    </div>
+
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">为什么JS社区大量采用未发布或者未广泛支持的语言特性？</h2>
+                    <div class="layui-colla-content">
+                        <p>有不少其他答案说是因为JS太差。我下面的答案已经说了，这不是根本性的原因。但除此之外，我还要纠正一些对JS具体问题的误解。JS当初是被作为脚本语言设计的，所以某些问题并不是JS设计得差或者是JS设计者的失误。比如var的作用域问题，并不是“错误”，而是当时绝大部分脚本语言都是这样的，如perl/php/sh等。模块的问题也是，脚本语言几乎都没有模块/命名空间功能。弱类型、for-in之类的问题也是，只不过现在用那些老的脚本语言的人比较少，所以很多人都误以为是JS才有的坑。另外有人说JS是半残语言，满足不了开发需求，1999年就该死。半残这个嘛，就夸张了。JS虽然有很多问题，但是设计总体还是优秀的。——来自知乎@贺师俊</p>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">为什么前端工程师多不愿意用 Bootstrap 框架？</h2>
+                    <div class="layui-colla-content">
+                        <p>因为不适合。如果希望开发长期的项目或者制作产品类网站，那么就需要实现特定的设计，为了在维护项目中可以方便地按设计师要求快速修改样式，肯定会逐步编写出各种业务组件、工具类，相当于为项目自行开发一套框架。——来自知乎@Kayo</p>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">贤心是男是女？</h2>
+                    <div class="layui-colla-content">
+                        <p>man！ 所以这个问题不要再出现了。。。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="./layui.js"></script>
+
+        <script>
+            //JavaScript代码区域
+            layui.use(['element', 'layer'], function() {
+                var element = layui.element;
+                var layer = layui.layer;
+
+                //监听折叠
+                element.on('collapse(test)', function(data) {
+                    // layer.msg('展开状态：' + data.show);
+                    console.log(data.show)
+
+                    layui.use('table', function() {
+                        var table = layui.table
+
+                        table.render({
+                            elem: '#test',
+                            url: '/person/personList',
+
+                            cols: [
+                                [{
+                                    field: 'id',
+                                    width: 100
+                                }, {
+                                    field: 'name',
+                                    width: 100
+                                }]
+                            ],
+                            page: true
+                        });
+                    })
+
+
+
+                });
+            });
+        </script>
+</body>
+
+</html>

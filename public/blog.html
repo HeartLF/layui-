@@ -98,14 +98,53 @@
         .layui-card div {
             white-space: normal;
         }
+        
+        .layui-flow-more {
+            clear: left;
+        }
     </style>
 </head>
 
-<body class="layui-layout-body">
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
+<body>
+    <div style=" background-color: #F2F2F2;" id="body">
+        <div style="padding: 20px;">
+            <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
+
+
+                <div class="layui-col-md9">
+                    <div class="layui-card">
+                        <div style="float:left" class="layui-col-md9">
+                            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入搜索内容" class="layui-input layui-col-md9">
+                        </div>
+
+                        <div style="float:left">
+                            <input type="button" class="layui-btn layui-btn-normal" value="搜索" id="btn2">
+                        </div>
+
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a href="">推荐</a>
+                <a href="">最新文章</a>
+                <a href="">咨询</a>
+                <a href="">网络安全</a>
+                <a href="">前端</a>
+                <a href="">后台</a>
+                <a href="">ssh</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- <div class="layui-layout layui-layout-admin"> -->
+    <!-- <div class="layui-header">
             <div class="layui-logo">layui 后台布局</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
+      
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
@@ -122,7 +161,7 @@
 
         <div class="layui-side layui-bg-black">
             <div class="layui-side-scroll">
-                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="javascript:;">博客</a>
@@ -159,13 +198,27 @@
                     <li class="layui-nav-item"><a href="">个人资料</a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
 
-        <div class="layui-body" style=" background-color: #F2F2F2;width: auto;height: auto; position: absolute;left: 200px;overflow-y: auto">
-            <!-- 内容主体区域 -->
+    <!-- <div class="layui-body" style=" background-color: #F2F2F2;" id="body"> -->
+    <!-- 内容主体区域 -->
 
-            <div style="padding: 20px;">
-                <div class="layui-row layui-col-space15">
+    <!-- <div style="padding: 20px;">
+                <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
+
+
+                    <div class="layui-col-md9">
+                        <div class="layui-card">
+                            <div style="float:left">
+                                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入搜索内容" class="layui-input" style="width:890px;">
+                            </div>
+                            <div style="float:left">
+                                <input type="button" class="layui-btn layui-btn-normal" value="搜索" id="btn2">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div></div>
                 </div>
             </div>
 
@@ -182,9 +235,9 @@
                     <a href="">ssh</a>
                 </li>
             </ul>
-        </nav>
+        </nav> -->
 
-    </div>
+    <!-- </div> -->
     <script src="./layui.js"></script>
 
     <script>
@@ -193,59 +246,122 @@
             var element = layui.element;
 
         });
-        var xhr = new XMLHttpRequest();
-        xhr.open('get', 'notice/listNewsDraft');
-        xhr.onreadystatechange = function() {
-            var html = '';
-            if (xhr.status == 200 && xhr.readyState == 4) {
-                var result = JSON.parse(xhr.responseText);
-                for (var i = 0; i < result.data.length; i++) {
-                    html += `<div class="layui-col-md8" style="margin-left:100px;">
-                        <div class="layui-card">
-                            <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
-                            <div class="layui-card-body">
-                                <div>（1）CSS规范规定，每个元素都有display属性，确定该元素的类型，每个元素都有默认的display值，  比如div默认display属性值为“block”，成为“块级”元素；  span默认display属性值为“inline”，是“行内”元素。  
-（2）行内元素有：a b span img input select strong（强调的语气）  块级元素有：div ul ol li dl dt dd h1 h2 h3 h4…p  </div>
-                                <br>
-                                <dl style="font-size:14px">
-                                    <dd style="float:left;margin-right: 10px;">姓名：<span>${result.data[i].editPerson.name}</span></dd>
-                                    <dd style="float:left;margin-right: 10px;display:none">ID：<span>${result.data[i].id}</span></dd>
-                                    <dd style="float:left">时间：<span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>
-                                    <dd>状态：<span>草稿</span></dd>
-                                    <div style="float:right">
-                                            <a href="./editor.html?id=${result.data[i].id}"><button class="layui-btn layui-btn-primary layui-btn-sm" data-id=${result.data[i].id}>阅读全文</button></a>  
-                                           
-                                    </div>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>`;
+        var map = new Map();
+        var map2 = new Map();
+        var map3 = new Map();
+        map.set('DRAFT', '草稿2');
+        map.set('AUDIT', '审核中');
+        map.set('OFFICIAL', '正式');
+        map.set('RECOMMEND', '推荐');
 
-                }
-                document.getElementsByClassName('layui-row')[0].innerHTML += html;
-                var btn = document.querySelectorAll('.layui-btn');
-                console.log(btn);
-                for (var i = 1; i < btn.length; i++) {
-                    (function(i) {
-                        if (i % 2 == 0) {
-                            btn[i].addEventListener('click', function() {
-                                console.log(this.dataset.id);
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('get', '/notice/delete?id=' + this.dataset.id);
-                                xhr.onreadystatechange = function() {
-                                    if (xhr.status == 200 && xhr.readyState == 4) {
-                                        console.log(xhr.responseText);
-                                    }
+
+        map2.set('AUDIT', '#d81e06');
+        map2.set('OFFICIAL', '#1afa29');
+        map2.set('RECOMMEND', '#1296db');
+
+        map3.set('AUDIT', './images/shenhe.png');
+        map3.set('OFFICIAL', './images/zhengshi.png');
+        map3.set('RECOMMEND', './images/tuijian.png');
+        // var editor = document.getElementById('editor');
+        // var del = document.getElementById('delete');
+        // editor.addEventListener('click');
+
+        layui.use('flow', function() {
+            var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+            var flow = layui.flow;
+            flow.load({
+                elem: '#LAY_demo1', //指定列表容器 
+                scrollElem: document.getElementById('body'),
+                isAuto: true,
+                mb: 100,
+                done: function(page, next) { //到达临界点（默认滚动触发），触发下一页
+                    var lis = [];
+                    var result, result2;
+                    //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                    $.get('/blogs/listOfficial?limit=8&page=' + page, function(res) {
+                        //假设你的列表返回在data集合中
+
+                        result = res.data;
+                        console.log(result)
+                        result.map(element => {
+                            element.addTime = element.addTime.slice().replace('T', ' ');
+                        });
+                        var str = '';
+                        var html = '';
+                        layui.each(result, function(index, item) {
+                            console.log(item);
+                            if (item.hasOwnProperty('classifySet') != 0) {
+                                console.log(1);
+                                for (var j = 0; j < item.classifySet.length; j++) {
+                                    str += (item.classifySet[j].name + '  ')
                                 }
-                                xhr.send();
-                            }, false)
-                        }
+                                console.log(str);
+                            }
+                            html += `<div class="layui-col-md9">
+                                            <div class="layui-card" >
+                                            <h1 class="layui-card-header" style="font-size:24px"><a href="">${item.title}</a></h1>
+                                            <div class="layui-card-body">
+                                                <div style="height:24px; line-height:24px;">${item.intro}</div>
+                                                <br>
+                                                <dl style="font-size:14px">
+                                                    <dd style="float:left;color:${map2.get(item.status)}"><img src='${map3.get(item.status)}' style="display: inline-block;width:28px;height:28px;"'><span style="color:${map2.get(item.status)};vertical-align: middle">${map.get(item.status)}</span>&nbsp&nbsp</dd>
+                                                    <dd style="float:left;"><img src="./images/标签.png" style="display:inline-block;width:28px;height:28px"><span style="width:200px;vertical-align: middle;display:inline-block; overflow: hidden;
+                                            text-overflow: ellipsis;
+                                            white-space: nowrap;">${str}</span></dd>
+                                                    <div style="float:right">
+                                                    <dd style="float:left;margin-right: 10px;color:#3399ea"><span>${item.person.name}</span></dd>
+                                                    <dd style="float:left;margin-right: 10px;display:none">ID：<span>${item.id}</span></dd>
+                                                    <dd style="float:left"><span>${item.addTime}</span>&nbsp&nbsp</dd>                                   
+                                                    </div>
+                                                    <div style="clear:both"></div>
+                                                    <div style="float:right">
+                                                            <a href="./blog_editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
+                                                            <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}><i class="layui-icon"></i></button>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                            </div>
+                                            </div>`
+                            str = ''
 
-                    })(i)
+                        })
+                        lis.push(html)
+                        next(lis.join(''), page < res.pages);
+                        //document.getElementsByClassName('layui-row')[0].innerHTML += html;
+
+                        var btn = document.querySelectorAll('.layui-btn');
+                        console.log(btn);
+                        for (var i = 1; i < btn.length; i++) {
+                            (function(i) {
+                                if (i % 2 == 0) {
+                                    btn[i].addEventListener('click', function() {
+                                        console.log(this.dataset.id);
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
+                                        xhr.onreadystatechange = function() {
+                                            console.log(xhr.responseText)
+                                            if (xhr.status == 200 && xhr.readyState == 4) {
+                                                let json = JSON.parse(xhr.responseText)
+                                                console.log(xhr.responseText.code)
+                                                if (json.code == 0) {
+                                                    document.getElementById('Alert').style.display = 'block';
+                                                    setTimeout(function() {
+                                                        document.getElementById("Alert").style.display = "none";
+                                                        window.location = './person_blog_draft.html'
+                                                    }, 2000);
+
+                                                }
+                                            }
+                                        }
+                                        xhr.send();
+                                    }, false)
+                                }
+                            })(i)
+                        }
+                    });
                 }
-            }
-        }
-        xhr.send();
+            });
+        });
     </script>
 </body>
 
