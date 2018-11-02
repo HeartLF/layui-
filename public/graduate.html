@@ -11,166 +11,111 @@
 
 <body class="layui-layout-body">
     <!-- <img src="http://192.168.1.138/file/downloadPersonImage?imageName=1.jpg" alt=""> -->
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">layui 后台布局</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">基本资料</a></dd>
-                        <dd><a href="">安全设置</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">退了</a></li>
-            </ul>
-        </div>
 
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-                <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="javascript:;">博客</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建博客</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                            <dd><a href="javascript:;">博客管理</a></dd>
-                            <dd><a href="">超链接</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">新闻管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="./message_history.html">新闻</a></dd>
-                            <dd><a href="./editor.html">新建</a></dd>
-                            <dd><a href="./message.html">草稿箱</a></dd>
-                            <dd>
-                                <a href=""></a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">项目管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
-                    <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
-                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
-                    <li class="layui-nav-item"><a href="">博客管理</a></li>
-                    <li class="layui-nav-item"><a href="">毕业生管理</a></li>
-                    <li class="layui-nav-item"><a href="">个人资料</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="layui-body">
-            <form action="" class="layui-form" style="margin-top: 10px;">
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">查找</label>
-                        <div class="layui-input-inline">
-                            <select id="test" name="quiz1" lay-filter="pageFilter">
+
+
+    <div>
+        <form action="" class="layui-form" style="margin-top: 10px;">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">查找</label>
+                    <div class="layui-input-inline">
+                        <select id="test" name="quiz1" lay-filter="pageFilter">
                                 <option value="">请选择</option>
                             </select>
-                        </div>
-                        <div class="layui-input-inline">
-                            <select name="quiz2" lay-filter="pageFilter"> 
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="quiz2" lay-filter="pageFilter"> 
                                     <option value="">请选择</option>
                             </select>
-                        </div>
-                        <div class="layui-input-inline">
-                            <select name="quiz3" lay-filter="pageFilter">
-                                    <option value="">请选择</option> </select>
-                        </div>
                     </div>
-            </form>
+                    <div class="layui-input-inline">
+                        <select name="quiz3" lay-filter="pageFilter">
+                                    <option value="">请选择</option> </select>
+                    </div>
+                </div>
+        </form>
 
-            <div style="float: right; margin-right: 50px;margin-top: 10px;">
-                <button type="button" onclick="selectRole()" class="layui-btn layui-btn-primary layui-btn-radius">添加</button>
-                <span class="layui-btn layui-btn-danger ">删除</span>
-            </div>
+        <div style="float: right; margin-right: 50px;margin-top: 10px;">
+            <button type="button" onclick="selectRole()" class="layui-btn layui-btn-primary layui-btn-radius">添加</button>
+            <span class="layui-btn layui-btn-danger ">删除</span>
+        </div>
 
-            <div class="layui-table-box ">
+        <div class="layui-table-box ">
 
-                <table class="layui-table" id="test3" lay-filter="test3" lay-data="{id:'test3',url:'/person/personList'}">
-                    <thead>
-                        <tr>
-                            <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+            <table class="layui-table" id="test3" lay-filter="test3" lay-data="{id:'test3',url:'/person/personList'}">
+                <thead>
+                    <tr>
+                        <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
 
-                            <th lay-data="{field: 'name', edit: 'text'} ">姓名</th>
-                            <th lay-data="{field: 'grade', edit: 'text'} ">年级</th>
-                            <th lay-data="{field: 'id', edit: 'text'} ">学号</th>
-                            <th lay-data="{field: 'className', edit: 'text'} ">班级</th>
-                            <th lay-data="{field: 'sex', edit: 'text'} ">性别</th>
-                            <th lay-data="{field: 'qq', edit: 'text'} ">QQ号</th>
-                            <th lay-data="{field: 'qq', edit: 'text'} ">手机号</th>
-                            <th lay-data="{field: 'email', edit: 'text'} ">邮箱</th>
-                            <th lay-data="{field: 'group', edit: 'text',templet: '<div>{{d.group.name}}</div>'}">所在组别</th>
-                            <th lay-data="{field: 'positionList', edit: 'text',templet: '<div>{{d.positionList[d.positionList.length-1].name}}</div>'} ">职位</th>
+                        <th lay-data="{field: 'name', edit: 'text'} ">姓名</th>
+                        <th lay-data="{field: 'grade', edit: 'text'} ">年级</th>
+                        <th lay-data="{field: 'id', edit: 'text'} ">学号</th>
+                        <th lay-data="{field: 'className', edit: 'text'} ">班级</th>
+                        <th lay-data="{field: 'sex', edit: 'text'} ">性别</th>
+                        <th lay-data="{field: 'qq', edit: 'text'} ">QQ号</th>
+                        <th lay-data="{field: 'qq', edit: 'text'} ">手机号</th>
+                        <th lay-data="{field: 'email', edit: 'text'} ">邮箱</th>
+                        <th lay-data="{field: 'group', edit: 'text',templet: '<div>{{d.group.name}}</div>'}">所在组别</th>
+                        <th lay-data="{field: 'positionList', edit: 'text',templet: '<div>{{d.positionList[d.positionList.length-1].name}}</div>'} ">职位</th>
 
-                            <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
-                        </tr>
-                    </thead>
-                </table>
-                <script type="text/html" id="barDemo">
+                        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
+                    </tr>
+                </thead>
+            </table>
+            <script type="text/html" id="barDemo">
 
-                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-                </script>
-            </div>
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
 
-            </div>
-            <script src="./layui.js"></script>
-            <script>
-                layui.use('element', function() {
-                    var element = layui.element;
+        </div>
+        <script src="./layui.js"></script>
+        <script>
+            layui.use('element', function() {
+                var element = layui.element;
 
-                });
-                //自定义验证规则
-                layui.use(['form', 'jquery', 'table'], function() {
-                    var table = layui.table;
-                    var form = layui.form;
-                    var $ = layui.jquery;
-                    //监听行单击事件（单击事件为：rowDouble）
-                    // table.on('row(test3)', function(obj) {
-                    //     var data = obj.data;
+            });
+            //自定义验证规则
+            layui.use(['form', 'jquery', 'table'], function() {
+                var table = layui.table;
+                var form = layui.form;
+                var $ = layui.jquery;
+                //监听行单击事件（单击事件为：rowDouble）
+                // table.on('row(test3)', function(obj) {
+                //     var data = obj.data;
 
-                    //     layer.alert(JSON.stringify(data), {
-                    //         title: '当前行数据：'
-                    //     });
+                //     layer.alert(JSON.stringify(data), {
+                //         title: '当前行数据：'
+                //     });
 
-                    //     //标注选中样式
-                    //     obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
-                    // });
-                    //监听工具条
-                    table.on('tool(test3)', function(obj) {
+                //     //标注选中样式
+                //     obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+                // });
+                //监听工具条
+                table.on('tool(test3)', function(obj) {
 
-                        var Data = obj.data;
+                    var Data = obj.data;
 
-                        if (obj.event === 'detail') {
-                            console.log(Data);
-                            layer.msg('ID：' + Data.id + ' 的查看操作');
-                        } else if (obj.event === 'del') {
-                            layer.confirm('真的删除行么', function(index) {
-                                //    $.get('/',{},(data)=>{
+                    if (obj.event === 'detail') {
+                        console.log(Data);
+                        layer.msg('ID：' + Data.id + ' 的查看操作');
+                    } else if (obj.event === 'del') {
+                        layer.confirm('真的删除行么', function(index) {
+                            //    $.get('/',{},(data)=>{
 
-                                //    })
-                                obj.del();
-                                layer.close(index);
-                            });
-                        } else if (obj.event === 'edit') {
-                            layer.open({
-                                //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-                                type: 1,
-                                title: "添加用户信息",
-                                area: ['30%', '50%'],
-                                content: ` <div class="layui-row" id="test">
+                            //    })
+                            obj.del();
+                            layer.close(index);
+                        });
+                    } else if (obj.event === 'edit') {
+                        layer.open({
+                            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                            type: 1,
+                            title: "添加用户信息",
+                            area: ['30%', '50%'],
+                            content: ` <div class="layui-row" id="test">
                     <div class="layui-col-md10">
                     <form class="layui-form" id="addEmployeeForm" onsubmit=" return checkImg('img_url','Label7')" action="/person/update" method="post" lay-filter="example">
                        
@@ -270,94 +215,94 @@
                     </form>
                 </div>
             </div>`,
-                                success: function(layero, index) {
-                                    upload()
-                                    $.get('/person/positionList', {}, function(data) {
-                                        var $html = "";
-                                        // console.log(data);
-                                        data.position.forEach(element => {
-                                            console.log(element);
-                                            $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                                        });
-                                        $("select[name='positionList[0].id']").append($html);
-
-
-                                        form.render('select');
+                            success: function(layero, index) {
+                                upload()
+                                $.get('/person/positionList', {}, function(data) {
+                                    var $html = "";
+                                    // console.log(data);
+                                    data.position.forEach(element => {
+                                        console.log(element);
+                                        $html += "<option value='" + element.id + "'>" + element.name + "</option>";
                                     });
-                                    $.get('/group/usableList', {}, function(data) {
-                                        var $html = "";
-                                        // console.log(data);
-                                        data.Group.forEach(function(element) {
-                                            $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                                        })
-                                        $("select[name='group.id']").append($html);
+                                    $("select[name='positionList[0].id']").append($html);
 
 
-                                        form.render('select');
-                                    });
+                                    form.render('select');
+                                });
+                                $.get('/group/usableList', {}, function(data) {
+                                    var $html = "";
+                                    // console.log(data);
+                                    data.Group.forEach(function(element) {
+                                        $html += "<option value='" + element.id + "'>" + element.name + "</option>";
+                                    })
+                                    $("select[name='group.id']").append($html);
 
 
-                                    form.val('example', {
-                                        "id": Data.id,
-                                        "group.id": Data.group.id,
-
-                                        "name": Data.name, // "name": "value"
-                                        "grade": Data.grade,
-                                        "email": Data.email,
-                                        "className": Data.className,
-                                        "mobile": Data.mobile //复选框选中状态
-                                            ,
-                                        "photoUri": Data.photoUri //开关状态
-                                            ,
-                                        "qq": Data.qq,
-                                        "sex": Data.sex,
-                                        "positionList[0].id": Data.positionList[Data.positionList.length - 1].id
-                                    });
-                                    form.render();
+                                    form.render('select');
+                                });
 
 
-                                    // $.get('/person/positionList', {}, function(data) {
-                                    //     var $html = "";
-                                    //     console.log(data);
-                                    //     data.position.forEach(element => {
-                                    //         console.log(element);
-                                    //         $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                                    //     });
-                                    //     $("select[name='positionList[0].id']").append($html);
+                                form.val('example', {
+                                    "id": Data.id,
+                                    "group.id": Data.group.id,
+
+                                    "name": Data.name, // "name": "value"
+                                    "grade": Data.grade,
+                                    "email": Data.email,
+                                    "className": Data.className,
+                                    "mobile": Data.mobile //复选框选中状态
+                                        ,
+                                    "photoUri": Data.photoUri //开关状态
+                                        ,
+                                    "qq": Data.qq,
+                                    "sex": Data.sex,
+                                    "positionList[0].id": Data.positionList[Data.positionList.length - 1].id
+                                });
+                                form.render();
 
 
-                                    //     form.render('select');
-                                    // });
-                                    // $.get('/group/usableList', {}, function(data) {
-                                    //     var $html = "";
-                                    //     // console.log(data);
-                                    //     data.Group.forEach(function(element) {
-                                    //         $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                                    //     })
-                                    //     $("select[name='group.id']").append($html);
+                                // $.get('/person/positionList', {}, function(data) {
+                                //     var $html = "";
+                                //     console.log(data);
+                                //     data.position.forEach(element => {
+                                //         console.log(element);
+                                //         $html += "<option value='" + element.id + "'>" + element.name + "</option>";
+                                //     });
+                                //     $("select[name='positionList[0].id']").append($html);
 
 
-                                    //     form.render('select');
-                                    // });
+                                //     form.render('select');
+                                // });
+                                // $.get('/group/usableList', {}, function(data) {
+                                //     var $html = "";
+                                //     // console.log(data);
+                                //     data.Group.forEach(function(element) {
+                                //         $html += "<option value='" + element.id + "'>" + element.name + "</option>";
+                                //     })
+                                //     $("select[name='group.id']").append($html);
 
-                                }
-                            });
-                            form.render();
-                        }
-                    });
 
+                                //     form.render('select');
+                                // });
+
+                            }
+                        });
+                        form.render();
+                    }
                 });
 
-                function selectRole() {
-                    layui.use(['form', 'jquery', 'table'], function() {
-                        var form = layui.form;
-                        var $ = layui.jquery;
-                        layer.open({
-                            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-                            type: 1,
-                            title: "添加用户信息",
-                            area: ['30%', '50%'],
-                            content: ` <div class="layui-row" id="test">
+            });
+
+            function selectRole() {
+                layui.use(['form', 'jquery', 'table'], function() {
+                    var form = layui.form;
+                    var $ = layui.jquery;
+                    layer.open({
+                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                        type: 1,
+                        title: "添加用户信息",
+                        area: ['30%', '50%'],
+                        content: ` <div class="layui-row" id="test">
                     <div class="layui-col-md10">
                     <form class="layui-form" id="addEmployeeForm" onsubmit=" return checkImg('img_url','Label7')" action="/person/save" method="post">
                        
@@ -456,251 +401,251 @@
                     </form>
                 </div>
             </div>`,
-                            success: function(layero, index) {
-                                $.get('/person/positionList', {}, function(data) {
-                                    var $html = "";
-                                    console.log(data);
-                                    data.position.forEach(element => {
-                                        console.log(element);
-                                        $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                                    });
-                                    $("select[name='positionList[0].id']").append($html);
-
-
-                                    form.render('select');
+                        success: function(layero, index) {
+                            $.get('/person/positionList', {}, function(data) {
+                                var $html = "";
+                                console.log(data);
+                                data.position.forEach(element => {
+                                    console.log(element);
+                                    $html += "<option value='" + element.id + "'>" + element.name + "</option>";
                                 });
-                                $.get('/group/usableList', {}, function(data) {
-                                    var $html = "";
-                                    // console.log(data);
-                                    data.Group.forEach(function(element) {
-                                        $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                                    })
-                                    $("select[name='group.id']").append($html);
-                                    form.render('select');
-                                });
-
-                            }
-                        });
-                        upload()
-                        form.render();
+                                $("select[name='positionList[0].id']").append($html);
 
 
-                    })
-                }
+                                form.render('select');
+                            });
+                            $.get('/group/usableList', {}, function(data) {
+                                var $html = "";
+                                // console.log(data);
+                                data.Group.forEach(function(element) {
+                                    $html += "<option value='" + element.id + "'>" + element.name + "</option>";
+                                })
+                                $("select[name='group.id']").append($html);
+                                form.render('select');
+                            });
 
-                layui.use(['form', 'jquery', 'table'], function() {
-                    var form = layui.form,
-                        $ = layui.$,
-                        table = layui.table;
-                    $.get('/person/gradeList', {}, function(data) {
-                        var $html = "";
-                        console.log(data.grade);
-                        data.grade.forEach(element => {
-                            console.log(element);
-                            $html += "<option value='" + element + "'>" + element + "级</option>";
-                        });
-                        $("select[name='quiz1']").append($html);
-                        form.render('select');
-                    })
-                    $.get('/person/positionList', {}, function(data) {
-                        var $html = "";
-                        console.log(data);
-                        data.position.forEach(element => {
-                            console.log(element);
-                            $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                        });
-                        $("select[name='position']").append($html);
-                        $("select[name='quiz2']").append($html);
-
-                        form.render('select');
-                    })
-                    $.get('/group/usableList', {}, function(data) {
-                        var $html = "";
-                        // console.log(data);
-                        data.Group.forEach(function(element) {
-                            $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                        })
-                        $("select[name='quiz3']").append($html);
-                        console.log(document.getElementById('deptSelect'));
-
-                        form.render('select');
-                    });
-
-                    var arr = [];
-                    var str = ''
-                    var num = 0;
-                    form.on('select(pageFilter)', function(data) {
-                        if (data.elem.name == 'quiz1') {
-                            arr[0] = data.value;
-                        } else if (data.elem.name == 'quiz2') {
-                            arr[1] = data.value;
-                        } else if (data.elem.name == 'quiz3') {
-                            arr[2] = data.value;
                         }
-                        // console.log(data.elem.name);
-                        // arr.push(data.value);
-                        // num++;
-                        // console.log(data.value); //得到被选中的值]
-                        table.reload('test3', {
-                            url: '/person/personList',
-                            page: 'false',
-                            where: {
-                                grade: arr[0],
-                                "positionList[0].id": arr[1],
-                                "group.id": arr[2]
-
-                            }
-                        });
                     });
+                    upload()
+                    form.render();
 
+
+                })
+            }
+
+            layui.use(['form', 'jquery', 'table'], function() {
+                var form = layui.form,
+                    $ = layui.$,
+                    table = layui.table;
+                $.get('/person/gradeList', {}, function(data) {
+                    var $html = "";
+                    console.log(data.grade);
+                    data.grade.forEach(element => {
+                        console.log(element);
+                        $html += "<option value='" + element + "'>" + element + "级</option>";
+                    });
+                    $("select[name='quiz1']").append($html);
+                    form.render('select');
+                })
+                $.get('/person/positionList', {}, function(data) {
+                    var $html = "";
+                    console.log(data);
+                    data.position.forEach(element => {
+                        console.log(element);
+                        $html += "<option value='" + element.id + "'>" + element.name + "</option>";
+                    });
+                    $("select[name='position']").append($html);
+                    $("select[name='quiz2']").append($html);
+
+                    form.render('select');
+                })
+                $.get('/group/usableList', {}, function(data) {
+                    var $html = "";
+                    // console.log(data);
+                    data.Group.forEach(function(element) {
+                        $html += "<option value='" + element.id + "'>" + element.name + "</option>";
+                    })
+                    $("select[name='quiz3']").append($html);
+                    console.log(document.getElementById('deptSelect'));
+
+                    form.render('select');
                 });
 
-
-
-                function checkEmpEmail(id1, id2) {
-                    var reg = /^([a-zA-Z0-9_-])+@[a-zA-Z0-9_-]+((\.[a-z]{2,3}){1,2})$/;
-                    var emp_email = document.getElementById(id1);
-                    if (!reg.test(emp_email.value)) {
-                        document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式Email!";
-                        emp_email.mail.focus();
-                        return false;
-                    } else {
-                        document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
-                        return true;
+                var arr = [];
+                var str = ''
+                var num = 0;
+                form.on('select(pageFilter)', function(data) {
+                    if (data.elem.name == 'quiz1') {
+                        arr[0] = data.value;
+                    } else if (data.elem.name == 'quiz2') {
+                        arr[1] = data.value;
+                    } else if (data.elem.name == 'quiz3') {
+                        arr[2] = data.value;
                     }
-                }
+                    // console.log(data.elem.name);
+                    // arr.push(data.value);
+                    // num++;
+                    // console.log(data.value); //得到被选中的值]
+                    table.reload('test3', {
+                        url: '/person/personList',
+                        page: 'false',
+                        where: {
+                            grade: arr[0],
+                            "positionList[0].id": arr[1],
+                            "group.id": arr[2]
 
-                function isChinese(id1, id2) {
-                    var reg = /^[\u0391-\uFFE5]+$/;
-                    var obj = document.getElementById(id1);
-                    if (!reg.test(obj.value)) {
-                        document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式文字!";
-                        obj.mail.focus();
-                        return false;
-                    } else {
-                        document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
-                        return true;
-                    }
-                }
-
-                function checkNumber(id1, id2) {
-                    var reg = /^\d{8}$/;
-                    var emp_email = document.getElementById(id1);
-                    if (!reg.test(emp_email.value)) {
-                        document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式学号!";
-                        emp_email.mail.focus();
-                        return false;
-                    } else {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('get', '/person/containsId?id=' + emp_email.value);
-                        xhr.onreadystatechange = function() {
-                            var info = JSON.parse(xhr.responseText);
-                            if (info.containsId) {
-                                document.getElementById(id2).innerHTML = "<img src='images/error.png'>该学号已存在!";
-
-                                return false;
-                            } else {
-                                document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
-                                return true;
-                            }
                         }
-
-                        xhr.send();
-
-
-                    }
-                }
-
-
-
-                function validatemobile(id1, id2) {
-                    var reg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
-                    var emp_email = document.getElementById(id1);
-                    console.log(emp_email.value)
-                    if (!reg.test(emp_email.value)) {
-                        document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式手机号11位!";
-                        emp_email.mail.focus();
-                        return false;
-                    } else {
-                        document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
-                        return true;
-                    }
-                }
-
-                function checkQQ(id1, id2) {
-                    var reg = /^[1-9][0-9]{4,14}$/;
-                    var emp_email = document.getElementById(id1);
-                    if (!reg.test(emp_email.value)) {
-                        document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式QQ号!";
-                        emp_email.mail.focus();
-                        return false;
-                    } else {
-                        document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
-                        return true;
-                    }
-                }
-
-                function checkImg(id1, id2) {
-
-                    var emp_email = document.getElementById(id1);
-                    if (!reg.test(emp_email.value)) {
-                        document.getElementById(id2).innerHTML = "<img src='images/error.png'>请上传图片必须是jpg";
-                        emp_email.mail.focus();
-                        return false;
-                    } else {
-                        document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
-                        return true;
-                    }
-                }
-
-
-                function upload() {
-                    layui.use('upload', function() {
-                        var upload = layui.upload,
-                            $ = layui.jquery;
-                        var uploadInst = upload.render({
-                            elem: '#upload1' //绑定元素
-                                ,
-                            url: '/file/uploadPersonImg',
-                            before: function(obj) {
-                                //预读本地文件示例，不支持ie8
-                                obj.preview(function(index, file, result) {
-
-                                    $('#demo1').attr('src', result); //图片链接（base64）
-                                });
-                            },
-                            field: 'fileModel.file',
-                            done: function(res) {
-                                console.log(res);
-                                //如果上传失败
-                                if (res.file == 0) {
-                                    layer.msg('上传成功');
-                                } else if (res.file == 1) {
-                                    layer.msg('上传格式必须是jpg')
-                                } else if (res.file == 2) {
-                                    layer.msg('上传图片超过400k')
-                                } else if (res.file == 3) {
-                                    layer.msg('未知错误，联系管理员');
-                                }
-
-                                //上传成功
-                                // alert("上传成功" + res.url);
-                                console.log(res.url);
-                                document.getElementById("img_url").value = res.url;
-
-                            },
-                            error: function() {
-                                //演示失败状态，并实现重传
-                                var demoText = $('#demoText');
-                                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-                                demoText.find('.demo-reload').on('click', function() {
-                                    uploadInst.upload();
-                                });
-                            }
-                        });
                     });
+                });
+
+            });
+
+
+
+            function checkEmpEmail(id1, id2) {
+                var reg = /^([a-zA-Z0-9_-])+@[a-zA-Z0-9_-]+((\.[a-z]{2,3}){1,2})$/;
+                var emp_email = document.getElementById(id1);
+                if (!reg.test(emp_email.value)) {
+                    document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式Email!";
+                    emp_email.mail.focus();
+                    return false;
+                } else {
+                    document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                    return true;
                 }
-            </script>
+            }
+
+            function isChinese(id1, id2) {
+                var reg = /^[\u0391-\uFFE5]+$/;
+                var obj = document.getElementById(id1);
+                if (!reg.test(obj.value)) {
+                    document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式文字!";
+                    obj.mail.focus();
+                    return false;
+                } else {
+                    document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                    return true;
+                }
+            }
+
+            function checkNumber(id1, id2) {
+                var reg = /^\d{8}$/;
+                var emp_email = document.getElementById(id1);
+                if (!reg.test(emp_email.value)) {
+                    document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式学号!";
+                    emp_email.mail.focus();
+                    return false;
+                } else {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('get', '/person/containsId?id=' + emp_email.value);
+                    xhr.onreadystatechange = function() {
+                        var info = JSON.parse(xhr.responseText);
+                        if (info.containsId) {
+                            document.getElementById(id2).innerHTML = "<img src='images/error.png'>该学号已存在!";
+
+                            return false;
+                        } else {
+                            document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                            return true;
+                        }
+                    }
+
+                    xhr.send();
+
+
+                }
+            }
+
+
+
+            function validatemobile(id1, id2) {
+                var reg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+                var emp_email = document.getElementById(id1);
+                console.log(emp_email.value)
+                if (!reg.test(emp_email.value)) {
+                    document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式手机号11位!";
+                    emp_email.mail.focus();
+                    return false;
+                } else {
+                    document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                    return true;
+                }
+            }
+
+            function checkQQ(id1, id2) {
+                var reg = /^[1-9][0-9]{4,14}$/;
+                var emp_email = document.getElementById(id1);
+                if (!reg.test(emp_email.value)) {
+                    document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式QQ号!";
+                    emp_email.mail.focus();
+                    return false;
+                } else {
+                    document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                    return true;
+                }
+            }
+
+            function checkImg(id1, id2) {
+
+                var emp_email = document.getElementById(id1);
+                if (!reg.test(emp_email.value)) {
+                    document.getElementById(id2).innerHTML = "<img src='images/error.png'>请上传图片必须是jpg";
+                    emp_email.mail.focus();
+                    return false;
+                } else {
+                    document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                    return true;
+                }
+            }
+
+
+            function upload() {
+                layui.use('upload', function() {
+                    var upload = layui.upload,
+                        $ = layui.jquery;
+                    var uploadInst = upload.render({
+                        elem: '#upload1' //绑定元素
+                            ,
+                        url: '/file/uploadPersonImg',
+                        before: function(obj) {
+                            //预读本地文件示例，不支持ie8
+                            obj.preview(function(index, file, result) {
+
+                                $('#demo1').attr('src', result); //图片链接（base64）
+                            });
+                        },
+                        field: 'fileModel.file',
+                        done: function(res) {
+                            console.log(res);
+                            //如果上传失败
+                            if (res.file == 0) {
+                                layer.msg('上传成功');
+                            } else if (res.file == 1) {
+                                layer.msg('上传格式必须是jpg')
+                            } else if (res.file == 2) {
+                                layer.msg('上传图片超过400k')
+                            } else if (res.file == 3) {
+                                layer.msg('未知错误，联系管理员');
+                            }
+
+                            //上传成功
+                            // alert("上传成功" + res.url);
+                            console.log(res.url);
+                            document.getElementById("img_url").value = res.url;
+
+                        },
+                        error: function() {
+                            //演示失败状态，并实现重传
+                            var demoText = $('#demoText');
+                            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                            demoText.find('.demo-reload').on('click', function() {
+                                uploadInst.upload();
+                            });
+                        }
+                    });
+                });
+            }
+        </script>
 </body>
 
 </html>

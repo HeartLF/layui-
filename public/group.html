@@ -22,102 +22,37 @@
 </head>
 
 <body class="layui-layout-body">
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">layui 后台布局</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">基本资料</a></dd>
-                        <dd><a href="">安全设置</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">退了</a></li>
-            </ul>
+
+
+    <div style="margin-top: 10px;">
+        <!-- 内容主体区域 -->
+        <div style="float: right">
+            <button class="layui-btn layui-btn-normal layui-btn-radius" onclick="addLabel()">添加标签</button>
         </div>
+        <div style="clear: both;"></div>
+        <table class="layui-table" lay-data="{width:1300, url:'/group/allList', page:true, id:'idTest'}" lay-filter="demo">
+            <thead>
+                <tr>
 
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-                <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="javascript:;">博客</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建博客</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                            <dd><a href="javascript:;">博客管理</a></dd>
-                            <dd><a href="">超链接</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">新闻管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="./message_history.html">新闻</a></dd>
-                            <dd><a href="./editor.html">新建</a></dd>
-                            <dd><a href="./message.html">草稿箱</a></dd>
-                            <dd>
-                                <a href=""></a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">项目管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
-                    <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
-                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
-                    <li class="layui-nav-item"><a href="">博客管理</a></li>
-                    <li class="layui-nav-item"><a href="">毕业生管理</a></li>
-                    <li class="layui-nav-item"><a href="">个人资料</a></li>
-                </ul>
-            </div>
-        </div>
+                    <th lay-data="{field:'id', width:80, sort: true, fixed: true}" id="ID">id</th>
+                    <th lay-data="{field:'name', width:100}">组名</th>
 
-        <div class="layui-body" style="margin-left: 100px;margin-top: 50px;">
-            <!-- 内容主体区域 -->
-            <div style="float: right">
-                <button class="layui-btn layui-btn-normal layui-btn-radius" onclick="addLabel()">添加标签</button>
-            </div>
-            <div style="clear: both;"></div>
-            <table class="layui-table" lay-data="{width:1500, url:'/group/allList', page:true, id:'idTest'}" lay-filter="demo">
-                <thead>
-                    <tr>
+                    <th lay-data="{field:'intro'}">简介</th>
+                    <th lay-data="{field:'status',templet: '#switchTpl', unresize: true, width:80}" id="status">状态</th>
+                    <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
+                </tr>
+            </thead>
+        </table>
+        <script type="text/html" id="switchTpl">
+            <!-- 这里的 checked 的状态只是演示 -->
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="可用|禁止" lay-filter="switchTest" {{ d.status=="USABLE" ? 'checked' : '' }} id="Status">
+        </script>
+        <script type="text/html" id="barDemo">
 
-                        <th lay-data="{field:'id', width:80, sort: true, fixed: true}" id="ID">id</th>
-                        <th lay-data="{field:'name', width:100}">组名</th>
-
-                        <th lay-data="{field:'intro'}">简介</th>
-                        <th lay-data="{field:'status',templet: '#switchTpl', unresize: true, width:80}" id="status">状态</th>
-                        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
-                    </tr>
-                </thead>
-            </table>
-            <script type="text/html" id="switchTpl">
-                <!-- 这里的 checked 的状态只是演示 -->
-                <input type="checkbox" name="status" lay-skin="switch" lay-text="可用|禁止" lay-filter="switchTest" {{ d.status=="USABLE" ? 'checked' : '' }} id="Status">
-            </script>
-            <script type="text/html" id="barDemo">
-
-                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                <a class="layui-btn layui-btn-xs" lay-event="add">添加</a>
-            </script>
-        </div>
-
-
-
-
-        <div class="layui-footer ">
-            <!-- 底部固定区域 -->
-            © layui.com - 底部固定区域
-        </div>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="add">添加</a>
+        </script>
+    </div>
     </div>
     <script src="./layui.js"></script>
 

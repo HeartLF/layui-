@@ -10,209 +10,193 @@
 </head>
 
 <body class="layui-layout-body">
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">layui 后台布局</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">基本资料</a></dd>
-                        <dd><a href="">安全设置</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">退了</a></li>
-            </ul>
+
+    <div id="layout">
+        <header>
+            <input type="text" placeholder="请输入标题！！必须填" name="txt" class="layui-input" id="txt" value="">
+        </header>
+
+        <div class="editormd" id="test-editormd">
+            <textarea></textarea>
+
         </div>
-        <div id="layout">
-            <header>
-                <input type="text" placeholder="请输入标题！！必须填" name="txt" class="layui-input" id="txt" value="">
-            </header>
+        <br/><input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
+        <input type="button" name="submit" id="preview-btn" class="layui-btn layui-btn-warm" value="保存为草稿">
+        <button id="back-btn" class="layui-btn layui-btn-warm"><a href="">返回</a></button>
+    </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/layui.js"></script>
+    <script src="js/editormd.js"></script>
+    <script type="text/javascript">
+        var testEditor;
+        var a = 1;
+        // var id = localStorage["id"];
+        // if (id == 'undefined') {
+        var id = 0;
+        // }
+        var url = window.location.href //获取当前URL
+        console.log(url);
+        if (url.indexOf('?') != -1) {
+            id = url.split("?")[1].split("=")[1];
 
-            <div class="editormd" id="test-editormd">
-                <textarea></textarea>
+        } else {
+            //取得参数
+            id = 0;
+        }
+        console.log(id);
 
-            </div>
-            <br/><input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
-            <input type="button" name="submit" id="preview-btn" class="layui-btn layui-btn-warm" value="保存为草稿">
-            <button id="back-btn" class="layui-btn layui-btn-warm"><a href="">返回</a></button>
-        </div>
-        <script src="js/zepto.min.js"></script>
-        <script src="js/layui.js"></script>
-        <script src="js/editormd.js"></script>
-        <script type="text/javascript">
-            var testEditor;
-            var a = 1;
-            // var id = localStorage["id"];
-            // if (id == 'undefined') {
-            var id = 0;
-            // }
-            var url = window.location.href //获取当前URL
-            console.log(url);
-            if (url.indexOf('?') != -1) {
-                id = url.split("?")[1].split("=")[1];
+        var jQuery = Zepto; // 为了避免修改 flowChart.js 和 sequence-diagram.js 的源码，所以想支持 flowChart / sequenceDiagram 就得加上这一句
 
-            } else {
-                //取得参数
-                id = 0;
-            }
-            console.log(id);
+        window.onload = function() {
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: 400,
+                path: '../lib/',
+                theme: "default",
+                previewTheme: "default",
+                editorTheme: "base16-light",
+                codeFold: true,
+                //syncScrolling : false,
+                saveHTMLToTextarea: true, // 保存 HTML 到 Textarea
+                searchReplace: true,
+                //watch : false,                // 关闭实时预览
+                htmlDecode: "style,script,iframe|on*", // 开启 HTML 标签解析，为了安全性，默认不开启    
+                //toolbar  : false,             //关闭工具栏
+                //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+                emoji: true,
+                taskList: true,
+                tocm: true, // Using [TOCM]
+                tex: true, // 开启科学公式TeX语言支持，默认关闭
+                flowChart: true, // 开启流程图支持，默认关闭
+                sequenceDiagram: true, // 开启时序/序列图支持，默认关闭,
+                //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
+                //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
+                //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
+                //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
+                //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
+                imageUpload: true,
+                imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL: "./php/upload.php",
+                onload: function() {
+                    console.log('onload', this);
 
-            var jQuery = Zepto; // 为了避免修改 flowChart.js 和 sequence-diagram.js 的源码，所以想支持 flowChart / sequenceDiagram 就得加上这一句
-
-            window.onload = function() {
-                testEditor = editormd("test-editormd", {
-                    width: "90%",
-                    height: 740,
-                    path: '../lib/',
-                    theme: "default",
-                    previewTheme: "default",
-                    editorTheme: "base16-light",
-                    codeFold: true,
-                    //syncScrolling : false,
-                    saveHTMLToTextarea: true, // 保存 HTML 到 Textarea
-                    searchReplace: true,
-                    //watch : false,                // 关闭实时预览
-                    htmlDecode: "style,script,iframe|on*", // 开启 HTML 标签解析，为了安全性，默认不开启    
-                    //toolbar  : false,             //关闭工具栏
-                    //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
-                    emoji: true,
-                    taskList: true,
-                    tocm: true, // Using [TOCM]
-                    tex: true, // 开启科学公式TeX语言支持，默认关闭
-                    flowChart: true, // 开启流程图支持，默认关闭
-                    sequenceDiagram: true, // 开启时序/序列图支持，默认关闭,
-                    //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
-                    //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
-                    //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
-                    //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
-                    //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
-                    imageUpload: true,
-                    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                    imageUploadURL: "./php/upload.php",
-                    onload: function() {
-                        console.log('onload', this);
-
-                        //this.fullscreen();
-                        //this.unwatch();
-                        //this.watch().fullscreen();
-                        //this.setMarkdown("#PHP");
-                        //this.width("100%");
-                        //this.height(480);
-                        //this.resize("100%", 640);
-                    },
-                    onchange: function() {
-                        var title = document.getElementById('txt');
-                        if (parseInt(a / 5) > 0) {
-                            a = 0;
-                            var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-
-                            var xhr = new XMLHttpRequest();
-
-                            xhr.open('post', '/notice/saveProjectAuto');
-                            xhr.onreadystatechange = function() {
-                                if (xhr.status == 200 && xhr.readyState == 4) {
-                                    var data = xhr.responseText;
-                                    var result = JSON.parse(data);
-                                    console.log(result);
-                                    if (result.code >= 0) {
-                                        id = result.data.id;
-                                    }
-
-                                }
-                            }
-                            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                            // console.log(id);
-                            let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
-                            console.log(obj);
-                            xhr.send(obj);
-                        }
-                        a++;
-                        // console.log(a++);
-                    }
-                });
-                //提交
-                document.getElementById("submit").onclick = function() {
-                        // var url = window.location.href //获取当前URL
-                        // var param = url.split("?")[1].split("=")[1]; //取得参数
-                        var title = document.getElementById('txt');
-                        var mdCode = testEditor.getMarkdown();
+                    //this.fullscreen();
+                    //this.unwatch();
+                    //this.watch().fullscreen();
+                    //this.setMarkdown("#PHP");
+                    //this.width("100%");
+                    //this.height(480);
+                    //this.resize("100%", 640);
+                },
+                onchange: function() {
+                    var title = document.getElementById('txt');
+                    if (parseInt(a / 5) > 0) {
+                        a = 0;
                         var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-                        if (title.value == '') {
-                            return alert("请输入标题")
-                        }
+
                         var xhr = new XMLHttpRequest();
-                        xhr.open('post', '/notice/saveProject');
+
+                        xhr.open('post', '/notice/saveProjectAuto');
                         xhr.onreadystatechange = function() {
                             if (xhr.status == 200 && xhr.readyState == 4) {
                                 var data = xhr.responseText;
                                 var result = JSON.parse(data);
-                                // if (param > 1) {
-                                //     id = param;
-                                //     return;
-                                // }
+                                console.log(result);
                                 if (result.code >= 0) {
                                     id = result.data.id;
                                 }
+
                             }
                         }
                         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                        let obj = "title:" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
-                        //var html = JSON.stringify(obj);
+                        // console.log(id);
+                        let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
+                        console.log(obj);
                         xhr.send(obj);
-                        // window.location = './message.html';
                     }
-                    //保存为草稿
-                document.getElementById("preview-btn").onclick = function() {
-                    //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
+                    a++;
+                    // console.log(a++);
+                }
+            });
+            //提交
+            document.getElementById("submit").onclick = function() {
+                    // var url = window.location.href //获取当前URL
+                    // var param = url.split("?")[1].split("=")[1]; //取得参数
                     var title = document.getElementById('txt');
+                    var mdCode = testEditor.getMarkdown();
+                    var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
                     if (title.value == '') {
                         return alert("请输入标题")
                     }
-                    var mdCode = testEditor.getMarkdown();
-                    var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-                    console.log(mdCode, htmlCode);
                     var xhr = new XMLHttpRequest();
-
-                    xhr.open('post', '/notice/saveProjectDraft');
+                    xhr.open('post', '/notice/saveProject');
                     xhr.onreadystatechange = function() {
                         if (xhr.status == 200 && xhr.readyState == 4) {
                             var data = xhr.responseText;
                             var result = JSON.parse(data);
-
+                            // if (param > 1) {
+                            //     id = param;
+                            //     return;
+                            // }
                             if (result.code >= 0) {
                                 id = result.data.id;
                             }
                         }
                     }
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                    let obj = "title:" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
                     //var html = JSON.stringify(obj);
                     xhr.send(obj);
+                    // window.location = './message.html';
                 }
-            }
-            ajax();
-
-            function ajax() {
+                //保存为草稿
+            document.getElementById("preview-btn").onclick = function() {
+                //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
                 var title = document.getElementById('txt');
+                if (title.value == '') {
+                    return alert("请输入标题")
+                }
+                var mdCode = testEditor.getMarkdown();
+                var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
+                console.log(mdCode, htmlCode);
                 var xhr = new XMLHttpRequest();
-                xhr.open('get', '/notice/getProjectMarkdown?id=' + id);
+
+                xhr.open('post', '/notice/saveProjectDraft');
                 xhr.onreadystatechange = function() {
                     if (xhr.status == 200 && xhr.readyState == 4) {
-                        var result = JSON.parse(xhr.responseText);
-                        console.log(result);
-                        title.value = result.data.title;
-                        // document.getElementsByTagName('textarea')[0].innerHTML = "dasdasd"
-                        document.getElementsByTagName('textarea')[0].innerHTML = result.data.markdownContent
+                        var data = xhr.responseText;
+                        var result = JSON.parse(data);
+
+                        if (result.code >= 0) {
+                            id = result.data.id;
+                        }
                     }
                 }
-                xhr.send();
-
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                //var html = JSON.stringify(obj);
+                xhr.send(obj);
             }
-        </script>
+        }
+        ajax();
+
+        function ajax() {
+            var title = document.getElementById('txt');
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', '/notice/getProjectMarkdown?id=' + id);
+            xhr.onreadystatechange = function() {
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    var result = JSON.parse(xhr.responseText);
+                    console.log(result);
+                    title.value = result.data.title;
+                    // document.getElementsByTagName('textarea')[0].innerHTML = "dasdasd"
+                    document.getElementsByTagName('textarea')[0].innerHTML = result.data.markdownContent
+                }
+            }
+            xhr.send();
+
+        }
+    </script>
 </body>
 
 </html>

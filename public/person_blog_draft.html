@@ -63,125 +63,66 @@
 </head>
 
 <body class="layui-layout-body">
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">layui 后台布局</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">基本资料</a></dd>
-                        <dd><a href="">安全设置</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">退了</a></li>
-            </ul>
-        </div>
 
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-                <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="javascript:;">博客</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建博客</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                            <dd><a href="javascript:;">博客管理</a></dd>
-                            <dd><a href="">超链接</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">新闻管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="./message_history.html">新闻</a></dd>
-                            <dd><a href="./editor.html">新建</a></dd>
-                            <dd><a href="./message.html">草稿箱</a></dd>
-                            <dd>
-                                <a href=""></a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">项目管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
-                    <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
-                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
-                    <li class="layui-nav-item"><a href="">博客管理</a></li>
-                    <li class="layui-nav-item"><a href="">毕业生管理</a></li>
-                    <li class="layui-nav-item"><a href="">个人资料</a></li>
-                </ul>
+
+
+    <div style=" background-color: #F2F2F2;" id="body">
+        <!-- 内容主体区域 -->
+        <div id="Alert" style="color:#fff; text-align: center; width:150px;height:100px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+            <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 18px;">删除成功</div>
+            <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+        </div>
+        <div style="padding: 20px;">
+            <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
             </div>
         </div>
+        <script src="./layui.js"></script>
 
-        <div class="layui-body" style=" background-color: #F2F2F2;" id="body">
-            <!-- 内容主体区域 -->
-            <div id="Alert" style="color:#fff; text-align: center; width:150px;height:100px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
-                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 18px;">删除成功</div>
-                <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
-            </div>
-            <div style="padding: 20px;">
-                <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
-                </div>
-            </div>
+        <script>
+            //JavaScript代码区域
+            layui.use('element', function() {
+                var element = layui.element;
 
-        </div>
-    </div>
-    <script src="./layui.js"></script>
-
-    <script>
-        //JavaScript代码区域
-        layui.use('element', function() {
-            var element = layui.element;
-
-        });
-        var map = new Map();
-        var map2 = new Map();
-        map.set('DRAFT', '草稿');
-        map.set('AUDIT', '审核中');
-        map.set('OFFICIAL', '正式');
-        map.set('RECOMMEND', '推荐');
+            });
+            var map = new Map();
+            var map2 = new Map();
+            map.set('DRAFT', '草稿');
+            map.set('AUDIT', '审核中');
+            map.set('OFFICIAL', '正式');
+            map.set('RECOMMEND', '推荐');
 
 
-        map2.set('AUDIT', 'red');
-        map2.set('OFFICIAL', 'green');
-        map2.set('RECOMMEND', 'yellow');
-        // var editor = document.getElementById('editor');
-        // var del = document.getElementById('delete');
-        // editor.addEventListener('click');
+            map2.set('AUDIT', 'red');
+            map2.set('OFFICIAL', 'green');
+            map2.set('RECOMMEND', 'yellow');
+            // var editor = document.getElementById('editor');
+            // var del = document.getElementById('delete');
+            // editor.addEventListener('click');
 
-        layui.use('flow', function() {
-            var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
-            var flow = layui.flow;
-            flow.load({
-                elem: '#LAY_demo1', //指定列表容器 
-                scrollElem: document.getElementById('body'),
-                isAuto: true,
-                mb: 100,
-                done: function(page, next) { //到达临界点（默认滚动触发），触发下一页
-                    var lis = [];
-                    //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                    $.get('/blogs/listDraft?limit=8&page=' + page, function(res) {
-                        //假设你的列表返回在data集合中
-                        console.log(res)
-                        var result = res.data;
-                        console.log(result)
-                        result.map(element => {
-                            element.addTime = element.addTime.slice().replace('T', ' ');
-                        });
-                        var str = '';
-                        var html = '';
-                        layui.each(result, function(index, item) {
-                            if (index == 0 && page == 1) {
-                                html = `<div class="layui-col-md6">
+            layui.use('flow', function() {
+                var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+                var flow = layui.flow;
+                flow.load({
+                    elem: '#LAY_demo1', //指定列表容器 
+                    scrollElem: document.getElementById('body'),
+                    isAuto: true,
+                    mb: 100,
+                    done: function(page, next) { //到达临界点（默认滚动触发），触发下一页
+                        var lis = [];
+                        //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                        $.get('/blogs/listDraft?limit=1&page=' + page, function(res) {
+                            //假设你的列表返回在data集合中
+                            console.log(res)
+                            var result = res.data;
+                            console.log(result)
+                            result.map(element => {
+                                element.addTime = element.addTime.slice().replace('T', ' ');
+                            });
+                            var str = '';
+                            var html = '';
+                            layui.each(result, function(index, item) {
+                                if (index == 0 && page == 1) {
+                                    html = `<div class="layui-col-md6">
                                             <div class="layui-card" style="height:189px;">
                                             <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
                                             <div style="display:none">
@@ -209,13 +150,13 @@
                                             </div>
                                             </div>
                                             </div>`
-                            }
-                            if (item.hasOwnProperty('classifySet') != 0) {
-                                for (var j = 0; j < item.classifySet.length; j++) {
-                                    str += (item.classifySet[j].name + '  ')
                                 }
-                            }
-                            html += `<div class="layui-col-md6">
+                                if (item.hasOwnProperty('classifySet') != 0) {
+                                    for (var j = 0; j < item.classifySet.length; j++) {
+                                        str += (item.classifySet[j].name + '  ')
+                                    }
+                                }
+                                html += `<div class="layui-col-md6">
                                             <div class="layui-card" >
                                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${item.title}</a></h1>
                                             <div class="layui-card-body">
@@ -240,52 +181,52 @@
                                             </div>
                                             </div>
                                             </div>`
-                            str = ''
+                                str = ''
 
-                        })
-                        lis.push(html)
-                        next(lis.join(''), page < res.pages);
-                        //document.getElementsByClassName('layui-row')[0].innerHTML += html;
+                            })
+                            lis.push(html)
+                            next(lis.join(''), page < res.pages);
+                            //document.getElementsByClassName('layui-row')[0].innerHTML += html;
 
-                        var btn = document.querySelectorAll('.layui-btn');
-                        console.log(btn);
-                        for (var i = 1; i < btn.length; i++) {
-                            (function(i) {
-                                if (i % 2 == 0) {
-                                    btn[i].addEventListener('click', function() {
-                                        console.log(this.dataset.id);
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
-                                        xhr.onreadystatechange = function() {
-                                            console.log(xhr.responseText)
-                                            if (xhr.status == 200 && xhr.readyState == 4) {
-                                                let json = JSON.parse(xhr.responseText)
-                                                console.log(xhr.responseText.code)
-                                                if (json.code == 0) {
-                                                    document.getElementById('Alert').style.display = 'block';
-                                                    setTimeout(function() {
-                                                        document.getElementById("Alert").style.display = "none";
-                                                        window.location = './person_blog_draft.html'
-                                                    }, 2000);
+                            var btn = document.querySelectorAll('.layui-btn');
+                            console.log(btn);
+                            for (var i = 1; i < btn.length; i++) {
+                                (function(i) {
+                                    if (i % 2 == 0) {
+                                        btn[i].addEventListener('click', function() {
+                                            console.log(this.dataset.id);
+                                            var xhr = new XMLHttpRequest();
+                                            xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
+                                            xhr.onreadystatechange = function() {
+                                                console.log(xhr.responseText)
+                                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                                    let json = JSON.parse(xhr.responseText)
+                                                    console.log(xhr.responseText.code)
+                                                    if (json.code == 0) {
+                                                        document.getElementById('Alert').style.display = 'block';
+                                                        setTimeout(function() {
+                                                            document.getElementById("Alert").style.display = "none";
+                                                            window.location = './person_blog_draft.html'
+                                                        }, 2000);
 
+                                                    }
                                                 }
                                             }
-                                        }
-                                        xhr.send();
-                                    }, false)
-                                }
-                            })(i)
-                        }
+                                            xhr.send();
+                                        }, false)
+                                    }
+                                })(i)
+                            }
 
 
-                        //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-                        //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                            //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                            //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
 
-                    });
-                }
+                        });
+                    }
+                });
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>
