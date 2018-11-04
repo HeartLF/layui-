@@ -127,7 +127,7 @@
                 <nav>
                     <ul>
                         <li>
-                            <a href="">推荐</a>
+                            <a href="./blog.html?id=1">推荐</a>
                             <a href="">最新文章</a>
                             <a href="">咨询</a>
                             <a href="">网络安全</a>
@@ -324,8 +324,12 @@
                             str = ''
 
                         })
-                        lis.push(html)
-                        next(lis.join(''), page < res.pages);
+                        lis.push(html);
+                        var pages = parseInt(res.pages / 4);
+                        if (pages % 4 > 0) {
+                            pages += 1;
+                        }
+                        next(lis.join(''), page < pages);
                         //document.getElementsByClassName('layui-row')[0].innerHTML += html;
 
                         var btn = document.querySelectorAll('.layui-btn');
