@@ -37,17 +37,14 @@
         </form>
 
         <div style="float: right; margin-right: 50px;margin-top: 10px;">
-            <button type="button" onclick="selectRole()" class="layui-btn layui-btn-primary layui-btn-radius">添加</button>
-            <span class="layui-btn layui-btn-danger ">删除</span>
+            <button type="button" onclick="selectRole()" class="layui-btn layui-btn-normal layui-btn-radius">添加</button>
         </div>
-
-        <div class="layui-table-box ">
-
-            <table class="layui-table" id="test3" lay-filter="test3" lay-data="{id:'test3',url:'/person/personList'}">
+        <div style="clear: both;"></div>
+        <div class="layui-table-box">
+            <table class="layui-table" id="test3" lay-filter="test3" lay-data="{ width:1300,id:'test3',url:'/person/personList'}">
                 <thead>
                     <tr>
                         <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
-
                         <th lay-data="{field: 'name', edit: 'text'} ">姓名</th>
                         <th lay-data="{field: 'grade', edit: 'text'} ">年级</th>
                         <th lay-data="{field: 'id', edit: 'text'} ">学号</th>

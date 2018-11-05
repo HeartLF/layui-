@@ -62,7 +62,7 @@
     </style>
 </head>
 
-<body class="layui-layout-body">
+<body>
 
 
 
@@ -110,19 +110,20 @@
                     done: function(page, next) { //到达临界点（默认滚动触发），触发下一页
                         var lis = [];
                         //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                        $.get('/blogs/listDraft?limit=1&page=' + page, function(res) {
-                            //假设你的列表返回在data集合中
-                            console.log(res)
-                            var result = res.data;
-                            console.log(result)
-                            result.map(element => {
-                                element.addTime = element.addTime.slice().replace('T', ' ');
-                            });
-                            var str = '';
-                            var html = '';
-                            layui.each(result, function(index, item) {
-                                if (index == 0 && page == 1) {
-                                    html = `<div class="layui-col-md6">
+                        (function(page, next) {
+                            $.get('/blogs/listDraft?limit=5&page=' + page, function(res) {
+                                //假设你的列表返回在data集合中
+                                console.log(res)
+                                var result = res.data;
+                                console.log(result)
+                                result.map(element => {
+                                    element.addTime = element.addTime.slice().replace('T', ' ');
+                                });
+                                var str = '';
+                                var html = '';
+                                layui.each(result, function(index, item) {
+                                    if (index == 0 && page == 1) {
+                                        html = `<div class="layui-col-md6">
                                             <div class="layui-card" style="height:189px;">
                                             <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
                                             <div style="display:none">
@@ -150,13 +151,13 @@
                                             </div>
                                             </div>
                                             </div>`
-                                }
-                                if (item.hasOwnProperty('classifySet') != 0) {
-                                    for (var j = 0; j < item.classifySet.length; j++) {
-                                        str += (item.classifySet[j].name + '  ')
                                     }
-                                }
-                                html += `<div class="layui-col-md6">
+                                    if (item.hasOwnProperty('classifySet') != 0) {
+                                        for (var j = 0; j < item.classifySet.length; j++) {
+                                            str += (item.classifySet[j].name + '  ')
+                                        }
+                                    }
+                                    html += `<div class="layui-col-md6">
                                             <div class="layui-card" >
                                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${item.title}</a></h1>
                                             <div class="layui-card-body">
@@ -181,48 +182,54 @@
                                             </div>
                                             </div>
                                             </div>`
-                                str = ''
+                                    str = ''
 
-                            })
-                            lis.push(html)
-                            next(lis.join(''), page < res.pages);
-                            //document.getElementsByClassName('layui-row')[0].innerHTML += html;
+                                })
+                                lis.push(html)
+                                var pages = parseInt(res.pages / 5);
+                                if (pages % 5 > 0) {
+                                    pages += 1;
+                                }
+                                next(lis.join(''), page < pages);
+                                //document.getElementsByClassName('layui-row')[0].innerHTML += html
+                                //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                                //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                                (function() {
+                                    var btn = document.querySelectorAll('.layui-btn');
+                                    console.log(btn);
+                                    for (var i = 1; i < btn.length; i++) {
+                                        (function(i) {
+                                            if (i % 2 == 0) {
+                                                btn[i].addEventListener('click', function() {
+                                                    console.log(this.dataset.id);
+                                                    var xhr = new XMLHttpRequest();
+                                                    xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
+                                                    xhr.onreadystatechange = function() {
+                                                        console.log(xhr.responseText)
+                                                        if (xhr.status == 200 && xhr.readyState == 4) {
+                                                            let json = JSON.parse(xhr.responseText)
+                                                            console.log(xhr.responseText.code)
+                                                            if (json.code == 0) {
+                                                                document.getElementById('Alert').style.display = 'block';
+                                                                setTimeout(function() {
+                                                                    document.getElementById("Alert").style.display = "none";
+                                                                    window.location = './person_blog_draft.html'
+                                                                }, 2000);
 
-                            var btn = document.querySelectorAll('.layui-btn');
-                            console.log(btn);
-                            for (var i = 1; i < btn.length; i++) {
-                                (function(i) {
-                                    if (i % 2 == 0) {
-                                        btn[i].addEventListener('click', function() {
-                                            console.log(this.dataset.id);
-                                            var xhr = new XMLHttpRequest();
-                                            xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
-                                            xhr.onreadystatechange = function() {
-                                                console.log(xhr.responseText)
-                                                if (xhr.status == 200 && xhr.readyState == 4) {
-                                                    let json = JSON.parse(xhr.responseText)
-                                                    console.log(xhr.responseText.code)
-                                                    if (json.code == 0) {
-                                                        document.getElementById('Alert').style.display = 'block';
-                                                        setTimeout(function() {
-                                                            document.getElementById("Alert").style.display = "none";
-                                                            window.location = './person_blog_draft.html'
-                                                        }, 2000);
-
+                                                            }
+                                                        }
                                                     }
-                                                }
+                                                    xhr.send();
+                                                }, false)
                                             }
-                                            xhr.send();
-                                        }, false)
+                                        })(i)
                                     }
-                                })(i)
-                            }
+                                })()
+                            });
+
+                        })(page, next);
 
 
-                            //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-                            //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-
-                        });
                     }
                 });
             });

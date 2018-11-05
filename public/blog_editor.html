@@ -52,7 +52,7 @@
 
                 <input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
                 <input type="button" name="submit" id="preview-btn" class="layui-btn layui-btn-warm" value="保存为草稿">
-                <button id="back-btn" class="layui-btn layui-btn-warm"><a href="">返回</a></button>
+
             </div>
         </div>
         <script src="js/zepto.min.js"></script>
@@ -198,6 +198,7 @@
                                 setTimeout(function() {
                                     document.getElementById("Alert2").style.display = "none";
                                     // window.location = './person_blog_draft.html'
+
                                 }, 2000);
 
                             }
@@ -247,8 +248,9 @@
                                 id = result.data.id;
                                 document.getElementById('Alert').style.display = 'block';
                                 setTimeout(function() {
-                                    document.getElementById("Alert").style.display = "none";
-                                    window.location = './person_blog_draft.html'
+                                    // history.go('<iframe data-frameid="2" frameborder="0" name="content" scrolling="yes" width="100%" src="./person_blog_draft.html"></iframe>')
+                                    document.getElementById('Alert').style.display = 'none';
+
                                 }, 2000);
 
                             }

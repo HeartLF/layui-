@@ -55,6 +55,10 @@
             display: inline-block;
             text-shadow: 0px 0px 2px #686868, inherit
         }
+        
+        .layui-flow-more {
+            clear: left;
+        }
     </style>
 </head>
 
@@ -64,100 +68,142 @@
     <div style=" background-color: #F2F2F2;">
         <!-- 内容主体区域 -->
 
+        <div id="Alert" style="color:#fff; text-align: center; width:150px;height:100px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+            <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 18px;">删除成功</div>
+            <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+        </div>
         <div style="padding: 20px;">
-            <div class="layui-row layui-col-space15">
-
+            <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
             </div>
         </div>
 
     </div>
     </div>
     <script src="./layui.js"></script>
-
     <script>
         //JavaScript代码区域
         layui.use('element', function() {
             var element = layui.element;
 
         });
+
         // var editor = document.getElementById('editor');
         // var del = document.getElementById('delete');
         // editor.addEventListener('click');
-        var xhr = new XMLHttpRequest();
-        xhr.open('get', 'notice/listProjectDraft');
-        xhr.onreadystatechange = function() {
-            var html = '';
-            if (xhr.status == 200 && xhr.readyState == 4) {
-                var result = JSON.parse(xhr.responseText);
-                if (result.data.length == 0) {
-                    html = `<div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-body"  style="padding:none">
-                                    <button  class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./project_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
-                            </div>
-                        </div>
-                    </div>`
-                }
-                for (var i = 0; i < result.data.length; i++) {
-                    if (i == 0) {
-                        html = `<div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-body"  style="padding:none">
-                                    <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
-                            </div>
-                        </div>
-                    </div>`;
 
-                    }
-                    html += `<div class="layui-col-md6">
-                        <div class="layui-card">
-                            <h1 class="layui-card-header" style="font-size:24px"><a href="">${result.data[i].title}</a></h1>
-                            <div class="layui-card-body">
-                                <div>${result.data[i].intro}</div>
-                                <br>
-                                <dl style="font-size:14px">
-                                    <dd style="float:left;margin-right: 10px;color:#3399ea">姓名：<span>${result.data[i].editPerson.name}</span></dd>
-                                    <dd style="float:left;margin-right: 10px;display:none">ID：<span>${result.data[i].id}</span></dd>
-                                    <dd style="float:left">时间：<span>${result.data[i].addTime}</span>&nbsp&nbsp</dd>
-                                    <dd>状态：<span>草稿</span></dd>
-                                    <div style="float:right">
-                                            <a href="./editor.html?id=${result.data[i].id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}> <i class="layui-icon"></i></button></a>  
-                                            <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${result.data[i].id}><i class="layui-icon"></i></button>
-                                    </div>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>`;
-
-                }
-                document.getElementsByClassName('layui-row')[0].innerHTML += html;
-                var btn = document.querySelectorAll('.layui-btn');
-                for (var i = 0; i < btn.length; i++) {
-                    (function(i) {
-                        if (i % 2 == 0) {
-                            btn[i].addEventListener('click', function() {
-                                console.log(this.dataset.id);
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('get', '/notice/delete?id=' + this.dataset.id);
-                                console.log(xhr.responseText);
-                                xhr.onreadystatechange = function() {
-                                    if (xhr.status == 200 && xhr.readyState == 4) {
-                                        if (xhr.responseText.data.code < 0) {
-                                            alert('数据库出错')
-                                        }
-
+        layui.use('flow', function() {
+            var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+            var flow = layui.flow;
+            flow.load({
+                elem: '#LAY_demo1', //指定列表容器 
+                scrollElem: document.getElementById('body'),
+                isAuto: true,
+                mb: 100,
+                done: function(page, next) { //到达临界点（默认滚动触发），触发下一页
+                    var lis = [];
+                    //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                    (function() {
+                        $.get('notice/listProjectDraft?limit=5&page=' + page, function(res) {
+                            //假设你的列表返回在data集合中
+                            console.log(res)
+                            var result = res.data;
+                            console.log(result)
+                            result.map(element => {
+                                element.addTime = element.addTime.slice().replace('T', ' ');
+                            });
+                            var str = '';
+                            var html = '';
+                            layui.each(result, function(index, item) {
+                                if (index == 0 && page == 1) {
+                                    html = `<div class="layui-col-md6">
+                                            <div class="layui-card" style="height:189px;">
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
+                                            </div>
+                                         </div>`
+                                }
+                                if (item.hasOwnProperty('classifySet') != 0) {
+                                    for (var j = 0; j < item.classifySet.length; j++) {
+                                        str += (item.classifySet[j].name + '  ')
                                     }
                                 }
-                                xhr.send();
-                            }, false)
-                        }
+                                html += `<div class="layui-col-md6">
+                                            <div class="layui-card" >
+                                            <h1 class="layui-card-header" style="font-size:24px"><a href="">${item.title}</a></h1>
+                                            <div class="layui-card-body">
+                                                <div style="height:24px; line-height:24px;">${item.intro}</div>
+                                                <br>
+                                                <dl style="font-size:14px">
+                                                    <dd style="float:left">状态：<span>公告</span>&nbsp&nbsp</dd>
+                                                    
+                                                    <div style="float:right">
+                                                    <dd style="float:left;margin-right: 10px;color:#3399ea"><span>${item.editPerson.name}</span></dd>
+                                                    <dd style="float:left;margin-right: 10px;display:none">ID：<span>${item.id}</span></dd>
+                                                    <dd style="float:left"><span>${item.addTime}</span>&nbsp&nbsp</dd>                                   
+                                                    </div>
+                                                    <div style="clear:both"></div>
+                                                    <div style="float:right">
+                                                            <a href="./blog_editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
+                                                            <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}><i class="layui-icon"></i></button>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                            </div>
+                                            </div>`
+                                str = ''
 
-                    })(i)
+                            })
+                            lis.push(html)
+                            var pages = parseInt(res.pages / 5);
+                            if (pages % 5 > 0) {
+                                pages += 1;
+                            }
+                            next(lis.join(''), page < res.pages);
+                            //document.getElementsByClassName('layui-row')[0].innerHTML += html;
+                            (function() {
+                                var btn = document.querySelectorAll('.layui-btn');
+                                console.log(btn);
+                                for (var i = 0; i < btn.length; i++) {
+                                    (function(i) {
+                                        if (i % 2 == 0) {
+                                            btn[i].addEventListener('click', function() {
+                                                console.log(this.dataset.id);
+                                                var xhr = new XMLHttpRequest();
+                                                xhr.open('post', '/notice/delete?id=' + this.dataset.id);
+                                                xhr.onreadystatechange = function() {
+                                                    console.log(xhr.responseText)
+                                                    if (xhr.status == 200 && xhr.readyState == 4) {
+                                                        let json = JSON.parse(xhr.responseText)
+                                                        console.log(xhr.responseText.code)
+                                                        if (json.code == 0) {
+                                                            document.getElementById('Alert').style.display = 'block';
+                                                            setTimeout(function() {
+                                                                document.getElementById("Alert").style.display = "none";
+                                                                window.location = './project_message.html'
+                                                            }, 2000);
+
+                                                        }
+                                                    }
+                                                }
+                                                xhr.send();
+                                            }, false)
+                                        }
+                                    })(i)
+                                }
+                            })()
+
+
+                        });
+                    })(page, next)
+
+
                 }
-            }
-        }
-        xhr.send();
+            });
+        });
     </script>
+
+
+
+
 </body>
 
 </html>

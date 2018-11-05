@@ -62,7 +62,7 @@
     </style>
 </head>
 
-<body class="layui-layout-body">
+<body>
 
 
     <div style=" background-color: #F2F2F2;" id="body">
@@ -119,26 +119,27 @@
                 done: function(page, next) { //到达临界点（默认滚动触发），触发下一页
                     var lis = [];
                     //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                    $.get('/blogs/listOfficial?limit=8&page=' + page, function(res) {
-                        //假设你的列表返回在data集合中
+                    (function(page, next) {
+                        $.get('/blogs/listOfficial?limit=5&page=' + page, function(res) {
+                            //假设你的列表返回在data集合中
 
-                        var result = res.data;
-                        console.log(result)
-                        result.map(element => {
-                            element.addTime = element.addTime.slice().replace('T', ' ');
-                        });
-                        var str = '';
-                        var html = '';
-                        layui.each(result, function(index, item) {
-                            console.log(item);
-                            if (item.hasOwnProperty('classifySet') != 0) {
-                                console.log(1);
-                                for (var j = 0; j < item.classifySet.length; j++) {
-                                    str += (item.classifySet[j].name + '  ')
+                            var result = res.data;
+                            console.log(result)
+                            result.map(element => {
+                                element.addTime = element.addTime.slice().replace('T', ' ');
+                            });
+                            var str = '';
+                            var html = '';
+                            layui.each(result, function(index, item) {
+                                console.log(item);
+                                if (item.hasOwnProperty('classifySet') != 0) {
+                                    console.log(1);
+                                    for (var j = 0; j < item.classifySet.length; j++) {
+                                        str += (item.classifySet[j].name + '  ')
+                                    }
+                                    console.log(str);
                                 }
-                                console.log(str);
-                            }
-                            html += `<div class="layui-col-md6">
+                                html += `<div class="layui-col-md6">
                                             <div class="layui-card" >
                                             <h1 class="layui-card-header" style="font-size:24px"><a href="">${item.title}</a></h1>
                                             <div class="layui-card-body">
@@ -163,44 +164,53 @@
                                             </div>
                                             </div>
                                             </div>`
-                            str = ''
+                                str = '';
+                            });
+                            lis.push(html);
+                            var pages = parseInt(res.pages / 5);
+                            if (pages % 5 > 0) {
+                                pages += 1;
+                            }
+                            next(lis.join(''), page < pages);
+                            (function() {
+                                var btn = document.querySelectorAll('.layui-btn');
+                                console.log(btn);
+                                for (var i = 0; i < btn.length; i++) {
+                                    (function(i) {
+                                        if (i % 2 != 0) {
+                                            btn[i].addEventListener('click', function() {
+                                                console.log(this.dataset.id);
+                                                var xhr = new XMLHttpRequest();
+                                                xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
+                                                xhr.onreadystatechange = function() {
+                                                    console.log(xhr.responseText)
+                                                    if (xhr.status == 200 && xhr.readyState == 4) {
+                                                        let json = JSON.parse(xhr.responseText)
+                                                        console.log(xhr.responseText.code)
+                                                        if (json.code == 0) {
+                                                            document.getElementById('Alert').style.display = 'block';
+                                                            setTimeout(function() {
+                                                                document.getElementById("Alert").style.display = "none";
+                                                                window.location = './person_blog_history.html'
+                                                            }, 2000);
 
-                        })
-                        lis.push(html)
-                        next(lis.join(''), page < res.pages);
-                        //document.getElementsByClassName('layui-row')[0].innerHTML += html;
-
-                        var btn = document.querySelectorAll('.layui-btn');
-                        console.log(btn);
-                        for (var i = 1; i < btn.length; i++) {
-                            (function(i) {
-                                if (i % 2 == 0) {
-                                    btn[i].addEventListener('click', function() {
-                                        console.log(this.dataset.id);
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
-                                        xhr.onreadystatechange = function() {
-                                            console.log(xhr.responseText)
-                                            if (xhr.status == 200 && xhr.readyState == 4) {
-                                                let json = JSON.parse(xhr.responseText)
-                                                console.log(xhr.responseText.code)
-                                                if (json.code == 0) {
-                                                    document.getElementById('Alert').style.display = 'block';
-                                                    setTimeout(function() {
-                                                        document.getElementById("Alert").style.display = "none";
-                                                        window.location = './person_blog_draft.html'
-                                                    }, 2000);
-
+                                                        }
+                                                    }
                                                 }
-                                            }
+                                                xhr.send();
+                                            }, false)
                                         }
-                                        xhr.send();
-                                    }, false)
+                                    })(i)
                                 }
-                            })(i)
-                        }
-                    });
-                }
+                            })()
+
+
+                        });
+                    })(page, next)
+
+
+                },
+
             });
         });
     </script>

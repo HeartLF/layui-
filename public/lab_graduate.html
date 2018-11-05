@@ -24,131 +24,203 @@
 </head>
 
 <body class="layui-layout-body">
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">layui 后台布局</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">基本资料</a></dd>
-                        <dd><a href="">安全设置</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">退了</a></li>
-            </ul>
+
+
+    <div style="margin-top: 10px;">
+        <!-- 内容主体区域 -->
+        <div style="float: right; margin-right:50px;margin-top:10px;">
+            <button class="layui-btn layui-btn-normal layui-btn-radius" onclick="add()">添加</button>
         </div>
+        <div style="clear: both;"></div>
+        <div class="layui-table-box">
+            <table class="layui-table" lay-data="{width:1300, url:'/group/allList', page:true, id:'idTest'}" lay-filter="demo">
+                <thead>
+                    <tr>
 
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-                <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                    <li class="layui-nav-item">
-                        <a class="avascript:;" href="javascript:;">博客</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新建博客</a></dd>
-                            <dd><a href="javascript:;">草稿箱</a></dd>
-                            <dd><a href="javascript:;">博客管理</a></dd>
-                            <dd><a href="">超链接</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="./message_history.html" target="_blank">新闻管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="./editor.html">新建</a></dd>
-
-                            <dd><a href="./message.html">草稿箱</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">项目管理</a>
-                        <dl class="layui-nav-child">
-
-                            <dd><a href="./project_message_history .html">项目</a></dd>
-                            <dd><a href="./project_message.html">草稿箱</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item"><a href="graduate.html">成员管理</a></li>
-                    <li class="layui-nav-item"><a href="group.html">组别管理</a></li>
-                    <li class="layui-nav-item"><a href="label.html">标签管理</a></li>
-                    <li class="layui-nav-item"><a href="">博客管理</a></li>
-                    <li class="layui-nav-item"><a href="">毕业生管理</a></li>
-                    <li class="layui-nav-item"><a href="">个人资料</a></li>
-                </ul>
-            </div>
+                        <th lay-data="{field:'id', width:80, sort: true, fixed: true}" id="ID">id</th>
+                        <th lay-data="{field:'name', width:100}">姓名</th>
+                        <th lay-data="{field:'grade'}">年级</th>
+                        <th lay-data="{field:'name'}">组别</th>
+                        <th lay-data="{field:'employment'}">毕业公司</th>
+                        <th lay-data="{field:'photoUri'}">照片</th>
+                        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-
-        <div class="layui-body">
-            <!-- 内容主体区域 -->
-            <div class="layui-collapse" lay-accordion="" lay-filter="test">
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title">为什么JS社区大量采用未发布或者未广泛支持的语言特性？</h2>
-                    <div class="layui-colla-content">
-                        <table class="layui-hide" id="test"></table>
-                    </div>
-
-                </div>
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title">为什么JS社区大量采用未发布或者未广泛支持的语言特性？</h2>
-                    <div class="layui-colla-content">
-                        <p>有不少其他答案说是因为JS太差。我下面的答案已经说了，这不是根本性的原因。但除此之外，我还要纠正一些对JS具体问题的误解。JS当初是被作为脚本语言设计的，所以某些问题并不是JS设计得差或者是JS设计者的失误。比如var的作用域问题，并不是“错误”，而是当时绝大部分脚本语言都是这样的，如perl/php/sh等。模块的问题也是，脚本语言几乎都没有模块/命名空间功能。弱类型、for-in之类的问题也是，只不过现在用那些老的脚本语言的人比较少，所以很多人都误以为是JS才有的坑。另外有人说JS是半残语言，满足不了开发需求，1999年就该死。半残这个嘛，就夸张了。JS虽然有很多问题，但是设计总体还是优秀的。——来自知乎@贺师俊</p>
-                    </div>
-                </div>
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title">为什么前端工程师多不愿意用 Bootstrap 框架？</h2>
-                    <div class="layui-colla-content">
-                        <p>因为不适合。如果希望开发长期的项目或者制作产品类网站，那么就需要实现特定的设计，为了在维护项目中可以方便地按设计师要求快速修改样式，肯定会逐步编写出各种业务组件、工具类，相当于为项目自行开发一套框架。——来自知乎@Kayo</p>
-                    </div>
-                </div>
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title">贤心是男是女？</h2>
-                    <div class="layui-colla-content">
-                        <p>man！ 所以这个问题不要再出现了。。。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
         <script src="./layui.js"></script>
 
         <script>
             //JavaScript代码区域
-            layui.use(['element', 'layer'], function() {
-                var element = layui.element;
-                var layer = layui.layer;
-
-                //监听折叠
-                element.on('collapse(test)', function(data) {
-                    // layer.msg('展开状态：' + data.show);
-                    console.log(data.show)
-
-                    layui.use('table', function() {
-                        var table = layui.table
-
-                        table.render({
-                            elem: '#test',
-                            url: '/person/personList',
-
-                            cols: [
-                                [{
-                                    field: 'id',
-                                    width: 100
-                                }, {
-                                    field: 'name',
-                                    width: 100
-                                }]
-                            ],
-                            page: true
-                        });
-                    })
-
-
-
+            layui.use('table', function() {
+                var table = layui.table;
+                //监听表格复选框选择
+                table.on('checkbox(demo)', function(obj) {
+                    console.log(obj)
                 });
+                //监听工具条
+                table.on('tool(demo)', function(obj) {
+                    var data = obj.data;
+                    if (obj.event === 'detail') {
+                        layer.msg('ID：' + data.id + ' 的查看操作');
+                    } else if (obj.event === 'del') {
+                        layer.confirm('真的删除行么', function(index) {
+                            obj.del();
+                            layer.close(index);
+                        });
+                    } else if (obj.event === 'edit') {
+                        layer.alert('编辑行：<br>' + JSON.stringify(data))
+                    }
+                });
+
             });
+
+            function add() {
+                layui.use(['form', 'jquery', 'table'], function() {
+                    var form = layui.form;
+                    var $ = layui.jquery;
+                    layer.open({
+                        //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                        type: 1,
+                        title: "添加毕业生信息",
+                        area: ['30%', '50%'],
+                        content: ` <div class="layui-row" id="test">
+                    <div class="layui-col-md10">
+                    <form class="layui-form" id="addEmployeeForm" onsubmit=" return checkImg('img_url','Label7')" action="/person/save" method="post">
+                       
+                        <div class="layui-form-item">
+                                <label class="layui-form-label">照片</label>
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="upload1">上传图片</button>
+            <input type="hidden" id="img_url" name="photoUri" value=""  required="required"/>
+            <label id="Label7" class="control-label" style="color:red"></label>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" width="100px" height="80px" id="demo1"/>
+            <p id="demoText"></p>
+            </div>
+        </div>
+        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" id="text1" class="layui-input" onBlur="isChinese('text1','Label1')" placeholder="请输入中文"  required="required">
+                                <label id="Label1" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                       
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">年级：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="grade" class="layui-input" placeholder="请输入如软件1606班xxx"  required="required">
+                                <label id="Label3" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">毕业公司：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="grade" class="layui-input" placeholder="请输入如软件1606班xxx"  required="required">
+                                <label id="Label3" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">组别：</label>
+                            <div class="layui-input-block">
+                                <select class="layui-input" name="group.id" id="deptSelect" lay-filter="pageFilter">                                                                    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="submit" class="layui-btn layui-btn-normal" lay-filter="demo1"></input>
+                        </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>`,
+                        success: function(layero, index) {
+                            $.get('/group/usableList', {}, function(data) {
+                                var $html = "";
+                                // console.log(data);
+                                data.Group.forEach(function(element) {
+                                    $html += "<option value='" + element.id + "'>" + element.name + "</option>";
+                                })
+                                $("select[name='group.id']").append($html);
+                                form.render('select');
+                            });
+
+                        }
+                    });
+                    upload()
+                    form.render();
+
+
+                })
+            }
+
+            function isChinese(id1, id2) {
+                var reg = /^[\u0391-\uFFE5]+$/;
+                var obj = document.getElementById(id1);
+                if (!reg.test(obj.value)) {
+                    document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式文字!";
+                    obj.mail.focus();
+                    return false;
+                } else {
+                    document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                    return true;
+                }
+            }
+
+            function upload() {
+                layui.use('upload', function() {
+                    var upload = layui.upload,
+                        $ = layui.jquery;
+                    var uploadInst = upload.render({
+                        elem: '#upload1' //绑定元素
+                            ,
+                        url: '/file/uploadPersonImg',
+                        before: function(obj) {
+                            //预读本地文件示例，不支持ie8
+                            obj.preview(function(index, file, result) {
+
+                                $('#demo1').attr('src', result); //图片链接（base64）
+                            });
+                        },
+                        field: 'fileModel.file',
+                        done: function(res) {
+                            console.log(res);
+                            //如果上传失败
+                            if (res.file == 0) {
+                                layer.msg('上传成功');
+                            } else if (res.file == 1) {
+                                layer.msg('上传格式必须是jpg')
+                            } else if (res.file == 2) {
+                                layer.msg('上传图片超过400k')
+                            } else if (res.file == 3) {
+                                layer.msg('未知错误，联系管理员');
+                            }
+
+                            //上传成功
+                            // alert("上传成功" + res.url);
+                            console.log(res.url);
+                            document.getElementById("img_url").value = res.url;
+
+                        },
+                        error: function() {
+                            //演示失败状态，并实现重传
+                            var demoText = $('#demoText');
+                            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                            demoText.find('.demo-reload').on('click', function() {
+                                uploadInst.upload();
+                            });
+                        }
+                    });
+                });
+            }
         </script>
 </body>
 
