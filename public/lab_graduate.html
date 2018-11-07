@@ -33,16 +33,16 @@
         </div>
         <div style="clear: both;"></div>
         <div class="layui-table-box">
-            <table class="layui-table" lay-data="{width:1300, url:'/group/allList', page:true, id:'idTest'}" lay-filter="demo">
+            <table class="layui-table" lay-data="{width:1300, url:'/graduate/list',id:'idTest',page:true}" lay-filter="demo">
                 <thead>
                     <tr>
 
-                        <th lay-data="{field:'id', width:80, sort: true, fixed: true}" id="ID">id</th>
-                        <th lay-data="{field:'name', width:100}">姓名</th>
-                        <th lay-data="{field:'grade'}">年级</th>
-                        <th lay-data="{field:'name'}">组别</th>
+                        <th lay-data="{field:'id'}">ID</th>
+                        <th lay-data="{field:'name',templet: '<div>{{d.personModel.name}}</div>'}">姓名</th>
+                        <th lay-data="{field:'personModel',templet: '<div>{{d.personModel.grade}}</div>'}">年级</th>
                         <th lay-data="{field:'employment'}">毕业公司</th>
                         <th lay-data="{field:'photoUri'}">照片</th>
+                        <th lay-data="{field:'photoUri',templet: '#content_img'}"></th>
                         <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>
                     </tr>
                 </thead>
@@ -52,23 +52,137 @@
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
+        <script id="content_img" type="text/html">
+            <img src="/group1/M00/00/00/rB_bBFvheJ2Aca4fAAMdgRet8EA898.jpg" alt="">
+        </script>
         <script src="./layui.js"></script>
 
         <script>
             //JavaScript代码区域
             layui.use('table', function() {
-                var table = layui.table;
-                //监听表格复选框选择
-                table.on('checkbox(demo)', function(obj) {
-                    console.log(obj)
-                });
-                //监听工具条
+
                 table.on('tool(demo)', function(obj) {
                     var data = obj.data;
-                    if (obj.event === 'detail') {
+                    console.log(data);
+                    if (obj.event === 'edit') {
+                        layui.use(['form', 'jquery', 'table'], function() {
+                            var form = layui.form;
+                            var $ = layui.jquery;
+                            var table = layer.table;
+                            layer.open({
+                                //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                                type: 1,
+                                title: "添加毕业生信息",
+                                area: ['30%', '60%'],
+                                content: ` <div class="layui-row" id="test">
+                    <div class="layui-col-md10">
+                    <form class="layui-form" id="addEmployeeForm" lay-filter="example">
+                       
+                        <div class="layui-form-item">
+                                <label class="layui-form-label">照片</label>
+                                <div class="layui-input-block">
+                                  
+                                    <input type="hidden" id="img_url" name="photoUri" value=""  required="required"/>
+                                    <label id="Label7" class="control-label" style="color:red"></label>
+                                    <div class="layui-upload-list">
+                                    <img class="layui-upload-img" width="100px" height="80px" id="demo1" src="${data.photoUri}"/>
+                                    <p id="demoText"></p>
+                                    <p>图片格式：jpg、png；大小不能超过1M</p>
+                                    <button type="button" class="layui-btn" id="upload1">上传图片</button>
+                                    </div>
+                                </div>
+                         </div>
+                         <div class="layui-form-item">
+                            <label class="layui-form-label">学号：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="id" class="layui-input" id="ID" required="required" disabled placeholder="不用输入学号">
+                                <label id="Label3" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                         <div class="layui-form-item">
+                            <label class="layui-form-label">姓名：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="group.id" class="layui-input" id="group.id" required="required" placeholder="不用输入学号">
+                                
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">毕业公司：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="graduate" class="layui-input" placeholder="请输入如软件1606班xxx"  id="company" required="required">
+                                <label id="Label3" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-filter="demo1" id="btn">提交</button>
+                        </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>`,
+                                success: function(layero, index) {
+                                    form.val('example', {
+                                        'photoUri': data.photoUri,
+                                        'id': data.id,
+                                        'group.id': data.personModel.name,
+                                        'graduate': data.employment
+                                    })
+
+                                    document.getElementById('btn').onclick = function() {
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open('post', '/graduate/save');
+                                        xhr.onreadystatechange = function() {
+                                            if (xhr.status == 200 && xhr.readyState == 4) {
+                                                let data = JSON.parse(xhr.responseText);
+                                                console.log(data.code);
+                                                if (data.code == 0) {
+                                                    layer.closeAll();
+
+                                                } else {
+                                                    layui.msg('提交失败', function() {
+                                                        layer.closeAll();
+                                                    });
+                                                }
+
+                                            }
+                                        }
+                                        xhr.setRequestHeader("Content-type", "application/json");
+                                        // console.log(id);
+                                        let obj = {
+                                            model: {
+                                                id: $('#ID').val(),
+                                                photoUri: $('#img_url').val(),
+                                                employment: $('#company').val(),
+                                                personModel: {
+                                                    id: $('#ID').val()
+                                                }
+                                            }
+                                        }
+                                        let info = JSON.stringify(obj);
+                                        xhr.send(info);
+                                    }
+
+                                }
+                            });
+                            upload()
+                            form.render();
+                        })
                         layer.msg('ID：' + data.id + ' 的查看操作');
+                        console.log(data.id);
                     } else if (obj.event === 'del') {
                         layer.confirm('真的删除行么', function(index) {
+                            var xhr = new XMLHttpRequest();
+                            console.log(index);
+                            xhr.open('get', '/graduate/delete?model.id=' + data.id);
+                            xhr.onreadystatechange = function() {
+                                if (xhr.readyState == 4 && xhr.status == 200) {
+                                    console.log(xhr.responseText);
+                                }
+                            }
+                            xhr.send();
                             obj.del();
                             layer.close(index);
                         });
@@ -83,59 +197,55 @@
                 layui.use(['form', 'jquery', 'table'], function() {
                     var form = layui.form;
                     var $ = layui.jquery;
+                    var table = layui.table;
                     layer.open({
                         //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                         type: 1,
                         title: "添加毕业生信息",
-                        area: ['30%', '50%'],
+                        area: ['30%', '60%'],
                         content: ` <div class="layui-row" id="test">
                     <div class="layui-col-md10">
-                    <form class="layui-form" id="addEmployeeForm" onsubmit=" return checkImg('img_url','Label7')" action="/person/save" method="post">
+                    <form class="layui-form" id="addEmployeeForm" lay-filter="example">
                        
                         <div class="layui-form-item">
                                 <label class="layui-form-label">照片</label>
-        <div class="layui-input-block">
-            <button type="button" class="layui-btn" id="upload1">上传图片</button>
-            <input type="hidden" id="img_url" name="photoUri" value=""  required="required"/>
-            <label id="Label7" class="control-label" style="color:red"></label>
-            <div class="layui-upload-list">
-                <img class="layui-upload-img" width="100px" height="80px" id="demo1"/>
-            <p id="demoText"></p>
-            </div>
-        </div>
-        </div>
-                        <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                  
+                                    <input type="hidden" id="img_url" name="photoUri" value=""  required="required"/>
+                                    <label id="Label7" class="control-label" style="color:red"></label>
+                                    <div class="layui-upload-list">
+                                    <img class="layui-upload-img" width="100px" height="80px" id="demo1"/>
+                                    <p id="demoText"></p>
+                                    <p>图片格式：jpg、png；大小不能超过1M</p>
+                                    <button type="button" class="layui-btn" id="upload1">上传图片</button>
+                                    </div>
+                                </div>
+                         </div>
+                         <div class="layui-form-item">
+                            <label class="layui-form-label">学号：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="id" class="layui-input" id="ID" required="required" disabled placeholder="不用输入学号">
+                                <label id="Label3" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                         <div class="layui-form-item">
                             <label class="layui-form-label">姓名：</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="name" id="text1" class="layui-input" onBlur="isChinese('text1','Label1')" placeholder="请输入中文"  required="required">
-                                <label id="Label1" class="control-label" style="color:red"></label>
-                            </div>
-                        </div>
-                       
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">年级：</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="grade" class="layui-input" placeholder="请输入如软件1606班xxx"  required="required">
-                                <label id="Label3" class="control-label" style="color:red"></label>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">毕业公司：</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="grade" class="layui-input" placeholder="请输入如软件1606班xxx"  required="required">
-                                <label id="Label3" class="control-label" style="color:red"></label>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">组别：</label>
                             <div class="layui-input-block">
                                 <select class="layui-input" name="group.id" id="deptSelect" lay-filter="pageFilter">                                                                    
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">毕业公司：</label>
                             <div class="layui-input-block">
-                                <input type="submit" class="layui-btn layui-btn-normal" lay-filter="demo1"></input>
+                                <input type="text" name="graduate" class="layui-input" placeholder="请输入如软件1606班xxx"  id="company" required="required">
+                                <label id="Label3" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-filter="demo1" id="btn">提交</button>
                         </div>
                         </div>
                         
@@ -143,22 +253,60 @@
                 </div>
             </div>`,
                         success: function(layero, index) {
-                            $.get('/group/usableList', {}, function(data) {
+                            $.get('/graduate/listSelect', {}, function(data) {
                                 var $html = "";
-                                // console.log(data);
-                                data.Group.forEach(function(element) {
+                                console.log(data);
+                                data.data.forEach(function(element) {
                                     $html += "<option value='" + element.id + "'>" + element.name + "</option>";
                                 })
                                 $("select[name='group.id']").append($html);
                                 form.render('select');
+
                             });
+                            form.on('select(pageFilter)', function(data) {
+                                document.getElementById('ID').value = data.value;
+                            })
+                            document.getElementById('btn').onclick = function() {
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('post', '/graduate/save');
+                                xhr.onreadystatechange = function() {
+                                    if (xhr.status == 200 && xhr.readyState == 4) {
+                                        let data = JSON.parse(xhr.responseText);
+                                        console.log(data.code);
+                                        if (data.code == 0) {
+                                            table.reload('idTest', {
+                                                url: '/graduate/list',
+                                                page: 'true',
+                                            });
+                                            layer.closeAll();
+                                        } else {
+                                            layui.msg('提交失败', function() {
+                                                layer.closeAll();
+                                            });
+                                        }
+
+                                    }
+                                }
+                                xhr.setRequestHeader("Content-type", "application/json");
+                                // console.log(id);
+                                let obj = {
+                                    model: {
+                                        id: $('#ID').val(),
+                                        photoUri: $('#img_url').val(),
+                                        employment: $('#company').val(),
+                                        personModel: {
+                                            id: $('#ID').val()
+                                        }
+                                    }
+                                }
+                                let info = JSON.stringify(obj);
+                                xhr.send(info);
+                            }
 
                         }
                     });
                     upload()
                     form.render();
-
-
                 })
             }
 
@@ -182,11 +330,10 @@
                     var uploadInst = upload.render({
                         elem: '#upload1' //绑定元素
                             ,
-                        url: '/file/uploadPersonImg',
+                        url: '/file/uploadGraduateImg',
                         before: function(obj) {
                             //预读本地文件示例，不支持ie8
                             obj.preview(function(index, file, result) {
-
                                 $('#demo1').attr('src', result); //图片链接（base64）
                             });
                         },
@@ -194,20 +341,21 @@
                         done: function(res) {
                             console.log(res);
                             //如果上传失败
-                            if (res.file == 0) {
+                            if (res.code == 0) {
                                 layer.msg('上传成功');
-                            } else if (res.file == 1) {
-                                layer.msg('上传格式必须是jpg')
-                            } else if (res.file == 2) {
-                                layer.msg('上传图片超过400k')
-                            } else if (res.file == 3) {
-                                layer.msg('未知错误，联系管理员');
+                            } else if (res.code == -1) {
+                                if (res.message != '') {
+                                    layer.msg(res.message)
+                                } else {
+                                    layer.msg('未知错误')
+                                }
+
                             }
 
                             //上传成功
                             // alert("上传成功" + res.url);
-                            console.log(res.url);
-                            document.getElementById("img_url").value = res.url;
+
+                            document.getElementById("img_url").value = res.data;
 
                         },
                         error: function() {

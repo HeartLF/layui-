@@ -27,14 +27,15 @@
          margin-top: 10px;">
         <!-- 内容主体区域 -->
         <div style="float: right; margin-right:50px;margin-top:10px;">
-            <button class="layui-btn layui-btn-normal layui-btn-radius" onclick="addLabel()">添加标签</button>
+            <button class="layui-btn layui-btn-normal layui-btn-radius" onclick="addLabel()">添加</button>
         </div>
         <div style="clear: both;"></div>
         <div class="layui-table-box">
-            <table class="layui-table" lay-data="{ width:1300,url:'/classify/list', page:true, id:'idTest'}" lay-filter="demo">
+            <table class="layui-table" lay-data="{width:1300, url:'/classify/list',id:'idTest',page:true}" lay-filter="demo">
+
                 <thead>
                     <tr>
-                        <th lay-data="{field:'id', width:80, sort: true, fixed: true}" id="ID">id</th>
+                        <th lay-data="{field:'id', width:80}" id="ID">id</th>
                         <th lay-data="{field:'name',align:'center'}">博客标签</th>
                         <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>
                     </tr>
@@ -75,7 +76,7 @@
                             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                             type: 1,
                             title: "编辑小组信息",
-                            area: ['20%', '20%'],
+                            area: ['30%', '20%'],
                             content: `<div class="layui-row" id="test">
                         <div class="layui-col-md10">
                         <form class="layui-form" id="addEmployeeForm"  lay-filter="example">
@@ -87,7 +88,7 @@
                             </div>
                         </div>
                             <div class="layui-form-item">
-                            <label class="layui-form-label">组名</label>
+                            <label class="layui-form-label">标签名</label>
                             <div class="layui-input-block">
                                 <input type="text" name="name" id="text2" class="layui-input"  placeholder="请输入中文"  required="required">
                                 <label id="Label1" class="control-label" style="color:red"></label>
@@ -113,18 +114,32 @@
                                     var xhr = new XMLHttpRequest();
                                     xhr.open('post', '/classify/update');
                                     xhr.onreadystatechange = function() {
-                                        var data = JSON.parse(xhr.responseText);
-                                        console.log(data);
-                                        if (data.code == 0) {
-                                            window.location = './classify.html'
-                                        } else {
-                                            layer.msg('删除失败')
+                                        if (xhr.status == 200 && xhr.readyState == 4) {
+                                            let data = JSON.parse(xhr.responseText);
+                                            if (data.code == 0) {
+                                                table.reload('idTest', {
+                                                    url: '/classify/list',
+                                                    page: 'true',
+                                                });
+                                                layer.closeAll();
+                                            } else {
+                                                layui.msg('提交失败', function() {
+                                                    layer.closeAll();
+                                                });
+                                            }
+
                                         }
                                     }
-                                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                    xhr.setRequestHeader("Content-type", "application/json");
                                     // console.log(id);
-                                    let obj = "id=" + Data.id + "&name=" + document.getElementById('text2').value;
-                                    xhr.send(obj);
+                                    let obj = {
+                                        model: {
+                                            name: document.getElementById('text2').value,
+                                            id: document.getElementById('text1').value
+                                        }
+                                    };
+                                    let info = JSON.stringify(obj);
+                                    xhr.send(info);
                                 }
                             }
                         })
@@ -132,7 +147,7 @@
                     } else if (obj.event === 'del') {
                         layer.confirm('真的删除行么', function(index) {
                             var xhr = new XMLHttpRequest();
-                            xhr.open('get', '/classify/delete?id=' + Data.id);
+                            xhr.open('get', '/classify/delete?model.id=' + Data.id);
                             xhr.onreadystatechange = function() {
                                 var data = JSON.parse(xhr.responseText);
                                 if (data.code == 0) {
@@ -156,15 +171,15 @@
                 var table = layui.table;
                 layer.open({
                     type: 1,
-                    area: ['20%', '20%'],
+                    area: ['20%', '30%'],
                     content: `<div class="layui-row" id="test">
                         <div class="layui-col-md10">
                         <form class="layui-form" id="addEmployeeForm"  lay-filter="example">
                             <div class="layui-form-item">
-                            <label class="layui-form-label">组名</label>
+                            <label class="layui-form-label">标签名</label>
                             <div class="layui-input-block">
-                                <input type="text" name="name" id="text3" class="layui-input" onBlur="isChinese('text1','Label1')" placeholder="请输入中文"  required="required">
-                                <label id="Label1" class="control-label" style="color:red"></label>
+                                <input type="text" name="name" id="text3" class="layui-input"  placeholder="请输入中文"  required="required">
+                                <label id="Label2" class="control-label" style="color:red"></label>
                             </div>
                         </div>
                         <div class="layui-form-item0" style="float:left">
@@ -177,26 +192,52 @@
             </div>`,
                     success: function() {
                         document.getElementById('btn1').onclick = function() {
-
                             var xhr = new XMLHttpRequest();
                             xhr.open('post', '/classify/save');
                             xhr.onreadystatechange = function() {
+                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                    let data = JSON.parse(xhr.responseText);
+                                    if (data.code == 0) {
+                                        table.reload('idTest', {
+                                            url: '/classify/list',
+                                            page: 'true',
+                                        });
+                                        layer.closeAll();
+                                    } else {
+                                        layui.msg('提交失败', function() {
+                                            layer.closeAll();
+                                        });
+                                    }
 
-                                var data = JSON.parse(xhr.responseText);
-                                if (data.code == 0) {
-                                    window.location = './classify.html'
-                                } else {
-                                    layer.msg('删除失败')
                                 }
                             }
-                            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            xhr.setRequestHeader("Content-type", "application/json");
                             // console.log(id);
-                            let obj = "name=" + document.getElementById('text3').value;
-                            xhr.send(obj);
+                            let obj = {
+                                model: {
+                                    name: document.getElementById('text3').value,
+
+                                }
+                            };
+                            let info = JSON.stringify(obj);
+                            xhr.send(info);
                         }
                     }
                 })
             })
+        }
+
+        function isChinese(id1, id2) {
+            var reg = /^[\u0391-\uFFE5]+$/;
+            var obj = document.getElementById(id1);
+            if (!reg.test(obj.value)) {
+                document.getElementById(id2).innerHTML = "<img src='images/error.png'>请输入正确格式文字!";
+                obj.mail.focus();
+                return false;
+            } else {
+                document.getElementById(id2).innerHTML = "<img src='images/right.png'>";
+                return true;
+            }
         }
     </script>
 </body>
