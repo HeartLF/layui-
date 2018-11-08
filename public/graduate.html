@@ -79,17 +79,7 @@
                 var table = layui.table;
                 var form = layui.form;
                 var $ = layui.jquery;
-                //监听行单击事件（单击事件为：rowDouble）
-                // table.on('row(test3)', function(obj) {
-                //     var data = obj.data;
 
-                //     layer.alert(JSON.stringify(data), {
-                //         title: '当前行数据：'
-                //     });
-
-                //     //标注选中样式
-                //     obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
-                // });
                 //监听工具条
                 table.on('tool(test3)', function(obj) {
 
@@ -100,13 +90,20 @@
                         layer.msg('ID：' + Data.id + ' 的查看操作');
                     } else if (obj.event === 'del') {
                         layer.confirm('真的删除行么', function(index) {
-                            //    $.get('/',{},(data)=>{
-
-                            //    })
+                            var xhr = new XMLHttpRequest();
+                            console.log(index);
+                            xhr.open('get', '/person/delete?model.id=' + Data.id);
+                            xhr.onreadystatechange = function() {
+                                if (xhr.readyState == 4 && xhr.status == 200) {
+                                    console.log(xhr.responseText);
+                                }
+                            }
+                            xhr.send();
                             obj.del();
                             layer.close(index);
                         });
                     } else if (obj.event === 'edit') {
+
                         layer.open({
                             //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                             type: 1,
@@ -187,20 +184,22 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">组别：</label>
                             <div class="layui-input-block">
-                                <select class="layui-input" name="group.id" id="deptSelect" lay-filter="pageFilter" >
-                                    
-                                  
+                                <select class="layui-input" name="group.id" id="deptSelect">                                                                     
                                 </select>
+                                
                             </div>
                         </div>
                         
                         <div class="layui-form-item">
-                            <label class="layui-form-label">职位</label>
-                            <div class="layui-input-block">
-                                <select name="positionList[0].id" lay-filter="pageFilter" id="text9"> 
-                                
-                                </select>
-                            </div>
+                                <label class="layui-form-label">职位</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="like[person]" title="成员" value="1">
+                                    <input type="checkbox" name="like[leader]" title="组长" value="2" >
+                                    <input type="checkbox" name="like[principal]" title="负责人" value="3">
+                                    <input type="checkbox" name="like[graduate]" title="毕业生"  value="5">
+                                    <input type="checkbox" name="like[teacher]" title="老师" value="4">
+                                    
+                                </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
@@ -213,10 +212,24 @@
             </div>`,
                             success: function(layero, index) {
                                 upload()
+                                Data.positionList.map((item) => {
+                                    if (item.id == 1) {
+                                        $("input[name='like[person]']").prop('checked', true);
+                                    } else if (item.id == 2) {
+                                        $("input[name='like[leader]']").prop('checked', true);
+                                    } else if (item.id == 3) {
+                                        $("input[name='like[principal]']").prop('checked', true);
+                                    } else if (item.id == 4) {
+                                        $("input[name='like[teacher]']").prop('checked', true);
+                                    } else {
+                                        $("input[name='like[graduate]']").prop('checked', true);
+                                    }
+
+                                })
                                 $.get('/person/positionList', {}, function(data) {
                                     var $html = "";
-                                    // console.log(data);
-                                    data.position.forEach(element => {
+                                    console.log(data);
+                                    data.data.forEach(element => {
                                         console.log(element);
                                         $html += "<option value='" + element.id + "'>" + element.name + "</option>";
                                     });
@@ -238,22 +251,34 @@
                                     xhr.open('post', '/person/update');
                                     xhr.onreadystatechange = function() {
                                         if (xhr.status == 200 && xhr.readyState == 4) {
-                                            // let data = JSON.parse(xhr.responseText);
-                                            // if (data.code == 0) {
-                                            //     table.reload('idTest', {
-                                            //         url: '/person/personList',
-                                            //         page: 'true',
-                                            //     });
-                                            //     layer.closeAll();
-                                            // } else {
-                                            //     layui.msg('提交失败', function() {
-                                            //         layer.closeAll();
-                                            //     });
-                                            // }
+                                            let data = JSON.parse(xhr.responseText);
+                                            if (data.code == 0) {
+                                                table.reload('test3', {
+                                                    url: '/person/personList',
+                                                    page: 'true',
+                                                });
+                                                layer.msg('编辑成功', {
+                                                    time: 1000
+                                                }, function() {
+                                                    layer.closeAll();
+                                                })
+                                            } else {
+                                                layer.msg('提交失败', {
+                                                    time: 1000
+                                                }, function() {
+                                                    layer.closeAll();
+                                                });
+                                            }
 
                                         }
                                     }
+                                    var checked = [];
 
+                                    $('input:checkbox:checked').each(function() {
+                                        checked.push({
+                                            id: $(this).val()
+                                        });
+                                    });
                                     xhr.setRequestHeader("Content-type", "application/json");
                                     let obj = {
                                         model: {
@@ -269,9 +294,8 @@
                                             group: {
                                                 id: document.getElementById('deptSelect').value
                                             },
-                                            positionList: [{
-                                                id: document.getElementById('text9').value
-                                            }]
+                                            positionList: checked
+
                                         }
                                     }
                                     let info = JSON.stringify(obj)
@@ -303,6 +327,8 @@
                 layui.use(['form', 'jquery', 'table'], function() {
                     var form = layui.form;
                     var $ = layui.jquery;
+                    var table = layui.table;
+                    // var layui = layui.layer;
                     layer.open({
                         //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                         type: 1,
@@ -310,19 +336,19 @@
                         area: ['30%', '50%'],
                         content: ` <div class="layui-row" id="test">
                     <div class="layui-col-md10">
-                    <form class="layui-form" id="addEmployeeForm" onsubmit=" return checkImg('img_url','Label7')" action="/person/save" method="post">
+                    <form class="layui-form" id="addEmployeeForm"  lay-filter="example">
                        
                         <div class="layui-form-item">
                                 <label class="layui-form-label">照片</label>
-        <div class="layui-input-block">
-            <button type="button" class="layui-btn" id="upload1">上传图片</button>
-            <input type="hidden" id="img_url" name="photoUri" value=""  required="required"/>
-            <label id="Label7" class="control-label" style="color:red"></label>
-            <div class="layui-upload-list">
-                <img class="layui-upload-img" width="100px" height="80px" id="demo1"/>
-            <p id="demoText"></p>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" id="upload1">上传图片</button>
+                <input type="hidden" id="img_url" name="photoUri" value=""  required="required"/>
+                <label id="Label7" class="control-label" style="color:red"></label>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" width="100px" height="80px" id="demo1"/>
+                <p id="demoText"></p>
+                </div>
             </div>
-        </div>
         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">姓名：</label>
@@ -341,14 +367,14 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">年级：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="grade" class="layui-input" placeholder="请输入如软件1606班xxx"  required="required">
+                                <input type="text" name="grade" class="layui-input" placeholder="请输入如软件1606班xxx" id="text3"  required="required">
                                 <label id="Label3" class="control-label" style="color:red"></label>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">班级：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="className" class="layui-input" placeholder="请输入如软件1606班xxx"  required="required">
+                                <input type="text" name="className" id="text4"  class="layui-input" placeholder="请输入如软件1606班xxx"  required="required">
                                  <label id="Label3" class="control-label" style="color:red"></label> 
                             </div>
                         </div>
@@ -369,21 +395,21 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">手机号：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="mobile" id="text4" class="layui-input" onBlur="validatemobile('text4','Label4')" placeholder="请输入手机号"  required="required">
+                                <input type="text" name="mobile" id="text6" class="layui-input" onBlur="validatemobile('text6','Label4')" placeholder="请输入手机号"  required="required">
                                 <label id="Label4" class="control-label" style="color:red"></label>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">邮箱：</label>
                             <div class="layui-input-block">
-                                    <input type="text" name="email" id="text3" class="layui-input" onBlur="checkEmpEmail('text3','Label5')" placeholder="请输入邮箱"  required="required">
+                                    <input type="text" name="email" id="text7" class="layui-input" onBlur="checkEmpEmail('text7','Label5')" placeholder="请输入邮箱"  required="required">
                                      <label id="Label5" class="control-label" style="color:red"></label> 
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">组别：</label>
                             <div class="layui-input-block">
-                                <select class="layui-input" name="group.id" id="deptSelect" lay-filter="pageFilter">
+                                <select class="layui-input" name="group" id="deptSelect" >
                                     
                                   
                                 </select>
@@ -391,16 +417,19 @@
                         </div>
                         
                         <div class="layui-form-item">
-                            <label class="layui-form-label">职位</label>
-                            <div class="layui-input-block">
-                                <select name="positionList[0].id" lay-filter="pageFilter"> 
-                                    
-                            </select>
-                            </div>
+                                <label class="layui-form-label">职位</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="like[person]" title="成员" value="1"  checked="">
+                                    <input type="checkbox" name="like[leader]" title="组长" value="2" >
+                                    <input type="checkbox" name="like[principal]" title="负责人" value="3">
+                                    <input type="checkbox" name="like[graduate]" title="毕业生"  value="5">
+                                    <input type="checkbox" name="like[teacher]" title="老师" value="4">
+                                   
+                                </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="submit" class="layui-btn layui-btn-normal" lay-filter="demo1"></input>
+                                <button type="button" class="layui-btn layui-btn-normal" lay-filter="demo1" id="btn1">提交</button>
                         </div>
                         </div>
                         
@@ -408,27 +437,74 @@
                 </div>
             </div>`,
                         success: function(layero, index) {
-                            $.get('/person/positionList', {}, function(data) {
-                                var $html = "";
-                                console.log(data);
-                                data.position.forEach(element => {
-                                    console.log(element);
-                                    $html += "<option value='" + element.id + "'>" + element.name + "</option>";
-                                });
-                                $("select[name='positionList[0].id']").append($html);
 
-
-                                form.render('select');
-                            });
                             $.get('/group/usableList', {}, function(data) {
                                 var $html = "";
                                 // console.log(data);
                                 data.Group.forEach(function(element) {
                                     $html += "<option value='" + element.id + "'>" + element.name + "</option>";
                                 })
-                                $("select[name='group.id']").append($html);
+                                $("select[name='group']").append($html);
                                 form.render('select');
                             });
+
+                            document.getElementById('btn1').onclick = function() {
+                                var checked = [];
+
+                                $('input:checkbox:checked').each(function() {
+                                    checked.push({
+                                        id: $(this).val()
+                                    });
+                                });
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('post', '/person/save');
+                                xhr.onreadystatechange = function() {
+                                    if (xhr.status == 200 && xhr.readyState == 4) {
+                                        //console.log(xhr.responseText.code)
+                                        let data = JSON.parse(xhr.responseText);
+                                        if (data.code == 0) {
+                                            table.reload('test3', {
+                                                url: '/person/personList',
+                                                page: 'true',
+                                            });
+                                            layer.msg('添加成功', {
+                                                time: 1000
+                                            }, function() {
+                                                layer.closeAll();
+
+                                            })
+                                        } else {
+                                            layer.msg('提交失败', {
+                                                time: 1000
+                                            }, function() {
+                                                layer.closeAll();
+                                            });
+                                        }
+
+                                    }
+                                }
+
+                                xhr.setRequestHeader("Content-type", "application/json");
+                                let obj = {
+                                    model: {
+                                        photoUri: document.getElementById('img_url').value,
+                                        name: document.getElementById('text1').value,
+                                        id: document.getElementById('text2').value,
+                                        grade: document.getElementById('text3').value,
+                                        sex: $("input[type='radio']:checked").val(),
+                                        className: document.getElementById('text4').value,
+                                        qq: document.getElementById('text5').value,
+                                        mobile: document.getElementById('text6').value,
+                                        email: document.getElementById('text7').value,
+                                        group: {
+                                            id: document.getElementById('deptSelect').value
+                                        },
+                                        positionList: checked
+                                    }
+                                }
+                                let info = JSON.stringify(obj)
+                                xhr.send(info);
+                            }
 
                         }
                     });
@@ -445,8 +521,8 @@
                     table = layui.table;
                 $.get('/person/gradeList', {}, function(data) {
                     var $html = "";
-                    console.log(data.grade);
-                    data.grade.forEach(element => {
+                    console.log(data);
+                    data.data.forEach(element => {
                         console.log(element);
                         $html += "<option value='" + element + "'>" + element + "级</option>";
                     });
@@ -456,7 +532,7 @@
                 $.get('/person/positionList', {}, function(data) {
                     var $html = "";
                     console.log(data);
-                    data.position.forEach(element => {
+                    data.data.forEach(element => {
                         console.log(element);
                         $html += "<option value='" + element.id + "'>" + element.name + "</option>";
                     });
@@ -467,7 +543,7 @@
                 })
                 $.get('/group/usableList', {}, function(data) {
                     var $html = "";
-                    // console.log(data);
+                    console.log(data);
                     data.Group.forEach(function(element) {
                         $html += "<option value='" + element.id + "'>" + element.name + "</option>";
                     })
@@ -496,9 +572,9 @@
                         url: '/person/personList',
                         page: 'false',
                         where: {
-                            grade: arr[0],
-                            "positionList[0].id": arr[1],
-                            "group.id": arr[2]
+                            "model.grade": arr[0],
+                            "model.positionList[0].id": arr[1],
+                            "model.group.id": arr[2]
 
                         }
                     });
@@ -620,7 +696,7 @@
                                 $('#demo1').attr('src', result); //图片链接（base64）
                             });
                         },
-                        field: 'fileModel.file',
+                        field: 'file',
                         done: function(res) {
                             console.log(res);
                             //如果上传失败

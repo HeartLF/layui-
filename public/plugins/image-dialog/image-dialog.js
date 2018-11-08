@@ -50,7 +50,7 @@
                     "<label>" + imageLang.url + "</label>" +
                     "<input type=\"text\" data-url />" + (function() {
                         return (settings.imageUpload) ? "<div class=\"" + classPrefix + "file-input\">" +
-                            "<input type=\"file\" name=\"" + "fileModel.file\" accept=\"image/*\" />" +
+                            "<input type=\"file\" name=\"" + "file\" accept=\"image/*\" />" +
                             "<input type=\"submit\" value=\"" + imageLang.uploadButton + "\" />" +
                             "</div>" : "";
                     })() +
@@ -120,7 +120,7 @@
                     return;
                 }
 
-                var fileInput = dialog.find("[name=\"" + "fileModel.file\"]");
+                var fileInput = dialog.find("[name=\"" + "file\"]");
 
                 fileInput.bind("change", function() {
                     var fileName = fileInput.val();
@@ -155,7 +155,7 @@
 
                             if (!settings.crossDomainUpload) {
                                 if (json.success === 1) {
-                                    dialog.find("[data-url]").val(json.url);
+                                    dialog.find("[data-url]").val(json.data);
                                     console.log(json.url);
                                 } else {
                                     alert(json.message);
