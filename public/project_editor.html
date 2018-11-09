@@ -110,7 +110,7 @@
                         }
                         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                         // console.log(id);
-                        let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
+                        let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode;
                         console.log(obj);
                         xhr.send(obj);
                     }
@@ -144,7 +144,7 @@
                         }
                     }
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    let obj = "title:" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                    let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode;
                     //var html = JSON.stringify(obj);
                     xhr.send(obj);
                     // window.location = './message.html';
@@ -173,7 +173,7 @@
                     }
                 }
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode;
                 //var html = JSON.stringify(obj);
                 xhr.send(obj);
             }

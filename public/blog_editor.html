@@ -60,9 +60,10 @@
         <script src="./js/jquery.js"></script>
         <script src="js/editormd.js"></script>
         <script type="text/javascript">
+            var element
             layui.use(['element', 'layer'], function() {
-                var element = layui.element;
-                var layer = layui.layer;
+                element = layui.element;
+                layer = layui.layer;
 
             });
 
@@ -228,7 +229,8 @@
                     // window.location = './message.html';
                 }
                 document.getElementById("preview-btn").onclick = function() {
-                    //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
+                    window.parent.close()
+                        //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
                     var title = document.getElementById('txt');
                     if (title.value == '') {
                         return alert("请输入标题")
@@ -250,6 +252,7 @@
                                 setTimeout(function() {
                                     // history.go('<iframe data-frameid="2" frameborder="0" name="content" scrolling="yes" width="100%" src="./person_blog_draft.html"></iframe>')
                                     document.getElementById('Alert').style.display = 'none';
+                                    element.tabChange('top-tab', '0');
 
                                 }, 2000);
 

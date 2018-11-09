@@ -30,6 +30,11 @@
     <script src="js/editormd.js"></script>
     <script type="text/javascript">
         var testEditor;
+        var layer;
+        layui.use(['element', 'layer'], function() {
+            var element = layui.element;
+            layer = layui.layer
+        });
         var a = 1;
         // var id = localStorage["id"];
         // if (id == 'undefined') {
@@ -79,7 +84,7 @@
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL: "./php/upload.php",
                 onload: function() {
-                    console.log('onload', this);
+
 
                     //this.fullscreen();
                     //this.unwatch();
@@ -111,7 +116,7 @@
                         }
                         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                         // console.log(id);
-                        let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
+                        let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode;
                         console.log(obj);
                         xhr.send(obj);
                     }
@@ -145,13 +150,16 @@
                     }
                 }
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                let obj = "title+" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                let obj = "model.title+" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode;
                 //var html = JSON.stringify(obj);
                 xhr.send(obj);
                 // window.location = './message.html';
             }
             document.getElementById("preview-btn").onclick = function() {
                 //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
+                // window.parent.open('<iframe data-frameid=0 frameborder="0" name="content" scrolling="yes" width="100%" src="./classify.html"></iframe>');
+                layer.iframeSrc(0, './blog.html')
+
                 var title = document.getElementById('txt');
                 if (title.value == '') {
                     return alert("请输入标题")
@@ -169,11 +177,12 @@
 
                         if (result.code >= 0) {
                             id = result.data.id;
+
                         }
                     }
                 }
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
+                let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode;
                 //var html = JSON.stringify(obj);
                 xhr.send(obj);
             }
