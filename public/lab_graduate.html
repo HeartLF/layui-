@@ -28,12 +28,12 @@
 
     <div style="margin-top: 10px;">
         <!-- 内容主体区域 -->
-        <div style="float: right; margin-right:50px;margin-top:10px;">
+        <div style="float: right; margin-top:10px; padding-right:20px;">
             <button class="layui-btn layui-btn-normal layui-btn-radius" onclick="add()">添加</button>
         </div>
         <div style="clear: both;"></div>
-        <div class="layui-table-box">
-            <table class="layui-table" lay-data="{width:1300, url:'/graduate/list',id:'idTest',page:true}" lay-filter="demo">
+        <div class="layui-table-box" style="padding-left:20px;padding-right:20px;">
+            <table class="layui-table" lay-data="{ url:'/graduate/list',id:'idTest',page:true}" lay-filter="demo">
                 <thead>
                     <tr>
 

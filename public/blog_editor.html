@@ -10,7 +10,7 @@
 
 </head>
 
-<body style="overflow:auto">
+<body class="layui-layout-body">
     <div class="layui-layout layui-layout-admin">
 
         <div id="layout">
@@ -31,25 +31,23 @@
                 <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">自动保存成功</div>
                 <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
             </div>
+            <div id="Alert4" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;bottom:0px;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+                <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">自动保存成功</div>
+                <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+            </div>
             <div class="editormd" id="test-editormd">
                 <textarea></textarea>
-
             </div>
-
             <br/>
-
             <div class="layui-form-item" style="width: 90%;margin:0 auto ;">
                 <label style="float: left">标签：</label>
                 <div id="box2" style="margin-top:10px;">
-
                     <button style="float:left" id="btn2" class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i>添加新分类</button>
                 </div>
             </div>
             <br>
             <br>
             <div style="margin-bottom:40px;">
-
-
                 <input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
                 <input type="button" name="submit" id="preview-btn" class="layui-btn layui-btn-warm" value="保存为草稿">
 
@@ -61,6 +59,7 @@
         <script src="js/editormd.js"></script>
         <script type="text/javascript">
             var element
+
             layui.use(['element', 'layer'], function() {
                 element = layui.element;
                 layer = layui.layer;
@@ -91,8 +90,8 @@
 
             window.onload = function() {
                 testEditor = editormd("test-editormd", {
-                    width: "90%",
-                    height: 400,
+                    width: "97%",
+                    height: 700,
                     path: '../lib/',
                     theme: "default",
                     previewTheme: "default",
@@ -135,7 +134,7 @@
                         if (parseInt(a / 5) > 0) {
                             a = 0;
                             var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-
+                            var mdCode = testEditor.getMarkdown();
                             var xhr = new XMLHttpRequest();
 
                             xhr.open('post', '/blogs/saveAuto');
@@ -149,7 +148,14 @@
                                         document.getElementById('Alert3').style.display = 'block';
                                         setTimeout(function() {
                                             document.getElementById("Alert3").style.display = "none";
-                                            //window.location = './person_blog_draft.html'
+
+                                        }, 2000);
+                                    } else {
+                                        document.getElementById('Alert4').innerHTML = result.message
+                                        document.getElementById('Alert4').style.display = 'block';
+                                        setTimeout(function() {
+                                            document.getElementById("Alert4").style.display = "none";
+
                                         }, 2000);
                                     }
                                 }
@@ -160,7 +166,8 @@
                                     blogsModel: {
                                         title: title.value,
                                         id: id,
-                                        content: htmlCode
+                                        content: htmlCode,
+                                        // markdownContent: mdCode,
                                     }
                                 }
                                 // let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
@@ -199,7 +206,7 @@
                                 setTimeout(function() {
                                     document.getElementById("Alert2").style.display = "none";
                                     // window.location = './person_blog_draft.html'
-
+                                    window.parent.active.tabChange(3)
                                 }, 2000);
 
                             }
@@ -252,8 +259,7 @@
                                 setTimeout(function() {
                                     // history.go('<iframe data-frameid="2" frameborder="0" name="content" scrolling="yes" width="100%" src="./person_blog_draft.html"></iframe>')
                                     document.getElementById('Alert').style.display = 'none';
-                                    element.tabChange('top-tab', '0');
-
+                                    window.parent.active.tabChange(2)
                                 }, 2000);
 
                             }

@@ -114,13 +114,7 @@
                             var str = '';
                             var html = '';
                             layui.each(result, function(index, item) {
-                                if (index == 0 && page == 1) {
-                                    html = `<div class="layui-col-md6">
-                                            <div class="layui-card" style="height:189px;">
-                                            <button class="layui-btn layui-btn-primary layui-btn-sm" style="height: 157px;   position: relative;left:50%;transform: translateX(-50%); border: none"><a href="./blog_editor.html" target="_black"><img src="./images/add.png" style="display:inline-block;height:120px"></a> </button>
-                                            </div>
-                                         </div>`
-                                }
+
                                 if (item.hasOwnProperty('classifySet') != 0) {
                                     for (var j = 0; j < item.classifySet.length; j++) {
                                         str += (item.classifySet[j].name + '  ')

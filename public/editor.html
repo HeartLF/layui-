@@ -16,7 +16,23 @@
         <header>
             <input type="text" placeholder="请输入标题！！必须填" name="txt" class="layui-input" id="txt" value="">
         </header>
-
+        <br>
+        <div id="Alert" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+            <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">保存草稿成功</div>
+            <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+        </div>
+        <div id="Alert2" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+            <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">提交成功</div>
+            <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+        </div>
+        <div id="Alert3" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;bottom:0px;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+            <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">自动保存成功</div>
+            <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+        </div>
+        <div id="Alert4" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;bottom:0px;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+            <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">自动保存成功</div>
+            <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+        </div>
         <div class="editormd" id="test-editormd">
             <textarea></textarea>
 
@@ -29,6 +45,10 @@
     <script src="./layui.js "></script>
     <script src="js/editormd.js"></script>
     <script type="text/javascript">
+        // var od = parent.document;
+        var pp = parent.document
+        console.log(pp)
+
         var testEditor;
         var layer;
         layui.use(['element', 'layer'], function() {
@@ -55,8 +75,8 @@
 
         window.onload = function() {
             testEditor = editormd("test-editormd", {
-                width: "90%",
-                height: 400,
+                width: "97%",
+                height: 700,
                 path: '../lib/',
                 theme: "default",
                 previewTheme: "default",
@@ -99,7 +119,7 @@
                     if (parseInt(a / 5) > 0) {
                         a = 0;
                         var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
-
+                        var mdCode = testEditor.getMarkdown();
                         var xhr = new XMLHttpRequest();
 
                         xhr.open('post', '/notice/saveNewsAuto');
@@ -110,13 +130,25 @@
                                 console.log(result);
                                 if (result.code >= 0) {
                                     id = result.data.id;
+                                    document.getElementById('Alert3').style.display = 'block';
+                                    setTimeout(function() {
+                                        document.getElementById("Alert3").style.display = "none";
+
+                                    }, 2000);
+                                } else {
+                                    document.getElementById('Alert4').innerHTML = result.message
+                                    document.getElementById('Alert4').style.display = 'block';
+                                    setTimeout(function() {
+                                        document.getElementById("Alert4").style.display = "none";
+
+                                    }, 2000);
                                 }
 
                             }
                         }
                         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                         // console.log(id);
-                        let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode;
+                        let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode;
                         console.log(obj);
                         xhr.send(obj);
                     }
@@ -146,6 +178,12 @@
                         // }
                         if (result.code >= 0) {
                             id = result.data.id;
+                            document.getElementById('Alert2').style.display = 'block';
+                            setTimeout(function() {
+                                document.getElementById("Alert2").style.display = "none";
+                                // window.location = './person_blog_draft.html'
+                                window.parent.active.tabChange(6)
+                            }, 2000);
                         }
                     }
                 }
@@ -177,6 +215,12 @@
 
                         if (result.code >= 0) {
                             id = result.data.id;
+                            document.getElementById('Alert').style.display = 'block';
+                            setTimeout(function() {
+                                // history.go('<iframe data-frameid="2" frameborder="0" name="content" scrolling="yes" width="100%" src="./person_blog_draft.html"></iframe>')
+                                document.getElementById('Alert').style.display = 'none';
+                                window.parent.active.tabChange(5)
+                            }, 2000);
 
                         }
                     }
@@ -192,7 +236,7 @@
         function ajax() {
             var title = document.getElementById('txt');
             var xhr = new XMLHttpRequest();
-            xhr.open('get', '/notice/getNewsMarkdown?id=' + id);
+            xhr.open('get', '/notice/getNewsMarkdown?model.id=' + id);
             xhr.onreadystatechange = function() {
                 if (xhr.status == 200 && xhr.readyState == 4) {
                     var result = JSON.parse(xhr.responseText);

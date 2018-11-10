@@ -18,7 +18,7 @@
         <form action="" class="layui-form" style="margin-top: 10px;">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">查找</label>
+                    <label class="layui-form-label" style="text-align:left;padding-left:20px;width: 30px;">查找</label>
                     <div class="layui-input-inline">
                         <select id="test" name="quiz1" lay-filter="pageFilter">
                                 <option value="">请选择</option>
@@ -36,27 +36,27 @@
                 </div>
         </form>
 
-        <div style="float: right; margin-right: 50px;margin-top: 10px;">
+        <div style="float: right; padding-right:20px;margin-top: 10px;">
             <button type="button" onclick="selectRole()" class="layui-btn layui-btn-normal layui-btn-radius">添加</button>
         </div>
         <div style="clear: both;"></div>
-        <div class="layui-table-box">
-            <table class="layui-table" id="test3" lay-filter="test3" lay-data="{ width:1300,id:'test3', page:true,url:'/person/personList'}">
+        <div class="layui-table-box" style="padding-left:20px;padding-right:20px;">
+            <table class="layui-table" id="test3" lay-filter="test3" lay-data="{ id:'test3', page:true,url:'/person/personList'}">
                 <thead>
                     <tr>
                         <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
-                        <th lay-data="{field: 'name', edit: 'text'} ">姓名</th>
-                        <th lay-data="{field: 'grade', edit: 'text'} ">年级</th>
-                        <th lay-data="{field: 'id', edit: 'text'} ">学号</th>
-                        <th lay-data="{field: 'className', edit: 'text'} ">班级</th>
-                        <th lay-data="{field: 'sex', edit: 'text'} ">性别</th>
-                        <th lay-data="{field: 'qq', edit: 'text'} ">QQ号</th>
-                        <th lay-data="{field: 'qq', edit: 'text'} ">手机号</th>
-                        <th lay-data="{field: 'email', edit: 'text'} ">邮箱</th>
-                        <th lay-data="{field: 'group', edit: 'text',templet: '<div>{{d.group.name}}</div>'}">所在组别</th>
-                        <th lay-data="{field: 'positionList', edit: 'text',templet: '<div>{{d.positionList[d.positionList.length-1].name}}</div>'} ">职位</th>
+                        <th lay-data="{field: 'name'} ">姓名</th>
+                        <th lay-data="{field: 'grade'} ">年级</th>
+                        <th lay-data="{field: 'id'} ">学号</th>
+                        <th lay-data="{field: 'className'} ">班级</th>
+                        <th lay-data="{field: 'sex'} ">性别</th>
+                        <th lay-data="{field: 'qq'} ">QQ号</th>
+                        <th lay-data="{field: 'qq'} ">手机号</th>
+                        <th lay-data="{field: 'email'} ">邮箱</th>
+                        <th lay-data="{field: 'group',templet: '<div>{{d.group.name}}</div>'}">所在组别</th>
+                        <th lay-data="{field: 'positionList',templet: '<div>{{d.positionList[d.positionList.length-1].name}}</div>'} ">职位</th>
 
-                        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}"></th>
+                        <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>
                     </tr>
                 </thead>
             </table>

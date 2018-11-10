@@ -3,21 +3,74 @@
     margin: 0;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-		body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+hr,
+button,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
     margin: 0;
     padding: 0;
 }
 
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary {
     display: block;
 }
 
-audio, canvas, video {
+audio,
+canvas,
+video {
     display: inline-block;
 }
 
@@ -26,20 +79,24 @@ img {
     vertical-align: middle;
 }
 
-ul, ol {
+ul,
+ol {
     /*list-style: none;*/
 }
 
 .clear {
-    *zoom: 1;           /* for IE 6/7 */
+    *zoom: 1;
+    /* for IE 6/7 */
 }
 
-.clear:before, .clear:after {
-    height: 0; 
+.clear:before,
+.clear:after {
+    height: 0;
     content: "";
     font-size: 0;
     display: table;
-    line-height: 0;     /* for Opera */
+    line-height: 0;
+    /* for Opera */
     visibility: hidden;
 }
 
@@ -50,7 +107,7 @@ ul, ol {
 body {
     font-size: 14px;
     color: #666;
-    font-family: "Microsoft YaHei", "微软雅黑", Helvetica, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif; 
+    font-family: "Microsoft YaHei", "微软雅黑", Helvetica, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
     background: #fff;
     text-align: center;
 }
@@ -59,9 +116,10 @@ body {
     text-align: left;
 }
 
-#layout > header, .btns {
+#layout>header,
+.btns {
     padding: 15px 0;
-    width: 90%;
+    width: 97%;
     margin: 0 auto;
 }
 
@@ -73,12 +131,13 @@ body {
     padding: 2px 8px;
 }
 
-#layout > header > h1 {
+#layout>header>h1 {
     font-size: 20px;
     margin-bottom: 10px;
 }
 
-.btns button, .btn {
+.btns button,
+.btn {
     padding: 8px 10px;
     background: #fff;
     border: 1px solid #ddd;
@@ -89,6 +148,7 @@ body {
     transition: background 300ms ease-out;
 }
 
-.btns button:hover, .btn:hover {
+.btns button:hover,
+.btn:hover {
     background: #f6f6f6;
 }
