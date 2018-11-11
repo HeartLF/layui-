@@ -122,7 +122,7 @@
                                 }
                                 html += `<div class="layui-col-md6">
                                             <div class="layui-card" >
-                                            <h1 class="layui-card-header" style="font-size:24px"><a href="./news.html?id=${item.id}">${item.title}</a></dd></a></h1>
+                                            <h1 class="layui-card-header" style="font-size:24px"><a href="javascript:;" data-url="./message_show.html?id=${item.id}" data-id="${item.id}" class="left_nav">${item.title}</a></h1>
                                             <div class="layui-card-body">
                                                 <div style="height:24px; line-height:24px;">${item.intro}</div>
                                                 <br>
@@ -154,7 +154,26 @@
                             next(lis.join(''), page < res.pages);
                             //document.getElementsByClassName('layui-row')[0].innerHTML += html;
                             (function() {
+                                console.log(window.parent);
                                 var btn = document.querySelectorAll('.layui-btn');
+                                $(".left_nav").click(function() {
+                                    var dataid = $(this);
+                                    if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                                        window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                                        console.log($(".layui-tab-title li[lay-id]"))
+                                    } else {
+                                        var isData = false;
+                                        $.each($(".layui-tab-title li[lay-id]"), function() {
+                                            if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+                                                isData = true;
+                                            }
+                                        })
+                                        if (isData == false) {
+                                            window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                                        }
+                                    }
+                                    window.parent.active.tabChange(dataid.attr("data-id"));
+                                })
                                 console.log(btn);
                                 for (var i = 1; i < btn.length; i++) {
                                     (function(i) {

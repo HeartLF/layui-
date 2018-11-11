@@ -10,7 +10,7 @@
 
 </head>
 
-<body class="layui-layout-body">
+<body>
     <div class="layui-layout layui-layout-admin">
 
         <div id="layout">
@@ -167,7 +167,7 @@
                                         title: title.value,
                                         id: id,
                                         content: htmlCode,
-                                        // markdownContent: mdCode,
+                                        markdownContent: mdCode,
                                     }
                                 }
                                 // let obj = "title=" + title.value + "&id=" + id + "&content=" + htmlCode;
@@ -221,19 +221,17 @@
                         })
                     }
                     let obj = {
-                            blogsModel: {
-                                title: title.value,
-                                id: id,
-                                content: htmlCode,
-                                markdownContent: mdCode,
-                                classifySet: str
-                            }
+                        blogsModel: {
+                            title: title.value,
+                            id: id,
+                            content: htmlCode,
+                            markdownContent: mdCode,
+                            classifySet: str
                         }
-                        //let obj = "title+" + title.value + "&id=" + id + "&content=" + htmlCode + "&markdownContent=" + mdCode;
-                        //var html = JSON.stringify(obj);
+                    }
                     var info = JSON.stringify(obj);
                     xhr.send(info);
-                    // window.location = './message.html';
+
                 }
                 document.getElementById("preview-btn").onclick = function() {
                     window.parent.close()

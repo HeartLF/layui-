@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="./css/layui.css">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/editormd.css" />
+</head>
+
+<body>
+    <div id="doc-content">
+
+    </div>
+
+    <script src="js/zepto.min.js"></script>
+    <script src="./layui.js "></script>
+    <script src="js/editormd.js"></script>
+    <script src="./js/jquery.js"></script>
+    <script src="lib/marked.min.js"></script>
+    <script src="lib/prettify.min.js"></script>
+    <script src="lib/raphael.min.js"></script>
+    <script src="lib/underscore.min.js"></script>
+    <script src="lib/sequence-diagram.min.js"></script>
+    <script src="lib/flowchart.min.js"></script>
+    <script src="lib/jquery.flowchart.min.js"></script>
+
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function() {
+            var element = layui.element;
+
+        });
+        var testEditor;
+        window.onload = function() {
+            var url = window.location.href //获取当前URL
+            console.log(url);
+            if (url.indexOf('?') != -1) {
+                id = url.split("?")[1].split("=")[1];
+            }
+            $.get('/blogs/getContent?blogsModel.id=' + id, function(data) {
+                var content = document.getElementById("doc-content");
+                content.innerHTML = data.data.content
+            })
+            testEditor = editormd.markdownToHTML("doc-content", { //注意：这里是上面DIV的id
+                htmlDecode: "style,script,iframe",
+                emoji: true,
+                taskList: true,
+                tex: true, // 默认不解析
+                flowChart: true, // 默认不解析
+                sequenceDiagram: true, // 默认不解析
+                codeFold: true
+            });
+        };
+    </script>
+
+
+</body>
+
+</html>

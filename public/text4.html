@@ -54,7 +54,6 @@
                         <!-- layui-nav-itemed-->
                         <a href="javascript:;"><i class="layui-icon">&#xe66f;</i>个人博客</a>
                         <dl class="layui-nav-child">
-
                             <dd><a href="javascript:;" data-id="1" data-url="./blog_editor.html" class="left_nav"><i class="layui-icon">&#xe655;</i>新建博客</a></dd>
                             <dd><a href="javascript:;" data-id="2" data-url="./person_blog_draft.html" class="left_nav"><i class="layui-icon">&#xe705;</i>草稿箱</a></dd>
                             <dd><a href="javascript:;" data-id="3" data-url="./person_blog_history.html" class="left_nav"><i class="layui-icon">&#xe6b2;</i>博客管理</a></dd>
@@ -75,6 +74,10 @@
                             <dd><a href="javascript:;" data-id="8" data-url="./project_message.html" class="left_nav"><i class="layui-icon">&#xe705;</i>草稿箱</a></dd>
                             <dd><a href="javascript:;" data-id="9" data-url="./project_message_history.html" class="left_nav"><i class="layui-icon">&#xe6b2;</i>项目管理</a></dd>
                         </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-id="14" data-url="./group_leader.html" class="left_nav"><i class="layui-icon">&#xe655;</i>组长审核</a></dd>
+
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;"><i class="layui-icon">&#xe612;</i>成员管理</a>
@@ -192,6 +195,8 @@
                         id: id //实际使用一般是规定好的id，这里以时间戳模拟下
                     });
                     FrameWH()
+
+
                 },
                 tabChange: function(id) {
                     element.tabChange('top-tab', id); //切换到：用户管理
@@ -204,44 +209,57 @@
                     $.each(ids, function(i, item) {
                         element.tabDelete("top-tab", item);
                     })
-                }
+                },
+
             };
+
+            function changeIframeHeight() {
+                $('iframe').height = $(window).height() - 110 + 'px'
+            }
+            window.onresize = function() {
+                changeIframeHeight()
+            }
 
             function FrameWH() {
                 var h = $(window).height();
 
-                h = h - 105;
+                h = h - 110;
                 console.log(h)
                 $("iframe").css("height", h + "px");
             }
-            element.on('tab(top-tab)', function(data) {
-                $('.layui-tab').show();
-                $('.admin_title').hide();
-                // $('.layui-progress-bar').fadeOut();
-                // element.progress('progress', '0%');
+            Top_tab();
 
-                var _index = data.index;
-                console.log(_index)
-                $('iframe').stop().animate({
-                    opacity: 0,
-                    top: '30px'
-                }, 300);
-                $('iframe').eq(_index).animate({
-                    opacity: 1,
-                    top: 0
-                }, 300);
-                // $('iframe').eq(_index).load(function() {
-                //     $('.layui-progress-bar').fadeIn();
-                //     element.progress('progress', '100%');
-                //     $('.layui-progress-bar').fadeOut(20);
-                // })
-            });
-            element.on('tabDelete(top-tab)', function(data) {
-                console.log(tabtitle.find('li').length);
-                if (tabtitle.find('li').length < 1) {
-                    $('#box').trigger("click");
-                }
-            });
+            function Top_tab() {
+                element.on('tab(top-tab)', function(data) {
+                    $('.layui-tab').show();
+                    $('.admin_title').hide();
+                    // $('.layui-progress-bar').fadeOut();
+                    // element.progress('progress', '0%');
+
+                    var _index = data.index;
+                    console.log(_index)
+                    $('iframe').stop().animate({
+                        opacity: 0,
+                        top: '30px'
+                    }, 300);
+                    $('iframe').eq(_index).animate({
+                        opacity: 1,
+                        top: 0
+                    }, 300);
+                    // $('iframe').eq(_index).load(function() {
+                    //     $('.layui-progress-bar').fadeIn();
+                    //     element.progress('progress', '100%');
+                    //     $('.layui-progress-bar').fadeOut(20);
+                    // })
+                });
+                element.on('tabDelete(top-tab)', function(data) {
+                    console.log(tabtitle.find('li').length);
+                    if (tabtitle.find('li').length < 1) {
+                        $('#box').trigger("click");
+                    }
+                });
+            }
+
             $(".left_nav").click(function() {
                 var dataid = $(this);
                 if ($(".layui-tab-title li[lay-id]").length <= 0) {
