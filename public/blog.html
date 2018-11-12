@@ -418,18 +418,18 @@
             console.log(ev.target)
             let Id = ev.target.value
             console.log(Id)
-            document.getElementById('LAY_demo1').style.display = 'none'
+            document.getElementById('LAY_demo1').innerHTML = ''
             layui.use('flow', function() {
                 var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
                 var flow = layui.flow;
                 // $("#LAY_demo1").remove();
                 flow.load({
-                    elem: '#LAY_demo2', //指定列表容器 
+                    elem: '#LAY_demo1', //指定列表容器 
                     scrollElem: document.getElementById('body'),
                     isAuto: true,
                     mb: 100,
                     done: function(page, next) {
-                        var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject()
+                        var xhr = XMLHttpRequest ? new XMLHttpRequest() : ActiveXObject("Microsoft.XMLHTTP")
                         xhr.open('post', '/blogs/listAll');
                         xhr.onreadystatechange = function() {
                             if (xhr.status == 200 && xhr.readyState == 4) {
@@ -478,7 +478,7 @@
 
                                 })
                                 arr.push(html);
-                                var pages = parseInt(res.pages / 4);
+                                var pages = parseInt(result.pages / 4);
                                 if (pages % 4 > 0) {
                                     pages += 1;
                                 }
