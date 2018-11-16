@@ -40,7 +40,7 @@
             if (url.indexOf('?') != -1) {
                 id = url.split("?")[1].split("=")[1];
             }
-            $.get('/notice/getNewsContent?model.id=' + id, function(data) {
+            $.get('/notice/getNewsContent?noticeId=' + id, function(data) {
                 var content = document.getElementById("doc-content");
                 content.innerHTML = data.data.content
             })

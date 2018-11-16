@@ -20,21 +20,8 @@
 <body style="overflow-y:hidden">
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header">
-            <div class="layui-logo">后台模板</div>
-
             <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">退出</a></dd>
-
-                    </dl>
-
-                </li>
-
-
+                <li class="layui-nav-item"><a href="">退出</a></li>
             </ul>
         </div>
 
@@ -42,8 +29,8 @@
         <div class="layui-side layui-bg-black">
             <div class="layui-side-scroll">
                 <div title="菜单缩放" class="kit-side-fold layui-nav-item layui-nav-itemed" style="height:45px;text-align: center"><i class="layui-icon layui-icon-shrink-right" aria-hidden="true" style="font-size: 30px"></i></div>
-                <!-- <img src="./images/avator.png" class="user_img" />
-                <h1 class="user_name">你好！Lee,欢迎登陆</h1> -->
+                <img src="" class="user_img" />
+                <h1 class="user_name"></h1>
                 <ul class="layui-nav layui-nav-tree" lay-filter="left-nav">
                     <li class="layui-nav-item">
                         <!-- layui-nav-itemed-->
@@ -75,10 +62,7 @@
                             <dd><a href="javascript:;" data-id="9" data-url="./project_message_history.html" class="left_nav"><i class="layui-icon">&#xe6b2;</i>项目管理</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;" data-id="14" data-url="./group_leader.html" class="left_nav"><i class="layui-icon">&#xe655;</i>组长审核</a></dd>
 
-                    </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;"><i class="layui-icon">&#xe612;</i>成员管理</a>
                         <dl class="layui-nav-child">
@@ -106,6 +90,13 @@
                             <dd><a href="javascript:;" data-url="./lab_graduate.html" data-id="13" class="left_nav"><i class="layui-icon">&#xe60e;</i>毕业生管理</a></dd>
                         </dl>
                     </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-id="14" data-url="./blog_check.html" class="left_nav"><i class="layui-icon">&#xe655;</i>组长审核</a></dd>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" data-url="./person_message.html" data-id="15" class="left_nav"><i class="layui-icon">&#xe60e;</i>个人信息</a>
+
+                    </li>
 
 
                 </ul>
@@ -122,9 +113,7 @@
 
                 </div>
             </div>
-            <h1 class="admin_title">
-                后台
-            </h1>
+
         </div>
         <!-- 底部 -->
         <!--        <div class="layui-footer" style="text-align: center; line-height: 44px;">
@@ -135,12 +124,18 @@
 
     <script type="text/javascript">
         var active;
+
         layui.use(['layer', 'element'], function() {
 
             var element = layui.element;
             var layer = layui.layer;
             var $ = layui.jquery;
             var isShow = true; //定义一个标志位
+            $.get('/person/getInfo', function(res) {
+                console.log(res);
+                document.getElementsByClassName('user_img')[0].setAttribute("src", res.data.photoUri)
+                document.getElementsByClassName('user_name')[0].innerHTML = "欢迎你！！" + res.data.name
+            })
             $('.kit-side-fold').click(function() {
                 //选择出所有的span，并判断是不是hidden
                 $('.layui-nav-item span').each(function() {

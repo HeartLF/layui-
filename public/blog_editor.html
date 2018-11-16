@@ -129,13 +129,14 @@
                         //this.height(480);
                         //this.resize("100%", 640);
                     },
+
                     onchange: function() {
                         var title = document.getElementById('txt');
                         if (parseInt(a / 5) > 0) {
                             a = 0;
                             var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
                             var mdCode = testEditor.getMarkdown();
-                            var xhr = new XMLHttpRequest();
+                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
 
                             xhr.open('post', '/blogs/saveAuto');
                             xhr.onreadystatechange = function() {
@@ -176,11 +177,11 @@
                             xhr.send(info);
                         }
                         a++;
-                        // console.log(a++);
+
                     }
                 });
                 labelAjax()
-                ajax();
+                    // ajax();
                 document.getElementById("submit").onclick = function() {
                     // var url = window.location.href //获取当前URL
                     // var param = url.split("?")[1].split("=")[1]; //取得参数
@@ -190,7 +191,8 @@
                     if (title.value == '') {
                         return alert("请输入标题")
                     }
-                    var xhr = new XMLHttpRequest();
+                    let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+
                     xhr.open('post', '/blogs/saveAudit');
                     xhr.onreadystatechange = function() {
                         if (xhr.status == 200 && xhr.readyState == 4) {
@@ -243,7 +245,7 @@
                     var mdCode = testEditor.getMarkdown();
                     var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
 
-                    var xhr = new XMLHttpRequest();
+                    let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
 
                     xhr.open('post', '/blogs/saveDraft');
                     xhr.onreadystatechange = function() {
@@ -318,58 +320,53 @@
                     }
                 }
             }
+            ajax();
 
             function ajax() {
                 var title = document.getElementById('txt');
-                var xhr = new XMLHttpRequest();
-                xhr.open('get', '/blogs/getMarkdownContent?blogsModel.id=' + id);
+                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+                xhr.open('get', '/blogs/getMarkdownContent?blogsId=' + id);
                 xhr.onreadystatechange = function() {
                     if (xhr.status == 200 && xhr.readyState == 4) {
                         var result = JSON.parse(xhr.responseText);
-                        console.log(result);
+                        console.log(result.data.markdownContent);
                         title.value = result.data.title;
                         // document.getElementsByTagName('textarea')[0].innerHTML = "dasdasd"
                         document.getElementsByTagName('textarea')[0].innerHTML = result.data.markdownContent;
-                        var option;
+                        // var option;
 
-                        for (var i = 0; i < result.data.classifySet.length; i++) {
-                            option = `<option value="${result.data.classifySet[i].id}" >${result.data.classifySet[i].name}</option>`
-                            $('#btn2').before(`<div class='label'>
-                                    <select name="" id="" style="float: left;width: 100px;height:30px;line-height: 30px;
-                             padding: 0 10px; font-size: 13px; " class="selectText1">
-                                       ${option}
-                                    ${html}
-                                    </select>
-                                    <img src="./images/关闭.png" class="delete1" style="float:left;width:20px;margin-top:5px;">
-                                    </div>`);
-                        }
+                        // for (var i = 0; i < result.data.classifySet.length; i++) {
+                        //     option = `<option value="${result.data.classifySet[i].id}" >${result.data.classifySet[i].name}</option>`
+                        //     $('#btn2').before(`<div class='label'>
+                        //             <select name="" id="" style="float: left;width: 100px;height:30px;line-height: 30px;
+                        //      padding: 0 10px; font-size: 13px; " class="selectText1">
+                        //                ${option}
+                        //             ${html}
+                        //             </select>
+                        //             <img src="./images/关闭.png" class="delete1" style="float:left;width:20px;margin-top:5px;">
+                        //             </div>`);
+                        // }
 
-                        var Delete = document.querySelectorAll('.delete1');
+                        // var Delete = document.querySelectorAll('.delete1');
 
-                        //let select = document.getElementById('btn2').previousSibling;
-                        let select = document.querySelectorAll('.selectText1');
-                        for (let i = 0; i < select.length; i++) {
-                            select[i].onchange = function() {
-                                result2.push(this.options[this.options.selectedIndex].value);
-                                console.log(result2);
-                            }
-                        }
+                        // let select = document.getElementById('btn2').previousSibling;
+                        // let select = document.querySelectorAll('.selectText1');
+                        // for (let i = 0; i < select.length; i++) {
+                        //     select[i].onchange = function() {
+                        //         result2.push(this.options[this.options.selectedIndex].value);
+                        //         console.log(result2);
+                        //     }
+                        // }
 
 
-                        for (let i = 0; i < Delete.length; i++) {
-                            Delete[i].onclick = function() {
-                                // let val = $(this).siblings();
-                                // // console.log(val[0]);
-                                // // let value = val[0].find("option:selected").val()
-                                // let index = val[0].selectedIndex;
-                                // let value = val[0].options[index].value;
-                                // console.log(value)
-                                $(this).parent().remove();
-                                result2.splice(i, 1);
-                                console.log(i);
-                                console.log(result)
-                            }
-                        }
+                        // for (let i = 0; i < Delete.length; i++) {
+                        //     Delete[i].onclick = function() {
+                        //         $(this).parent().remove();
+                        //         result2.splice(i, 1);
+                        //         console.log(i);
+                        //         console.log(result)
+                        //     }
+                        // }
                     }
                 }
                 xhr.send();

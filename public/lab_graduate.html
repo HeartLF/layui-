@@ -132,7 +132,7 @@
                                     })
 
                                     document.getElementById('btn').onclick = function() {
-                                        var xhr = new XMLHttpRequest();
+                                        let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                         xhr.open('post', '/graduate/save');
                                         xhr.onreadystatechange = function() {
                                             if (xhr.status == 200 && xhr.readyState == 4) {
@@ -174,7 +174,7 @@
                         console.log(data.id);
                     } else if (obj.event === 'del') {
                         layer.confirm('真的删除行么', function(index) {
-                            var xhr = new XMLHttpRequest();
+                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                             console.log(index);
                             xhr.open('get', '/graduate/delete?model.id=' + data.id);
                             xhr.onreadystatechange = function() {
@@ -265,7 +265,7 @@
                                 document.getElementById('ID').value = data.value;
                             })
                             document.getElementById('btn').onclick = function() {
-                                var xhr = new XMLHttpRequest();
+                                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                 xhr.open('post', '/graduate/save');
                                 xhr.onreadystatechange = function() {
                                     if (xhr.status == 200 && xhr.readyState == 4) {

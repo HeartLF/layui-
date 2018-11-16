@@ -86,15 +86,20 @@
             });
             var map = new Map();
             var map2 = new Map();
-            map.set('DRAFT', '草稿');
+            var map3 = new Map();
+            map.set('DRAFT', '草稿2');
             map.set('AUDIT', '审核中');
             map.set('OFFICIAL', '正式');
             map.set('RECOMMEND', '推荐');
 
 
-            map2.set('AUDIT', 'red');
-            map2.set('OFFICIAL', 'green');
-            map2.set('RECOMMEND', 'yellow');
+            map2.set('AUDIT', '#d81e06');
+            map2.set('OFFICIAL', '#1afa29');
+            map2.set('RECOMMEND', '#1296db');
+
+            map3.set('AUDIT', './images/shenhe.png');
+            map3.set('OFFICIAL', './images/zhengshi.png');
+            map3.set('RECOMMEND', './images/tuijian.png');
             // var editor = document.getElementById('editor');
             // var del = document.getElementById('delete');
             // editor.addEventListener('click');
@@ -111,7 +116,7 @@
                         var lis = [];
                         //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
                         (function(page, next) {
-                            $.get('/blogs/listDraft?limit=5&page=' + page, function(res) {
+                            $.get('/blogs/listAuditGroup?limit=5&page=' + page, function(res) {
                                 //假设你的列表返回在data集合中
                                 console.log(res)
                                 var result = res.data;
@@ -130,13 +135,13 @@
                                     }
                                     html += `<div class="layui-col-md6">
                                             <div class="layui-card" >
-                                                <h1 class="layui-card-header" style="font-size:24px"><a href="javascript:;" data-url="./person_blog._show.html?id=${item.id}" data-id="${item.id}" class="left_nav">${item.title}</a></h1>
+                                                <h1 class="layui-card-header" style="font-size:24px"><a href="javascript:;" data-url="./blog_check_show.html?id=${item.id}" data-id="${item.id}" class="left_nav">${item.title}</a></h1>
                                             <div class="layui-card-body">
                                                 <div style="height:24px; line-height:24px;">${item.intro}</div>
                                                 <br>
                                                 <dl style="font-size:14px">
-                                                    <dd style="float:left">状态：<span>${map.get(item.status)}</span>&nbsp&nbsp</dd>
-                                                    <dd style="float:left;">标签：<span style="width:200px;   vertical-align: middle;display:inline-block; overflow: hidden;
+                                                    <dd style="float:left;color:${map2.get(item.status)}"><img src='${map3.get(item.status)}' style="display: inline-block;width:28px;height:28px;"'><span style="color:${map2.get(item.status)};vertical-align: middle">${map.get(item.status)}</span>&nbsp&nbsp</dd>
+                                                    <dd style="float:left;"><img src="./images/标签.png" style="display:inline-block;width:28px;height:28px"><span style="width:200px;vertical-align: middle;display:inline-block; overflow: hidden;
                                             text-overflow: ellipsis;
                                             white-space: nowrap;">${str}</span></dd>
                                                     <div style="float:right">
@@ -144,11 +149,7 @@
                                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${item.id}</span></dd>
                                                     <dd style="float:left"><span>${item.addTime}</span>&nbsp&nbsp</dd>                                   
                                                     </div>
-                                                    <div style="clear:both"></div>
-                                                    <div style="float:right">
-                                                            <a href="./blog_editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
-                                                            <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}><i class="layui-icon"></i></button>
-                                                    </div>
+                                                
                                                 </dl>
                                             </div>
                                             </div>
@@ -165,55 +166,28 @@
                                 //document.getElementsByClassName('layui-row')[0].innerHTML += html
                                 //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                                 //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-                                (function() {
-                                    var btn = document.querySelectorAll('.layui-btn');
-                                    console.log(btn);
-                                    $(".left_nav").click(function() {
-                                        var dataid = $(this);
-                                        if ($(".layui-tab-title li[lay-id]").length <= 0) {
-                                            window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
-                                            console.log($(".layui-tab-title li[lay-id]"))
-                                        } else {
-                                            var isData = false;
-                                            $.each($(".layui-tab-title li[lay-id]"), function() {
-                                                if ($(this).attr("lay-id") == dataid.attr("data-id")) {
-                                                    isData = true;
-                                                }
-                                            })
-                                            if (isData == false) {
-                                                window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
-                                            }
-                                        }
-                                        window.parent.active.tabChange(dataid.attr("data-id"));
-                                    })
-                                    for (var i = 1; i < btn.length; i++) {
-                                        (function(i) {
-                                            if (i % 2 != 0) {
-                                                btn[i].addEventListener('click', function() {
-                                                    console.log(this.dataset.id);
-                                                    let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
-                                                    xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
-                                                    xhr.onreadystatechange = function() {
-                                                        console.log(xhr.responseText)
-                                                        if (xhr.status == 200 && xhr.readyState == 4) {
-                                                            let json = JSON.parse(xhr.responseText)
-                                                            console.log(xhr.responseText.code)
-                                                            if (json.code == 0) {
-                                                                document.getElementById('Alert').style.display = 'block';
-                                                                setTimeout(function() {
-                                                                    document.getElementById("Alert").style.display = "none";
-                                                                    window.location = './person_blog_draft.html'
-                                                                }, 1000);
 
-                                                            }
-                                                        }
-                                                    }
-                                                    xhr.send();
-                                                }, false)
+
+                                $(".left_nav").click(function() {
+                                    var dataid = $(this);
+                                    if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                                        window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                                        console.log($(".layui-tab-title li[lay-id]"))
+                                    } else {
+                                        var isData = false;
+                                        $.each($(".layui-tab-title li[lay-id]"), function() {
+                                            if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+                                                isData = true;
                                             }
-                                        })(i)
+                                        })
+                                        if (isData == false) {
+                                            window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                                        }
                                     }
-                                })()
+                                    window.parent.active.tabChange(dataid.attr("data-id"));
+                                })
+
+
                             });
 
                         })(page, next);

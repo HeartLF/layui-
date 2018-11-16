@@ -154,11 +154,16 @@
                             json = (typeof JSON.parse !== "undefined") ? JSON.parse(json) : eval("(" + json + ")");
 
                             if (!settings.crossDomainUpload) {
-                                if (json.success === 1) {
+                                if (json.code === 0) {
                                     dialog.find("[data-url]").val(json.data);
-                                    console.log(json.url);
+                                    // console.log(json.data);
                                 } else {
-                                    alert(json.message);
+                                    if ('message' in json) {
+                                        alert(json.message);
+                                    } else {
+                                        alert('上传失败！！未知错误')
+                                    }
+
                                 }
                             }
 

@@ -72,7 +72,6 @@
         <script>
             layui.use('element', function() {
                 var element = layui.element;
-
             });
             //自定义验证规则
             layui.use(['form', 'jquery', 'table'], function() {
@@ -90,7 +89,7 @@
                         layer.msg('ID：' + Data.id + ' 的查看操作');
                     } else if (obj.event === 'del') {
                         layer.confirm('真的删除行么', function(index) {
-                            var xhr = new XMLHttpRequest();
+                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                             console.log(index);
                             xhr.open('get', '/person/delete?model.id=' + Data.id);
                             xhr.onreadystatechange = function() {
@@ -247,7 +246,7 @@
                                 });
                                 document.getElementById('btn').onclick = function() {
 
-                                    var xhr = new XMLHttpRequest();
+                                    let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                     xhr.open('post', '/person/update');
                                     xhr.onreadystatechange = function() {
                                         if (xhr.status == 200 && xhr.readyState == 4) {
@@ -301,7 +300,7 @@
                                     let info = JSON.stringify(obj)
                                     xhr.send(info);
                                 }
-
+                                document.getElementById('deptSelect').innerHTML = `<option value="${Data.group.id}">${Data.group.name}</option>`
                                 form.val('example', {
                                     "id": Data.id,
                                     "group.id": Data.group.id,
@@ -317,7 +316,7 @@
                                 });
                             }
                         });
-                        form.render();
+                        // form.render();
                     }
                 });
 
@@ -456,7 +455,7 @@
                                         id: $(this).val()
                                     });
                                 });
-                                var xhr = new XMLHttpRequest();
+                                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                 xhr.open('post', '/person/save');
                                 xhr.onreadystatechange = function() {
                                     if (xhr.status == 200 && xhr.readyState == 4) {
@@ -505,13 +504,10 @@
                                 let info = JSON.stringify(obj)
                                 xhr.send(info);
                             }
-
                         }
                     });
                     upload()
                     form.render();
-
-
                 })
             }
 
@@ -618,7 +614,7 @@
                     emp_email.mail.focus();
                     return false;
                 } else {
-                    var xhr = new XMLHttpRequest();
+                    let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                     xhr.open('get', '/person/containsId?id=' + emp_email.value);
                     xhr.onreadystatechange = function() {
                         var info = JSON.parse(xhr.responseText);

@@ -107,36 +107,30 @@
 
 <body>
     <div style=" background-color: #F2F2F2;" id="body">
+        <div id="Alert" style="color:#fff; text-align: center; width:150px;height:100px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
+            <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 18px;">删除成功</div>
+            <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
+        </div>
         <div style="padding: 20px;">
             <div class="layui-col-md9">
                 <div class="layui-card">
                     <div style="float:left" class="layui-col-md9">
                         <input type="text" name="title" lay-verify="title" id="title" autocomplete="off" placeholder="请输入搜索内容" class="layui-input layui-col-md9">
                     </div>
-
                     <div style="float:left">
                         <input type="button" class="layui-btn layui-btn-normal" value="搜索" id="btn2">
                     </div>
-
                 </div>
             </div>
+            <div></div>
             <nav>
                 <ul id="ul">
-                    <li>
-                        <button class="layui-btn layui-btn-normal">dasd</button>
-                    </li>
-                    <li>
-                        <button>ada</button>
-                    </li>
+
                 </ul>
             </nav>
             <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
-
-
             </div>
             <div class="layui-row layui-col-space15 flow-default" id="LAY_demo2">
-
-
             </div>
         </div>
 
@@ -236,10 +230,7 @@
                                                     <dd style="float:left"><span>${item.addTime}</span>&nbsp&nbsp</dd>                                   
                                                     </div>
                                                     <div style="clear:both"></div>
-                                                    <div style="float:right">
-                                                            <a href="./blog_editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
-                                                            <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}><i class="layui-icon"></i></button>
-                                                    </div>
+                                              
                                                 </dl>
                                             </div>
                                             </div>
@@ -253,37 +244,8 @@
                             pages += 1;
                         }
                         next(lis.join(''), page < pages);
-                        //document.getElementsByClassName('layui-row')[0].innerHTML += html;
+                        //document.getElementsByClassName('layui-row')[0].innerHTML += html
 
-                        var btn = document.querySelectorAll('.layui-btn');
-                        console.log(btn);
-                        for (var i = 1; i < btn.length; i++) {
-                            (function(i) {
-                                if (i % 2 == 0) {
-                                    btn[i].addEventListener('click', function() {
-                                        console.log(this.dataset.id);
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
-                                        xhr.onreadystatechange = function() {
-                                            console.log(xhr.responseText)
-                                            if (xhr.status == 200 && xhr.readyState == 4) {
-                                                let json = JSON.parse(xhr.responseText)
-                                                console.log(xhr.responseText.code)
-                                                if (json.code == 0) {
-                                                    document.getElementById('Alert').style.display = 'block';
-                                                    setTimeout(function() {
-                                                        document.getElementById("Alert").style.display = "none";
-                                                        window.location = './person_blog_draft.html'
-                                                    }, 2000);
-
-                                                }
-                                            }
-                                        }
-                                        xhr.send();
-                                    }, false)
-                                }
-                            })(i)
-                        }
                         $(".left_nav").click(function() {
                             var dataid = $(this);
                             if ($(".layui-tab-title li[lay-id]").length <= 0) {
@@ -359,11 +321,7 @@
                                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${item.id}</span></dd>
                                                     <dd style="float:left"><span>${item.addTime}</span>&nbsp&nbsp</dd>                                   
                                                     </div>
-                                                    <div style="clear:both"></div>
-                                                    <div style="float:right">
-                                                            <a href="./blog_editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
-                                                            <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}><i class="layui-icon"></i></button>
-                                                    </div>
+                                                 
                                                 </dl>
                                             </div>
                                             </div>
@@ -386,7 +344,7 @@
                                     if (i % 2 == 0) {
                                         btn[i].addEventListener('click', function() {
                                             console.log(this.dataset.id);
-                                            var xhr = new XMLHttpRequest();
+                                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                             xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
                                             xhr.onreadystatechange = function() {
                                                 console.log(xhr.responseText)
@@ -465,11 +423,7 @@
                                                     <dd style="float:left;margin-right: 10px;display:none">ID：<span>${item.id}</span></dd>
                                                     <dd style="float:left"><span>${item.addTime}</span>&nbsp&nbsp</dd>                                   
                                                     </div>
-                                                    <div style="clear:both"></div>
-                                                    <div style="float:right">
-                                                            <a href="./blog_editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
-                                                            <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}><i class="layui-icon"></i></button>
-                                                    </div>
+                                               
                                                 </dl>
                                             </div>
                                             </div>
@@ -492,7 +446,7 @@
                                         if (i % 2 == 0) {
                                             btn[i].addEventListener('click', function() {
                                                 console.log(this.dataset.id);
-                                                var xhr = new XMLHttpRequest();
+                                                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                                 xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
                                                 xhr.onreadystatechange = function() {
                                                     console.log(xhr.responseText)

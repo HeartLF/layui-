@@ -175,8 +175,8 @@
                                         if (i % 2 != 0) {
                                             btn[i].addEventListener('click', function() {
                                                 console.log(this.dataset.id);
-                                                var xhr = new XMLHttpRequest();
-                                                xhr.open('post', '/notice/delete?id=' + this.dataset.id);
+                                                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+                                                xhr.open('post', '/notice/delete?model.id=' + this.dataset.id);
                                                 xhr.onreadystatechange = function() {
                                                     console.log(xhr.responseText)
                                                     if (xhr.status == 200 && xhr.readyState == 4) {
@@ -187,7 +187,7 @@
                                                             setTimeout(function() {
                                                                 document.getElementById("Alert").style.display = "none";
                                                                 window.location = './project_message_history.html'
-                                                            }, 2000);
+                                                            }, 1000);
 
                                                         }
                                                     }

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="./css/layui.css">
+
+</head>
+
+<body>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+
+    </fieldset>
+    <div style="float: right; padding-right:20px;margin-top: 10px;">
+        <button type="button" onclick="Add()" class="layui-btn layui-btn-normal layui-btn-radius">编辑</button>
+    </div>
+    <form class="layui-form" action="" lay-filter="example">
+        <div class="layui-form-item">
+            <label class="layui-form-label">照片:</label>
+            <div class="layui-input-block">
+
+                <input type="hidden" id="img_url" name="photoUri" value="" required="required" />
+                <label id="Label7" class="control-label" style="color:red"></label>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" width="100px" height="80px" id="demo1" />
+                    <p id="demoText"></p>
+                </div>
+
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">学号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">QQ号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="qq" lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">emile：</label>
+            <div class="layui-input-block">
+                <input type="text" name="email" lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input" disabled>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="mobile" lay-verify="required" placeholder="请输入学号" class="layui-input" disabled>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">组别：</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="aihao" disabled id="select">
+          
+          </select>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="MAN" title="男" checked="" disabled>
+                <input type="radio" name="sex" value="WOMEN" title="女" disabled>
+            </div>
+        </div>
+    </form>
+
+
+
+
+    <script src="./layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+    <script>
+        var Data;
+        layui.use(['form', 'layedit', 'laydate'], function() {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
+            let html = ''
+            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+            xhr.open('get', '/person/getInfo');
+            xhr.onreadystatechange = function() {
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    let result = JSON.parse(xhr.responseText);
+                    Data = result.data;
+                    // document.getElementById('demo1').setAttribute("src", '')
+                    console.log(result);
+                    html = `<option value="${result.data.group.id}">${result.data.group.name}</option>`
+                    document.getElementById('select').innerHTML += html
+                    document.getElementById('demo1').setAttribute("src", result.data.photoUri)
+                    html = ''
+                    form.val('example', {
+                        "name": result.data.name // "name": "value"
+                            ,
+                        "id": result.data.id,
+                        "grade": result.data.grade,
+                        "mobile": result.data.mobile //复选框选中状态
+                            ,
+                        "qq": result.data.qq //开关状态
+                            ,
+                        "email": result.data.email,
+                        "photo": result.data.photoUri,
+                        "sex": result.data.sex,
+                    })
+                }
+            }
+            xhr.send()
+            upload('#upload1');
+
+        });
+
+        function Add() {
+            layui.use(['form', 'jquery', 'table'], function() {
+                var form = layui.form;
+                var $ = layui.jquery;
+                var table = layui.table;
+                // var layui = layui.layer;
+                layer.open({
+                    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                    type: 1,
+                    title: "添加用户信息",
+                    area: ['30%', '50%'],
+                    closeBtn: '2',
+                    content: `<div class="layui-row" id="test">
+                    <div class="layui-col-md10">
+                    <form class="layui-form" id="addEmployeeForm"  lay-filter="example">
+                       
+                        <div class="layui-form-item">
+                                <label class="layui-form-label">照片</label>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" id="upload2">上传图片</button>
+                <input type="hidden" id="img_url" name="photoUri" value=""  required="required"/>
+                <label id="Label7" class="control-label" style="color:red"></label>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" width="100px" height="80px" id="demo2"/>
+                <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">姓名：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" id="text1" class="layui-input" onBlur="isChinese('text1','Label1')" placeholder="请输入中文"  required="required" disabled>
+                                <label id="Label1" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">QQ号：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="qq" id="text5" class="layui-input" onBlur="checkQQ('text5','Label6')" placeholder="请输入qq号"  required="required">
+                                <label id="Label6" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">手机号：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="mobile" id="text6" class="layui-input" onBlur="validatemobile('text6','Label4')" placeholder="请输入手机号"  required="required">
+                                <label id="Label4" class="control-label" style="color:red"></label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱：</label>
+                            <div class="layui-input-block">
+                                    <input type="text" name="email" id="text7" class="layui-input" onBlur="checkEmpEmail('text7','Label5')" placeholder="请输入邮箱"  required="required">
+                                     <label id="Label5" class="control-label" style="color:red"></label> 
+                            </div>
+                        </div>
+                      
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-filter="demo1" id="btn1">提交</button>
+                        </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>`,
+                    success: function(layero, index) {
+                        document.getElementById("demo2").setAttribute("src", Data.photoUri)
+                            // document.getElementById('deptSelect').innerHTML = `<option value="${Data.group.id}">${Data.group.name}</option>`
+                        document.getElementById('btn1').onclick = function() {
+
+                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+                            xhr.open('post', '/person/updateInfo');
+                            xhr.onreadystatechange = function() {
+                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                    //console.log(xhr.responseText.code)
+                                    let data = JSON.parse(xhr.responseText);
+                                    if (data.code == 0) {
+                                        layer.msg('编辑成功', {
+                                            time: 1000
+                                        }, function() {
+                                            layer.closeAll();
+                                            location.href = './person_message.html'
+                                        })
+                                    } else {
+                                        layer.msg('编辑失败', {
+                                            time: 1000
+                                        }, function() {
+                                            layer.closeAll();
+                                        });
+                                    }
+
+                                }
+                            }
+                            xhr.setRequestHeader("Content-type", "application/json");
+                            let obj = {
+                                model: {
+                                    photoUri: document.getElementById('img_url').value,
+                                    qq: document.getElementById('text5').value,
+                                    mobile: document.getElementById('text6').value,
+                                    email: document.getElementById('text7').value,
+                                }
+                            }
+                            let info = JSON.stringify(obj)
+                            xhr.send(info);
+                        }
+                        form.val('example', {
+                            "name": Data.name,
+
+                            "mobile": Data.mobile,
+                            "qq": Data.qq,
+                            "email": Data.email,
+                            "photoUri": Data.photoUri,
+
+                        })
+                    }
+                });
+                form.render();
+                upload('#upload2')
+            })
+        }
+
+        function upload(id) {
+            layui.use('upload', function() {
+                var upload = layui.upload,
+                    $ = layui.jquery;
+                var uploadInst = upload.render({
+                    elem: id //绑定元素
+                        ,
+                    url: '/file/uploadImg',
+                    before: function(obj) {
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function(index, file, result) {
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    },
+                    field: 'file',
+                    done: function(res) {
+                        console.log(res);
+                        //如果上传失败
+                        if (res.code == 0) {
+                            layer.msg('上传成功');
+                        } else if (res.code == -1) {
+                            layer.msg('图片上传失败')
+                        }
+
+                        //上传成功
+                        // alert("上传成功" + res.url);
+
+                        document.getElementById("img_url").value = res.data;
+
+                    },
+                    error: function() {
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function() {
+                            uploadInst.upload();
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+
+</body>
+
+</html>

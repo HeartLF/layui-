@@ -117,7 +117,7 @@
 
                                 html += `<div class="layui-col-md6">
                                             <div class="layui-card" >
-                                                <h1 class="layui-card-header" style="font-size:24px"><a href="javascript:;" data-url="./news.html?id=${item.id}" data-id="${item.id}" class="left_nav">${item.title}</a></h1>
+                                                <h1 class="layui-card-header" style="font-size:24px"><a href="javascript:;" data-url="./message_show.html?id=${item.id}" data-id="${item.id}" class="left_nav">${item.title}</a></h1>
                                             <div class="layui-card-body">
                                                 <div style="height:24px; line-height:24px;">${item.intro}</div>
                                                 <br>
@@ -131,7 +131,7 @@
                                                     </div>
                                                     <div style="clear:both"></div>
                                                     <div style="float:right">
-                                                            <a href="./blog_editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
+                                                            <a href="./editor.html?id=${item.id}"><button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}> <i class="layui-icon"></i></button></a>  
                                                             <button class="layui-btn layui-btn-normal layui-btn-sm" data-id=${item.id}><i class="layui-icon"></i></button>
                                                     </div>
                                                 </dl>
@@ -148,55 +148,55 @@
                             }
                             next(lis.join(''), page < res.pages);
                             //document.getElementsByClassName('layui-row')[0].innerHTML += html;
-                            (function() {
-                                var btn = document.querySelectorAll('.layui-btn');
-                                console.log(btn);
-                                $(".left_nav").click(function() {
-                                    var dataid = $(this);
-                                    if ($(".layui-tab-title li[lay-id]").length <= 0) {
-                                        window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
-                                        console.log($(".layui-tab-title li[lay-id]"))
-                                    } else {
-                                        var isData = false;
-                                        $.each($(".layui-tab-title li[lay-id]"), function() {
-                                            if ($(this).attr("lay-id") == dataid.attr("data-id")) {
-                                                isData = true;
-                                            }
-                                        })
-                                        if (isData == false) {
-                                            window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                            $(".left_nav").click(function() {
+                                var dataid = $(this);
+                                if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                                    window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                                    console.log($(".layui-tab-title li[lay-id]"))
+                                } else {
+                                    var isData = false;
+                                    $.each($(".layui-tab-title li[lay-id]"), function() {
+                                        if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+                                            isData = true;
                                         }
+                                    })
+                                    if (isData == false) {
+                                        window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
                                     }
-                                    window.parent.active.tabChange(dataid.attr("data-id"));
-                                })
-                                for (var i = 1; i < btn.length; i++) {
-                                    (function(i) {
-                                        if (i % 2 != 0) {
-                                            btn[i].addEventListener('click', function() {
-                                                console.log(this.dataset.id);
-                                                var xhr = new XMLHttpRequest();
-                                                xhr.open('post', '/notice/delete?id=' + this.dataset.id);
-                                                xhr.onreadystatechange = function() {
-                                                    console.log(xhr.responseText)
-                                                    if (xhr.status == 200 && xhr.readyState == 4) {
-                                                        let json = JSON.parse(xhr.responseText)
-                                                        console.log(xhr.responseText.code)
-                                                        if (json.code == 0) {
-                                                            document.getElementById('Alert').style.display = 'block';
-                                                            setTimeout(function() {
-                                                                document.getElementById("Alert").style.display = "none";
-                                                                window.location = './message_history.html'
-                                                            }, 2000);
+                                }
+                                window.parent.active.tabChange(dataid.attr("data-id"));
+                            })
+                            var btn = document.querySelectorAll('.layui-btn');
+                            console.log(btn);
 
-                                                        }
+                            for (var i = 1; i < btn.length; i++) {
+                                (function(i) {
+                                    if (i % 2 != 0) {
+                                        btn[i].addEventListener('click', function() {
+                                            console.log(this.dataset.id);
+                                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+                                            xhr.open('post', '/notice/delete?model.id=' + this.dataset.id);
+                                            xhr.onreadystatechange = function() {
+                                                console.log(xhr.responseText)
+                                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                                    let json = JSON.parse(xhr.responseText)
+                                                    console.log(xhr.responseText.code)
+                                                    if (json.code == 0) {
+                                                        document.getElementById('Alert').style.display = 'block';
+                                                        setTimeout(function() {
+                                                            document.getElementById("Alert").style.display = "none";
+                                                            window.location = './message_history.html'
+                                                        }, 2000);
+
                                                     }
                                                 }
-                                                xhr.send();
-                                            }, false)
-                                        }
-                                    })(i)
-                                }
-                            })()
+                                            }
+                                            xhr.send();
+                                        }, false)
+                                    }
+                                })(i)
+                            }
+
 
 
                         });

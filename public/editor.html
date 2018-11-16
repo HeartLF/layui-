@@ -10,13 +10,14 @@
 </head>
 
 <body>
-
-
     <div id="layout">
         <header>
             <input type="text" placeholder="请输入标题！！必须填" name="txt" class="layui-input" id="txt" value="">
+            <br>
+            <input type="text" placeholder="请输入图片的url！！必须先从Markdown编译器上上传后把图片链接填到这里" name="photoUri" class="layui-input" id="photoUri" value="">
         </header>
         <br>
+
         <div id="Alert" style="color:#fff; text-align: center; width:170px;height:50px;position:absolute;display:none; left:50%;top: 50%;transform: translate(-50%,-50%);z-index: 25;opacity: 1;background-color: rgba(0,0,0,.6);">
             <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">保存草稿成功</div>
             <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
@@ -33,9 +34,9 @@
             <div id="Alert_btn" style="position:absolute;left:50%;top: 50%;transform: translate(-50%,-50%);font-size: 14px;">自动保存成功</div>
             <!-- <button style="margin-left:35px;" class="layui-btn layui-btn-warm" id="Alert_btn">确定</button> -->
         </div>
+
         <div class="editormd" id="test-editormd">
             <textarea></textarea>
-
         </div>
         <br/>
         <input id="submit" type="button" name="submit" value="提交" class="layui-btn" style="margin-left: 82px;" />
@@ -45,21 +46,15 @@
     <script src="./layui.js "></script>
     <script src="js/editormd.js"></script>
     <script type="text/javascript">
-        // var od = parent.document;
-        var pp = parent.document
-        console.log(pp)
-
         var testEditor;
         var layer;
+
         layui.use(['element', 'layer'], function() {
             var element = layui.element;
             layer = layui.layer
         });
         var a = 1;
-        // var id = localStorage["id"];
-        // if (id == 'undefined') {
         var id = 0;
-        // }
         var url = window.location.href //获取当前URL
         console.log(url);
         if (url.indexOf('?') != -1) {
@@ -69,8 +64,6 @@
             //取得参数
             id = 0;
         }
-        console.log(id);
-
         var jQuery = Zepto; // 为了避免修改 flowChart.js 和 sequence-diagram.js 的源码，所以想支持 flowChart / sequenceDiagram 就得加上这一句
 
         window.onload = function() {
@@ -102,10 +95,8 @@
                 //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
                 imageUpload: true,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                imageUploadURL: "./php/upload.php",
+                imageUploadURL: "/file/uploadImg",
                 onload: function() {
-
-
                     //this.fullscreen();
                     //this.unwatch();
                     //this.watch().fullscreen();
@@ -120,7 +111,7 @@
                         a = 0;
                         var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
                         var mdCode = testEditor.getMarkdown();
-                        var xhr = new XMLHttpRequest();
+                        let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
 
                         xhr.open('post', '/notice/saveNewsAuto');
                         xhr.onreadystatechange = function() {
@@ -153,29 +144,23 @@
                         xhr.send(obj);
                     }
                     a++;
-                    // console.log(a++);
+
                 }
             });
 
             document.getElementById("submit").onclick = function() {
-                // var url = window.location.href //获取当前URL
-                // var param = url.split("?")[1].split("=")[1]; //取得参数
                 var title = document.getElementById('txt');
                 var mdCode = testEditor.getMarkdown();
                 var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
                 if (title.value == '') {
                     return alert("请输入标题")
                 }
-                var xhr = new XMLHttpRequest();
+                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                 xhr.open('post', '/notice/saveNews');
                 xhr.onreadystatechange = function() {
                     if (xhr.status == 200 && xhr.readyState == 4) {
                         var data = xhr.responseText;
                         var result = JSON.parse(data);
-                        // if (param > 1) {
-                        //     id = param;
-                        //     return;
-                        // }
                         if (result.code >= 0) {
                             id = result.data.id;
                             document.getElementById('Alert2').style.display = 'block';
@@ -188,16 +173,12 @@
                     }
                 }
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                let obj = "model.title+" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode;
-                //var html = JSON.stringify(obj);
+                let obj = "model.title+" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode + "&model.photoUri=" + document.getElementById('photoUri').value;
+
                 xhr.send(obj);
-                // window.location = './message.html';
+
             }
             document.getElementById("preview-btn").onclick = function() {
-                //document.getElementsByTagName('textarea')[0].innerHTML = mdCode;
-                // window.parent.open('<iframe data-frameid=0 frameborder="0" name="content" scrolling="yes" width="100%" src="./classify.html"></iframe>');
-                layer.iframeSrc(0, './blog.html')
-
                 var title = document.getElementById('txt');
                 if (title.value == '') {
                     return alert("请输入标题")
@@ -205,7 +186,7 @@
                 var mdCode = testEditor.getMarkdown();
                 var htmlCode = document.getElementsByClassName("editormd-preview-container")[0].innerHTML;
                 console.log(mdCode, htmlCode);
-                var xhr = new XMLHttpRequest();
+                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
 
                 xhr.open('post', '/notice/saveNewsDraft');
                 xhr.onreadystatechange = function() {
@@ -226,28 +207,29 @@
                     }
                 }
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode;
-                //var html = JSON.stringify(obj);
+                let obj = "model.title=" + title.value + "&model.id=" + id + "&model.content=" + htmlCode + "&model.markdownContent=" + mdCode + "&model.photoUri=" + document.getElementById('photoUri').value;
                 xhr.send(obj);
             }
         }
+
         ajax();
+
 
         function ajax() {
             var title = document.getElementById('txt');
-            var xhr = new XMLHttpRequest();
-            xhr.open('get', '/notice/getNewsMarkdown?model.id=' + id);
+            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+            xhr.open('get', '/notice/getNewsMarkdown?noticeId=' + id);
             xhr.onreadystatechange = function() {
                 if (xhr.status == 200 && xhr.readyState == 4) {
                     var result = JSON.parse(xhr.responseText);
-                    console.log(result);
+                    console.log(result.data.markdownContent);
                     title.value = result.data.title;
-                    // document.getElementsByTagName('textarea')[0].innerHTML = "dasdasd"
+                    document.getElementById('photoUri').value = result.data.photoUri
+                        // document.getElementsByTagName('textarea')[0].innerHTML = "dasdasd"
                     document.getElementsByTagName('textarea')[0].innerHTML = result.data.markdownContent
                 }
             }
             xhr.send();
-
         }
     </script>
 </body>

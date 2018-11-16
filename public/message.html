@@ -153,56 +153,55 @@
                             }
                             next(lis.join(''), page < res.pages);
                             //document.getElementsByClassName('layui-row')[0].innerHTML += html;
-                            (function() {
-                                console.log(window.parent);
-                                var btn = document.querySelectorAll('.layui-btn');
-                                $(".left_nav").click(function() {
-                                    var dataid = $(this);
-                                    if ($(".layui-tab-title li[lay-id]").length <= 0) {
-                                        window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
-                                        console.log($(".layui-tab-title li[lay-id]"))
-                                    } else {
-                                        var isData = false;
-                                        $.each($(".layui-tab-title li[lay-id]"), function() {
-                                            if ($(this).attr("lay-id") == dataid.attr("data-id")) {
-                                                isData = true;
-                                            }
-                                        })
-                                        if (isData == false) {
-                                            window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                            $(".left_nav").click(function() {
+                                var dataid = $(this);
+                                if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                                    window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
+                                    console.log($(".layui-tab-title li[lay-id]"))
+                                } else {
+                                    var isData = false;
+                                    $.each($(".layui-tab-title li[lay-id]"), function() {
+                                        if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+                                            isData = true;
                                         }
+                                    })
+                                    if (isData == false) {
+                                        window.parent.active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.html());
                                     }
-                                    window.parent.active.tabChange(dataid.attr("data-id"));
-                                })
-                                console.log(btn);
-                                for (var i = 1; i < btn.length; i++) {
-                                    (function(i) {
-                                        if (i % 2 == 0) {
-                                            btn[i].addEventListener('click', function() {
-                                                console.log(this.dataset.id);
-                                                var xhr = new XMLHttpRequest();
-                                                xhr.open('post', '/notice/delete?id=' + this.dataset.id);
-                                                xhr.onreadystatechange = function() {
-                                                    console.log(xhr.responseText)
-                                                    if (xhr.status == 200 && xhr.readyState == 4) {
-                                                        let json = JSON.parse(xhr.responseText)
-                                                        console.log(xhr.responseText.code)
-                                                        if (json.code == 0) {
-                                                            document.getElementById('Alert').style.display = 'block';
-                                                            setTimeout(function() {
-                                                                document.getElementById("Alert").style.display = "none";
-                                                                window.location = './message.html'
-                                                            }, 2000);
+                                }
+                                window.parent.active.tabChange(dataid.attr("data-id"));
+                            })
+                            console.log(window.parent);
+                            var btn = document.querySelectorAll('.layui-btn');
+                            console.log(btn)
+                            for (var i = 1; i < btn.length; i++) {
+                                (function(i) {
+                                    if (i % 2 != 0) {
+                                        btn[i].addEventListener('click', function() {
+                                            console.log(this.dataset.id);
+                                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+                                            xhr.open('post', '/notice/delete?model.id=' + this.dataset.id);
+                                            xhr.onreadystatechange = function() {
+                                                console.log(xhr.responseText)
+                                                if (xhr.status == 200 && xhr.readyState == 4) {
+                                                    let json = JSON.parse(xhr.responseText)
 
-                                                        }
+                                                    if (json.code == 0) {
+                                                        document.getElementById('Alert').style.display = 'block';
+                                                        setTimeout(function() {
+                                                            document.getElementById("Alert").style.display = "none";
+                                                            location.href = './message.html'
+                                                        }, 1000);
                                                     }
                                                 }
-                                                xhr.send();
-                                            }, false)
-                                        }
-                                    })(i)
-                                }
-                            })()
+                                            }
+                                            xhr.send();
+                                        }, false)
+                                    }
+                                })(i)
+
+                            }
+
 
 
                         });

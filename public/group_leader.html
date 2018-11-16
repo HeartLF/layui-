@@ -121,7 +121,7 @@
             var element = layui.element;
 
         });
-        var xhr = new XMLHttpRequest();
+        let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
         xhr.open('get', 'notice/listNewsDraft');
         xhr.onreadystatechange = function() {
             var html = '';
@@ -155,7 +155,7 @@
                         if (i % 2 == 0) {
                             btn[i].addEventListener('click', function() {
                                 console.log(this.dataset.id);
-                                var xhr = new XMLHttpRequest();
+                                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                 xhr.open('get', '/notice/delete?id=' + this.dataset.id);
                                 xhr.onreadystatechange = function() {
                                     if (xhr.status == 200 && xhr.readyState == 4) {

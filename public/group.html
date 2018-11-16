@@ -146,7 +146,7 @@
 
                                 form.render('select');
                                 document.getElementById('btn1').onclick = function() {
-                                    var xhr = new XMLHttpRequest();
+                                    let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                     xhr.open('post', '/group/update');
                                     xhr.onreadystatechange = function() {
                                         if (xhr.status == 200 && xhr.readyState == 4) {
@@ -249,7 +249,7 @@
                         form.render('select');
                         document.getElementById('btn').onclick = function() {
 
-                            var xhr = new XMLHttpRequest();
+                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                             xhr.open('post', '/group/save');
                             xhr.onreadystatechange = function() {
                                 if (xhr.status == 200 && xhr.readyState == 4) {

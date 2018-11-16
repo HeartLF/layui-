@@ -111,7 +111,7 @@
                                 // form.render( 'example');
 
                                 document.getElementById('btn').onclick = function() {
-                                    var xhr = new XMLHttpRequest();
+                                    let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                                     xhr.open('post', '/classify/update');
                                     xhr.onreadystatechange = function() {
                                         if (xhr.status == 200 && xhr.readyState == 4) {
@@ -146,7 +146,7 @@
 
                     } else if (obj.event === 'del') {
                         layer.confirm('真的删除行么', function(index) {
-                            var xhr = new XMLHttpRequest();
+                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                             xhr.open('get', '/classify/delete?model.id=' + Data.id);
                             xhr.onreadystatechange = function() {
                                 var data = JSON.parse(xhr.responseText);
@@ -192,7 +192,7 @@
             </div>`,
                     success: function() {
                         document.getElementById('btn1').onclick = function() {
-                            var xhr = new XMLHttpRequest();
+                            let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
                             xhr.open('post', '/classify/save');
                             xhr.onreadystatechange = function() {
                                 if (xhr.status == 200 && xhr.readyState == 4) {
