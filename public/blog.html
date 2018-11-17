@@ -123,11 +123,13 @@
                 </div>
             </div>
             <div></div>
-            <nav>
-                <ul id="ul">
+            <div class="layui-col-md9">
+                <nav>
+                    <ul id="ul">
+                    </ul>
+                </nav>
+            </div>
 
-                </ul>
-            </nav>
             <div class="layui-row layui-col-space15 flow-default" id="LAY_demo1">
             </div>
             <div class="layui-row layui-col-space15 flow-default" id="LAY_demo2">
@@ -373,7 +375,7 @@
         }
         document.getElementById('ul').onclick = function(ev) {
             var arr = [];
-            console.log(ev.target)
+
             let Id = ev.target.value
             console.log(Id)
             document.getElementById('LAY_demo1').innerHTML = ''
@@ -438,36 +440,6 @@
                                 }
                                 next(arr.join(''), page < pages);
                                 //document.getElementsByClassName('layui-row')[0].innerHTML += html;
-
-                                var btn = document.querySelectorAll('.layui-btn');
-                                console.log(btn);
-                                for (var i = 1; i < btn.length; i++) {
-                                    (function(i) {
-                                        if (i % 2 == 0) {
-                                            btn[i].addEventListener('click', function() {
-                                                console.log(this.dataset.id);
-                                                let xhr = XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
-                                                xhr.open('post', '/blogs/delete?blogsModel.id=' + this.dataset.id);
-                                                xhr.onreadystatechange = function() {
-                                                    console.log(xhr.responseText)
-                                                    if (xhr.status == 200 && xhr.readyState == 4) {
-                                                        let json = JSON.parse(xhr.responseText)
-                                                        console.log(xhr.responseText.code)
-                                                        if (json.code == 0) {
-                                                            document.getElementById('Alert').style.display = 'block';
-                                                            setTimeout(function() {
-                                                                document.getElementById("Alert").style.display = "none";
-                                                                window.location = './person_blog_draft.html'
-                                                            }, 2000);
-
-                                                        }
-                                                    }
-                                                }
-                                                xhr.send();
-                                            }, false)
-                                        }
-                                    })(i)
-                                }
                             }
                         }
                         xhr.setRequestHeader("Content-type", "application/json");
